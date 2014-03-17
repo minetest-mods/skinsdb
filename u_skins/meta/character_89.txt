@@ -1,0 +1,3 @@
+name = "S&quot;am&quot;TEVE",
+author = "AMMOnym",
+comment = "CC BY-SA 3.0",

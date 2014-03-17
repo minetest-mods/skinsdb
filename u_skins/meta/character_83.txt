@@ -1,0 +1,3 @@
+name = "BlueZ Sam II",
+author = "philipbenr",
+comment = "CC BY-SA 3.0",

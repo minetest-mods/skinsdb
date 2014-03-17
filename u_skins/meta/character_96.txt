@@ -1,0 +1,3 @@
+name = "ShadowNinja",
+author = "ShadowNinja",
+comment = "CC BY-SA 4.0",

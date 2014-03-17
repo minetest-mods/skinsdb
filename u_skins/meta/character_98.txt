@@ -1,0 +1,3 @@
+name = "Calinou",
+author = "Calinou",
+comment = "CC BY-SA 3.0",

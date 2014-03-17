@@ -1,0 +1,3 @@
+name = "skin minecraft",
+author = "lestouem",
+comment = "CC BY-SA 3.0",

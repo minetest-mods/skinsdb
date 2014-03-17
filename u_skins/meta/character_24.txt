@@ -1,0 +1,3 @@
+name = "Brett Favre",
+author = "philipbenr",
+comment = "CC BY-SA 3.0",

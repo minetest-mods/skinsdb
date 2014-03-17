@@ -1,0 +1,3 @@
+name = "Scarlet Spider-man",
+author = "Ferdi Napoli",
+comment = "CC BY-NC-SA 3.0",

@@ -1,0 +1,3 @@
+name = "Charizard",
+author = "Ferdi Napoli",
+comment = "CC BY-NC-SA 3.0",

@@ -1,0 +1,3 @@
+name = "Infantry man",
+author = "philipbenr",
+comment = "CC BY-SA 3.0",

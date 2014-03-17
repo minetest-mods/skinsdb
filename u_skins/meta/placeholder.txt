@@ -1,0 +1,2 @@
+This file is here so the "meta" directory is created by git.
+Please run the update_from_db.py script to fill this, or use the "master" branch of the mod.

@@ -1,0 +1,3 @@
+name = "Gothic Sam",
+author = "GingerHunter797",
+comment = "CC BY-SA 3.0",

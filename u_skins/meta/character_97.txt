@@ -1,0 +1,3 @@
+name = "Minetestian",
+author = "Minetestian",
+comment = "CC BY-SA 3.0",
