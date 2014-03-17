@@ -1,0 +1,22 @@
+minetest-skins
+==============
+
+Skins mod for minetest unified_inventory by Dean Montgomery - feel free to merge it into skinsdb or unified_inventory git.
+
+Requires latest unified_inventory from:
+https://github.com/minetest-technic/unified_inventory
+
+This is the "u_skindb" branch, it is ment to download the skins from addi's skin database (http://minetest.fensta.bplaced.net).
+
+!!! Please run either:
+ "./update_from_db.py" OR
+ "./update_from_db2.py"
+ script, then "./generate_previews.sh" before using the mod. !!!
+
+Use the "master" branch if you want to use your own skin database, or the one provided with the mod.
+
+
+Credits:
+MirceaKitsune (WTFPL) + bundled script by Zeg9 (WTFPL too):
+	skin_previews.blend
+RealyBadAngel unified_inventory and Zeg9 skinsdb
