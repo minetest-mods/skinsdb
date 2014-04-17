@@ -6,6 +6,7 @@ u_skins = {}
 u_skins.type = { SPRITE=0, MODEL=1 }
 u_skins.pages = {}
 u_skins.u_skins = {}
+u_skins.used_hacky = false -- set to true if used hacky way to update skins
 
 u_skins.get_type = function(texture)
 	if not texture then return end
@@ -34,6 +35,7 @@ u_skins.update_player_skin = function(player)
 	elseif u_skins.get_type(u_skins.u_skins[name]) == u_skins.type.MODEL then
 		player:set_properties({
 			visual = "mesh",
+			mesh = "character.x",
 			textures = {u_skins.u_skins[name]..".png"},
 			visual_size = {x=1, y=1},
 		})
@@ -47,11 +49,13 @@ unified_inventory.register_page("u_skins", {
 		name = player:get_player_name()
 		local formspec = "background[0.06,0.99;7.92,7.52;ui_misc_form.png]"
 		if u_skins.get_type(u_skins.u_skins[name]) == u_skins.type.MODEL then
-			formspec = formspec
-				.. "image[0,.75;1,2;"..u_skins.u_skins[name].."_preview.png]"
-				.. "image[1,.75;1,2;"..u_skins.u_skins[name].."_preview_back.png]"
-				.. "label[6,.5;Raw texture:]"
-				.. "image[6,1;2,1;"..u_skins.u_skins[name]..".png]"
+			formspec = formspec.."image[0,.75;1,2;"..u_skins.u_skins[name].."_preview.png]"
+			if not u_skins.used_hacky then
+				-- player back view
+				formspec = formspec.."image[1,.75;1,2;"..u_skins.u_skins[name].."_preview_back.png]"
+			end
+			formspec = formspec.."label[6,.5;Raw texture:]"
+				.."image[6,1;2,1;"..u_skins.u_skins[name]..".png]"
 			
 		else
 			formspec = formspec

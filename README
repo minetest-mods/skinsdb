@@ -8,11 +8,12 @@ https://github.com/minetest-technic/unified_inventory
 
 This is the "u_skindb" branch, it is ment to download the skins from addi's skin database (http://minetest.fensta.bplaced.net).
 
-To re-download the latest skins you may want to run:
- "./update_from_db.py" OR
- "./update_from_db2.py"
- script, then "./generate_previews.sh" before using the mod.
-
+To re-download the latest skins you have 2 ways:
+	1, if you have blender) Run the script "update_from_db.py" OR "update_from_db2.py"
+	and then "./generate_previews.sh"
+	
+	2, if you are lazy) Run the script "update_from_db_hacky.py"
+	and then make sure, you have set "u_skins.used_hacky" to "true" in "./u_skins/init.lua"
 
 Credits:
 MirceaKitsune (WTFPL) + bundled script by Zeg9 (WTFPL too):
