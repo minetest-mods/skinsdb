@@ -33,14 +33,26 @@ def addpage(page):
 		f.write(base64.b64decode(s["img"]))
 		f.close()
 		f = open(metadir+"character_"+str(i)+".txt",'w')
-		f.write('name = "'+s["name"]+'",\n')
-		f.write('author = "'+s["author"]+'",\n')
-		f.write('comment = "'+s["license"]+'",\n')
+		f.write(s["name"] + '\n')
+		f.write(s["author"] + '\n')
+		f.write(s["license"])
+		f.close()
+		try:
+			c.request("GET","/skins/1/"+str(s["id"])+".png")
+			r = c.getresponse()
+		except StandardError:
+			c.request("GET","/skins/1/"+str(s["id"])+".png")
+			r = c.getresponse()
+			if r.status != 200:
+				print("Error", r.status)
+				exit(r.status)
+		data = r.read()
+		f = open(skinsdir+"character_"+str(i)+"_preview.png",'wb')
+		f.write(data)
 		f.close()
 		i = i + 1
 addpage(1)
 if pages > 1:
 	for p in range(pages-1):
 		addpage(p+2)
-print("Skins have been updated. Please run ./generate_previews.sh")
-
+print("Skins have been updated!")

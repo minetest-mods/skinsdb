@@ -1,3 +1,0 @@
-name = "Natsu (Fairy Tail)",
-author = "philipbenr",
-comment = "CC BY-SA 3.0",

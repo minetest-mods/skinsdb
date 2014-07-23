@@ -1,3 +1,0 @@
-name = "C55",
-author = "Jordach",
-comment = "CC BY-NC-SA 3.0",

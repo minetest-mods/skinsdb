@@ -1,3 +1,0 @@
-name = "Adarqet",
-author = "Adarqet",
-comment = "CC BY-SA 3.0",

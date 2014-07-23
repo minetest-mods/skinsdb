@@ -1,3 +1,0 @@
-name = "Sonic The Hedgehog",
-author = "Ferdi Napoli",
-comment = "CC BY-NC-SA 3.0",

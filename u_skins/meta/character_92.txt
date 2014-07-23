@@ -1,3 +1,0 @@
-name = "Black",
-author = "Calinou",
-comment = "CC BY 4.0",

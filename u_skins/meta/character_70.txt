@@ -1,3 +1,0 @@
-name = "Diamond Armor Sam",
-author = "Block_Guy",
-comment = "CC BY-SA 3.0",

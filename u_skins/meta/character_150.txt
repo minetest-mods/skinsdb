@@ -1,3 +1,0 @@
-name = "Cywalk Sam",
-author = "w_laenger",
-comment = "CC BY-SA 3.0",

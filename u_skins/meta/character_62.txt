@@ -1,3 +1,0 @@
-name = "villiantest III",
-author = "marshrover",
-comment = "CC BY-SA 3.0",

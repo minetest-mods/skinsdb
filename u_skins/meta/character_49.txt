@@ -1,3 +1,0 @@
-name = "My younger Brother",
-author = "philipbenr",
-comment = "CC BY-SA 3.0",

@@ -1,3 +1,0 @@
-name = "Hobo/Homeless person",
-author = "Minetestian",
-comment = "CC BY-SA 3.0",

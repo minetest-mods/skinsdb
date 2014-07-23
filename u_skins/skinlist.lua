@@ -1,25 +1,26 @@
 u_skins.list = {}
-u_skins.add = function(skin)
-	table.insert(u_skins.list,skin)
+u_skins.meta = {}
+
+local id = 1
+local internal_id = 1
+local fetched_skip = 0
+while fetched_skip < 40 do
+	local name = "character_"..id
+	local file = io.open(u_skins.modpath.."/meta/"..name..".txt", "r")
+	if file then
+		local data = string.split(file:read("*all"), "\n", 3)
+		file:close()
+		
+		u_skins.list[internal_id] = name
+		u_skins.meta[name] = {}
+		u_skins.meta[name].name = data[1]
+		u_skins.meta[name].author = data[2]
+		u_skins.meta[name].license = data[3]
+		u_skins.meta[name].description = "" --what's that??
+		
+		fetched_skip = 0
+		internal_id = internal_id + 1
+	end
+	fetched_skip = fetched_skip + 1
+	id = id + 1
 end
-
-local id
-
-id = 1
-while true do
-	local f = io.open(minetest.get_modpath("u_skins").."/textures/player_"..id..".png")
-	if (not f) then break end
-	f:close()
-	u_skins.add("player_"..id)
-	id = id +1
-end
-
-id = 1
-while true do
-	local f = io.open(minetest.get_modpath("u_skins").."/textures/character_"..id..".png")
-	if (not f) then break end
-	f:close()
-	u_skins.add("character_"..id)
-	id = id +1
-end
-

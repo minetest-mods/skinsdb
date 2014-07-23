@@ -1,3 +1,0 @@
-name = "jojoa1997 2",
-author = "jojoa1997",
-comment = "CC BY-SA 3.0",

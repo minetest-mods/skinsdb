@@ -1,3 +1,0 @@
-name = "PilzAdam",
-author = "PilzAdam",
-comment = "CC BY 4.0",

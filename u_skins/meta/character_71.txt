@@ -1,3 +1,0 @@
-name = "Molten Elemental",
-author = "Dunedubby",
-comment = "CC BY-SA 3.0",

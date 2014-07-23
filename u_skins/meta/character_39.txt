@@ -1,3 +1,0 @@
-name = "DASHING",
-author = "DJOZZY",
-comment = "CC BY-SA 3.0",

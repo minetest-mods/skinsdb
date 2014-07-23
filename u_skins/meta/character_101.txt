@@ -1,3 +1,0 @@
-name = "4&deg;district",
-author = "Ferdi Napoli",
-comment = "CC BY-SA 3.0",

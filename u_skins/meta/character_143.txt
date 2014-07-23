@@ -1,3 +1,0 @@
-name = "Jan",
-author = "Jan",
-comment = "CC BY 4.0",

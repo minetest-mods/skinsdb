@@ -1,3 +1,0 @@
-name = "santa",
-author = "https://dl.dropbox.com/s/cs0vhq8kkzpcvre/santa.zip?dl=1",
-comment = "CC BY-SA 3.0",

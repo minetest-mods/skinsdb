@@ -1,3 +1,0 @@
-name = "Aguia Explorer",
-author = "Davizinho",
-comment = "CC BY-SA 3.0",

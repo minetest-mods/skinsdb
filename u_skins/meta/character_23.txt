@@ -1,3 +1,0 @@
-name = "Interstella 5555 guitarist",
-author = "philipbenr",
-comment = "CC BY-SA 3.0",

@@ -1,3 +1,0 @@
-name = "Zombie",
-author = "viv100",
-comment = "CC BY-SA 3.0",

@@ -1,3 +1,0 @@
-name = "Invisbility Ninja",
-author = "Minetestian",
-comment = "CC BY-SA 3.0",
