@@ -13,9 +13,9 @@ u_skins.file_save = false
 u_skins.type = { SPRITE=0, MODEL=1, ERROR=99 }
 u_skins.get_type = function(texture)
 	if not u_skins.is_skin(texture) then
-		return u_skins.ERROR
+		return u_skins.type.ERROR
 	end
-	return u_skins.MODEL
+	return u_skins.type.MODEL
 end
 -- )
 
