@@ -9,6 +9,16 @@ u_skins.pages = {}
 u_skins.u_skins = {}
 u_skins.file_save = false
 
+-- ( Deprecated
+u_skins.type = { SPRITE=0, MODEL=1, ERROR=99 }
+u_skins.get_type = function(texture)
+	if not u_skins.is_skin(texture) then
+		return u_skins.ERROR
+	end
+	return u_skins.MODEL
+end
+-- )
+
 u_skins.is_skin = function(texture)
 	if not texture then
 		return false
