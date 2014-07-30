@@ -30,7 +30,7 @@ u_skins.save = function()
 	local output = io.open(u_skins.file, "w")
 	for name, skin in pairs(u_skins.u_skins) do
 		if name and skin then
-			if skin ~= "character_1" then
+			if skin ~= u_skins.default then
 				output:write(name.." "..skin.."\n")
 			end
 		end

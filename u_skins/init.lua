@@ -5,6 +5,7 @@
 u_skins = {}
 u_skins.modpath = minetest.get_modpath("u_skins")
 u_skins.file = minetest.get_worldpath().."/u_skins.mt"
+u_skins.default = "character_1"
 u_skins.pages = {}
 u_skins.u_skins = {}
 u_skins.file_save = false
@@ -35,13 +36,10 @@ dofile(u_skins.modpath.."/players.lua")
 u_skins.update_player_skin = function(player)
 	local name = player:get_player_name()
 	if not u_skins.is_skin(u_skins.u_skins[name]) then
-		u_skins.u_skins[name] = "character_1"
+		u_skins.u_skins[name] = u_skins.default
 	end
 	player:set_properties({
-		visual = "mesh",
-		mesh = "character.x",
 		textures = {u_skins.u_skins[name]..".png"},
-		visual_size = {x=1, y=1},
 	})
 	u_skins.file_save = true
 end
@@ -51,7 +49,7 @@ unified_inventory.register_page("u_skins", {
 	get_formspec = function(player)
 		local name = player:get_player_name()
 		if not u_skins.is_skin(u_skins.u_skins[name]) then
-			u_skins.u_skins[name] = "character_1"
+			u_skins.u_skins[name] = u_skins.default
 		end
 		
 		local formspec = ("background[0.06,0.99;7.92,7.52;ui_misc_form.png]"
@@ -158,7 +156,7 @@ end)
 minetest.register_on_joinplayer(function(player)
 	local player_name = player:get_player_name()
 	if not u_skins.is_skin(u_skins.u_skins[player_name]) then
-		u_skins.u_skins[player_name] = "character_1"
+		u_skins.u_skins[player_name] = u_skins.default
 	end
 	u_skins.update_player_skin(player)
 end)
