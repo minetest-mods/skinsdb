@@ -31,7 +31,7 @@ def addpage(page):
 	pages = int(l["pages"])
 	for s in l["skins"]:
 		f = open(skinsdir + "character_" + str(i) + ".png", "wb")
-		f.write(base64.b64decode(s["img"]))
+		f.write(base64.b64decode(bytes(s["img"], 'utf-8')))
 		f.close()
 		f = open(metadir + "character_" + str(i) + ".txt", "w")
 		f.write(str(s["name"]) + '\n')
