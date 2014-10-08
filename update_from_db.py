@@ -17,11 +17,13 @@ def addpage(page):
 	try:
 		c.request("GET", "/api/get.json.php?getlist&page=" + str(page) + "&outformat=base64")
 		r = c.getresponse()
-	except StandardError:
+	except Exception:
 		if r != 0:
 			if r.status != 200:
 				print("Error", r.status)
 				exit(r.status)
+		return
+	
 	data = r.read().decode()
 	l = json.loads(data)
 	if not l["success"]:
@@ -41,11 +43,12 @@ def addpage(page):
 		try:
 			c.request("GET", "/skins/1/" + str(s["id"]) + ".png")
 			r = c.getresponse()
-		except StandardError:
+		except Exception:
 			if r != 0:
 				if r.status != 200:
 					print("Error", r.status)
-					exit(r.status)
+			continue
+		
 		data = r.read()
 		f = open(skinsdir + "character_" + str(i) + "_preview.png", "wb")
 		f.write(data)
