@@ -109,8 +109,9 @@ u_skins.generate_pages = function(texture)
 			if i > 1 and x == 0 then
 				y = 1.8
 			end
-			formspec = (formspec.."image_button["..x..","..y..";1,2;"
-				..skin[2].."_preview.png;u_skins_set$"..skin[1]..";]")
+			formspec = (formspec.."image_button["..x..","..y..";1,2;"..
+				skin[2].."_preview.png;u_skins_set$"..skin[1]..";]"..
+				"tooltip[u_skins_set$"..skin[1]..";"..u_skins.meta[skin[2]].name.."]")
 		end
 		local page_prev = page - 2
 		local page_next = page
