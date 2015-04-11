@@ -9,6 +9,7 @@ u_skins.default = "character_1"
 u_skins.pages = {}
 u_skins.u_skins = {}
 u_skins.file_save = false
+u_skins.simple_skins = false
 
 -- ( Deprecated
 u_skins.type = { SPRITE=0, MODEL=1, ERROR=99 }
@@ -33,15 +34,22 @@ end
 dofile(u_skins.modpath.."/skinlist.lua")
 dofile(u_skins.modpath.."/players.lua")
 
+if rawget(_G, "skins") then
+	u_skins.simple_skins = true
+end
+
 u_skins.update_player_skin = function(player)
 	local name = player:get_player_name()
+	if u_skins.simple_skins and u_skins.u_skins[name] == u_skins.default then
+		return
+	end
+	
 	if not u_skins.is_skin(u_skins.u_skins[name]) then
 		u_skins.u_skins[name] = u_skins.default
 	end
 	player:set_properties({
 		textures = {u_skins.u_skins[name]..".png"},
 	})
-	u_skins.file_save = true
 end
 
 -- Display Current Skin
@@ -145,6 +153,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if current[1] == "u_skins_set" then
 			u_skins.u_skins[player:get_player_name()] = u_skins.list[tonumber(current[2])]
 			u_skins.update_player_skin(player)
+			u_skins.file_save = true
 			unified_inventory.set_inventory_formspec(player, "u_skins")
 		elseif current[1] == "u_skins_page" then
 			u_skins.pages[player:get_player_name()] = current[2]
