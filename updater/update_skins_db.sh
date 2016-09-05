@@ -14,9 +14,10 @@ NUMPAGES="1"	# Number of pages. Default is 1 page
 PERPAGE="2000"  # Number of items per page. Default is 2000.
 JSONURL="http://minetest.fensta.bplaced.net/api/get.json.php?getlist&page=$NUMPAGES&outformat=base64&per_page=$PERPAGE"	# The URL to the database
 PREVIEWURL="http://minetest.fensta.bplaced.net/skins/1/"	# The url to the location of the previews.
-temp=$PWD/tmp			# Where the temp folder will be. Default is $PWD/tmp, which means that the tmp folder will be put in the current folder
-METADEST=$PWD/u_skins/meta		# This is the folder where the meta data will be saved
-TEXTUREDEST=$PWD/u_skins/textures	# This is the folder where the skins and the previews will be saved
+curpath="$(dirname $0)"		# all path are relative to this script place
+temp="$curpath"/tmp			# Where the temp folder will be. Default is $PWD/tmp, which means that the tmp folder will be put in the current folder
+METADEST="$curpath"/../meta		# This is the folder where the meta data will be saved
+TEXTUREDEST="$curpath"/../textures	# This is the folder where the skins and the previews will be saved
 
 
 # === Make a bunch of folders and download the db ===

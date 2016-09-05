@@ -6,9 +6,10 @@ It downloads the skins from the Minetest skin database. (http://minetest.fensta.
 Requires latest unified_inventory from:
 https://github.com/minetest-technic/unified_inventory
 
-To download the latest skins you need to run:
- "./update_from_db.py" OR
- the win32.NET client
+To download the latest there are 3 tools available in "updater" folder:
+ "./update_skins_db.sh"    bash and jq required
+ "./update_from_db.py"     python3 required
+ "MT_skins_updater.exe .." windows or mono required. ".." is the path to u_skins folder
 
 Licenses:
 --------

@@ -10,8 +10,8 @@ def die(message,code=23):
 		raise SystemExit(code)
 
 server = "minetest.fensta.bplaced.net"
-skinsdir = "u_skins/textures/"
-metadir = "u_skins/meta/"
+skinsdir = "../textures/"
+metadir = "../meta/"
 curskin = 0
 curpage = 1
 pages = None
