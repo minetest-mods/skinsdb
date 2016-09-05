@@ -1,0 +1,9 @@
+# Template
+
+Raw texture = 
+Name = 
+Author = 
+Change = 
+Page = 
+License = 
+Description =
