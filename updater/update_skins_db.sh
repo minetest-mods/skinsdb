@@ -25,17 +25,17 @@ TEXTUREDEST="$curpath"/../textures	# This is the folder where the skins and the 
 if [ -d "$temp" ]; then
     rm -r $temp				# If the temp dir exists we will remove it and its contents.
 fi
-mkdir $temp				# Make a new temp dir. Redundant? No. We will get rid of it later.
+mkdir "$temp"				# Make a new temp dir. Redundant? No. We will get rid of it later.
 
 if [ ! -d "$METADEST" ]; then		# Check to see if the meta dir exists, and if not, create it
-  mkdir $METADEST
+  mkdir "$METADEST"
 fi
 
 if [ ! -d "$TEXTUREDEST" ]; then	# Check to see if the textures dir exists, and if not, create it
-  mkdir $TEXTUREDEST
+  mkdir "$TEXTUREDEST"
 fi
 
-wget $JSONURL -O $temp/rawdb.txt	# Download the entire database
+wget "$JSONURL" -O "$temp"/rawdb.txt	# Download the entire database
 
 
 # === Do the JSON thing ===
@@ -43,37 +43,36 @@ wget $JSONURL -O $temp/rawdb.txt	# Download the entire database
 i="0" 	# This will be the counter.
 while [ "$ID" != "null" ] 	# Repeat for as long as there is data to process
   do
-    ID=$(cat $temp/rawdb.txt | jq ".skins[$i].id")
-    
+    ID=$(cat "$temp"/rawdb.txt | jq ".skins[$i].id")
+
     # The next lines are kinda complex. sed is being used to strip the quotes from the variables. I had help...
-    meta_name=$(echo $(cat $temp/rawdb.txt | jq ".skins[$i].name") | sed -e 's/^"//'  -e 's/"$//')
-    meta_author=$(echo $(cat $temp/rawdb.txt | jq ".skins[$i].author") | sed -e 's/^"//'  -e 's/"$//')
-    meta_license=$(echo $(cat $temp/rawdb.txt | jq ".skins[$i].license") | sed -e 's/^"//'  -e 's/"$//')
-    
+    meta_name="$(jq ".skins[$i].name" < "$temp"/rawdb.txt | sed 's/^"//;s/"$//')"
+    meta_author="$(jq ".skins[$i].author" <"$temp"/rawdb.txt | sed 's/^"//;s/"$//')"
+    meta_license="$(jq ".skins[$i].license" <"$temp"/rawdb.txt | sed 's/^"//;s/"$//')"
+
     if [[ "$ID" != "null" ]]; then 	# Check to see if ID has a value
-      echo "#"$ID "name:" $meta_name "author:" $meta_author "license:" $meta_license  # Verbosity to show that the script is working.      
-      
-      echo $meta_name > $METADEST/character_$ID.txt		# Save the meta data to files, this line overwrites the data inside the file
-      echo $meta_author  >> $METADEST/character_$ID.txt		# Save the meta data to files, this line is added to the file
-      echo $meta_license >> $METADEST/character_$ID.txt		# Save the meta data to files, and this line is added to the file as well.
-      
-      
+      echo "# $ID name: $meta_name author: $meta_author license: $meta_license"  # Verbosity to show that the script is working.
+
+      echo "$meta_name" > "$METADEST"/character_$ID.txt			# Save the meta data to files, this line overwrites the data inside the file
+      echo "$meta_author"  >> "$METADEST"/character_$ID.txt		# Save the meta data to files, this line is added to the file
+      echo "$meta_license" >> "$METADEST"/character_$ID.txt		# Save the meta data to files, and this line is added to the file as well.
+
+
       # === Extract and save the image from the JSON file ===
       # ======================================================
-      skin=$(echo $(cat $temp/rawdb.txt | jq ".skins[$i].img") | sed -e 's/^"//'  -e 's/"$//') # Strip the quotes from the base64 encoded string
-      echo $skin | base64 --decode > $TEXTUREDEST"/character_"$ID".png"		# Decode the string, and save it as a .png file
-      
-      
+      skin=$(jq ".skins[$i].img" < "$temp"/rawdb.txt | sed 's/^"//;s/"$//') 	# Strip the quotes from the base64 encoded string
+      echo "$skin" | base64 --decode > "$TEXTUREDEST"/character_"$ID".png	# Decode the string, and save it as a .png file
+
       # === Download a preview image whilst we're at it ===
       # ====================================================
-      wget -nv $PREVIEWURL/$ID".png" -O $TEXTUREDEST"/character_"$ID"_preview.png"      # Downloads a preview of the skin that we just saved.
-      
+      wget -nv "$PREVIEWURL/$ID".png -O "$TEXTUREDEST"/character_"$ID"_preview.png	# Downloads a preview of the skin that we just saved.
+
     fi
     i=$[$i+1] 	# Increase the counter by one.
   done
 
 # === Now we'll clean up the mess ===
 # ===================================
-rm -r $temp	# Remove the temp dir and its contents.
+rm -r "$temp"	# Remove the temp dir and its contents.
 
 exit # Not strictly needed, but i like to use it to wrap things up.
