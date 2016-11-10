@@ -104,6 +104,9 @@ unified_inventory.register_button("u_skins", {
 
 -- Create all of the skin-picker pages.
 
+
+local dropdown_values = {}
+
 u_skins.generate_pages = function(texture)
 	local page = 0
 	local pages = {}
@@ -137,9 +140,17 @@ u_skins.generate_pages = function(texture)
 		if page_next >= total_pages then
 			page_next = 0
 		end
+		local page_list = ""
+		dropdown_values = {}
+		for pg=1, total_pages do
+			local pagename = S("Page").." "..pg.."/"..total_pages
+			dropdown_values[pagename] = pg
+			if pg > 1 then page_list = page_list.."," end
+			page_list = page_list..pagename
+		end
 		formspec = (formspec
 			.."button[0,3.8;1,.5;u_skins_page$"..page_prev..";<<]"
-			.."button[.75,3.8;6.5,.5;u_skins_null;"..S("Page").." "..page.."/"..total_pages.."]"
+			.."dropdown[1,3.65;6.5,.5;u_skins_selpg;"..page_list..";"..page.."]"
 			.."button[7,3.8;1,.5;u_skins_page$"..page_next..";>>]")
 		
 		unified_inventory.register_page("u_skins_page$"..(page - 1), {
@@ -163,10 +174,18 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			u_skins.update_player_skin(player)
 			u_skins.file_save = true
 			unified_inventory.set_inventory_formspec(player, "u_skins")
+			return
 		elseif current[1] == "u_skins_page" then
 			u_skins.pages[player:get_player_name()] = current[2]
 			unified_inventory.set_inventory_formspec(player, "u_skins_page$"..current[2])
+			return
 		end
+	end
+	if fields.u_skins_selpg then
+		page = dropdown_values[fields.u_skins_selpg]
+		u_skins.pages[player:get_player_name()] = page
+		unified_inventory.set_inventory_formspec(player, "u_skins_page$"..(page-1))
+		return
 	end
 end)
 
