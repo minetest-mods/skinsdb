@@ -1,10 +1,7 @@
-minetest-u_skins
+minetest-skins
 ================
-An skin extention for the Minetest mod unified_inventory by Dean Montgomery
+An skin extention for the Minetest (bell07's version)
 It downloads the skins from the Minetest skin database. (http://minetest.fensta.bplaced.net)
-
-Requires latest unified_inventory from:
-https://github.com/minetest-technic/unified_inventory
 
 To download the latest there are 3 tools available in "updater" folder:
  "./update_skins_db.sh"    bash and jq required

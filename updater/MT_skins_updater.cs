@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.IO;
 
-// MT skins updater for the u_skins mod
+// MT skins updater for the skins mod
 // Creator: Krock
 // License: zlib (http://www.zlib.net/zlib_license.html)
 namespace MT_skins_updater {
@@ -14,7 +14,7 @@ namespace MT_skins_updater {
 			Console.WriteLine("Welcome to the MT skins updater!");
 			Console.WriteLine("# Created by: Krock (2014-07-10)");
 			Engine e = new Engine();
-			Console.WriteLine(@"Path to the u_skins mod: (ex. 'E:\Minetest\mods\u_skinsdb\u_skins\')");
+			Console.WriteLine(@"Path to the skins mod: (ex. 'E:\Minetest\mods\skinsdb\skins\')");
 			string path = Console.ReadLine();
 			Console.WriteLine("Start updating at page: ('0' to update everything)");
 			int page = getInt(Console.ReadLine());
