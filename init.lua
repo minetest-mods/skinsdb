@@ -6,7 +6,7 @@
 
 skins = {}
 skins.modpath = minetest.get_modpath("skins")
-skins.file = minetest.get_worldpath().."skins.mt"
+skins.file = minetest.get_worldpath().."/skins.mt"
 skins.default = "character_1"
 skins.pages = {}
 skins.skins = {}
