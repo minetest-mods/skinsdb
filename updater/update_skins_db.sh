@@ -19,7 +19,6 @@ temp="$curpath"/tmp			# Where the temp folder will be. Default is $PWD/tmp, whic
 METADEST="$curpath"/../meta		# This is the folder where the meta data will be saved
 TEXTUREDEST="$curpath"/../textures	# This is the folder where the skins and the previews will be saved
 
-
 # === Make a bunch of folders and download the db ===
 # ===================================================
 if [ -d "$temp" ]; then
@@ -41,16 +40,18 @@ wget "$JSONURL" -O "$temp"/rawdb.txt	# Download the entire database
 # === Do the JSON thing ===
 # =========================
 i="0" 	# This will be the counter.
-while [ "$ID" != "null" ] 	# Repeat for as long as there is data to process
-  do
-    ID=$(cat "$temp"/rawdb.txt | jq ".skins[$i].id")
+while true; do
+   ID=$(cat "$temp"/rawdb.txt | jq ".skins[$i].id")
+   if [ "$ID" == "null" ]; then
+       break
+   fi
 
-    # The next lines are kinda complex. sed is being used to strip the quotes from the variables. I had help...
-    meta_name="$(jq ".skins[$i].name" < "$temp"/rawdb.txt | sed 's/^"//;s/"$//')"
-    meta_author="$(jq ".skins[$i].author" <"$temp"/rawdb.txt | sed 's/^"//;s/"$//')"
-    meta_license="$(jq ".skins[$i].license" <"$temp"/rawdb.txt | sed 's/^"//;s/"$//')"
+   if [ ! -f "$METADEST"/character_$ID.txt ] || [ "$1" == "all" ]; then
+      # The next lines are kinda complex. sed is being used to strip the quotes from the variables. I had help...
+      meta_name="$(jq ".skins[$i].name" < "$temp"/rawdb.txt | sed 's/^"//;s/"$//')"
+      meta_author="$(jq ".skins[$i].author" <"$temp"/rawdb.txt | sed 's/^"//;s/"$//')"
+      meta_license="$(jq ".skins[$i].license" <"$temp"/rawdb.txt | sed 's/^"//;s/"$//')"
 
-    if [[ "$ID" != "null" ]]; then 	# Check to see if ID has a value
       echo "# $ID name: $meta_name author: $meta_author license: $meta_license"  # Verbosity to show that the script is working.
 
       echo "$meta_name" > "$METADEST"/character_$ID.txt			# Save the meta data to files, this line overwrites the data inside the file
@@ -66,10 +67,11 @@ while [ "$ID" != "null" ] 	# Repeat for as long as there is data to process
       # === Download a preview image whilst we're at it ===
       # ====================================================
       wget -nv "$PREVIEWURL/$ID".png -O "$TEXTUREDEST"/character_"$ID"_preview.png	# Downloads a preview of the skin that we just saved.
-
-    fi
-    i=$[$i+1] 	# Increase the counter by one.
-  done
+   else
+      echo -n "."
+   fi
+   i=$[$i+1] 	# Increase the counter by one.
+done
 
 # === Now we'll clean up the mess ===
 # ===================================
