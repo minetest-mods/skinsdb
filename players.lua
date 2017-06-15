@@ -20,7 +20,7 @@ end
 skins.update_player_skin = function(player)
 	local skin = skins.get_player_skin(player)
 	player:set_properties({
-		textures = {skins.list[skin]},
+		textures = {skins.textures[skin]},
 	})
 end
 
