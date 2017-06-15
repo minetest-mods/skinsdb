@@ -1,11 +1,12 @@
 -- Unified Skins for Minetest - based modified Bags from unfied_inventory and skins from inventory_plus
 
 -- Copyright (c) 2012 cornernote, Dean Montgomery
+-- Rework 2017 by bell07
 -- License: GPLv3
 -- Boilerplate to support localized strings if intllib mod is installed.
 
 skins = {}
-skins.modpath = minetest.get_modpath("skins")
+skins.modpath = minetest.get_modpath(minetest.get_current_modname())
 skins.default = "character_1"
 
 skins.type = { SPRITE=0, MODEL=1, ERROR=99 }
