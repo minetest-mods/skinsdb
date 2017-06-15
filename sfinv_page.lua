@@ -59,7 +59,7 @@ local function get_formspec(player, context)
 		local x = (index_p-1) % 8
 		local y
 		if index_p > 8 then
-			y = 5
+			y = 5.5
 		else
 			y = 3.2
 		end
@@ -91,38 +91,28 @@ local function get_formspec(player, context)
 	return formspec
 end
 
-
-
 sfinv.register_page("skins:overview", {
 	title = "Skins",
 	get = function(self, player, context)
-		print(dump(context))
 		return sfinv.make_formspec(player, context, get_formspec(player, context))
-	end
-})
-
-
-
--- click button handlers
-minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if fields.skins then
---		unified_inventory.set_inventory_formspec(player, "craft")
-		return
-	end
-	for field, _ in pairs(fields) do
-		local current = string.split(field, "$", 2)
-		if current[1] == "skins_set" then
-			skins.set_player_skin(player, skins_reftab[tonumber(current[2])].skin)
---			unified_inventory.set_inventory_formspec(player, "skins")
-			return
-		elseif current[1] == "skins_page" then
---			unified_inventory.set_inventory_formspec(player, "skins_page$"..current[2])
+	end,
+	on_player_receive_fields = function(self, player, context, fields)
+		for field, _ in pairs(fields) do
+			local current = string.split(field, "$", 2)
+			if current[1] == "skins_set" then
+				skins.set_player_skin(player, skins_reftab[tonumber(current[2])].skin)
+				sfinv.set_player_inventory_formspec(player)
+				return
+			elseif current[1] == "skins_page" then
+				context.skins_page = tonumber(current[2])
+				sfinv.set_player_inventory_formspec(player)
+				return
+			end
+		end
+		if fields.skins_selpg then
+			context.skins_page = tonumber(dropdown_values[fields.skins_selpg])
+			sfinv.set_player_inventory_formspec(player)
 			return
 		end
 	end
-	if fields.skins_selpg then
-		local page = dropdown_values[fields.skins_selpg]
---		unified_inventory.set_inventory_formspec(player, "skins_page$"..(page))
-		return
-	end
-end)
+})
