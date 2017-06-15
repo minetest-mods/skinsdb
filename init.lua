@@ -34,3 +34,6 @@ if minetest.get_modpath("unified_inventory") then
 	dofile(skins.modpath.."/unified_inventory_page.lua")
 end
 
+if minetest.get_modpath("sfinv") then
+	dofile(skins.modpath.."/sfinv_page.lua")
+end

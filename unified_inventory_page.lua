@@ -48,63 +48,61 @@ unified_inventory.register_button("skins", {
 })
 
 -- Create all of the skin-picker pages.
-skins.generate_pages = function()
-	local total_pages = 1
+local total_pages = 1
+for i, skin in ipairs(skins.list) do
+	local page = math.floor((i-1) / 16)+1
+	local index_p = (i-1)%16+1
 
-	for i, skin in ipairs(skins.list) do
-		local page = math.floor((i-1) / 16)+1
-		local index_p = (i-1)%16+1
-
-		skins_reftab[i] = { index = i, page = page, index_p = index_p, skin = skin }
-		skins_reftab_byskin[skin] = skins_reftab[i]
-		total_pages = page
-	end
-
-	for page=1, total_pages do
-		local formspec = "background[0.06,0.99;7.92,7.52;ui_misc_form.png]"
-		for i = (page-1)*16+1, page*16 do
-			if not skins_reftab[i] then
-				break
-			end
-			local index_p = skins_reftab[i].index_p
-			local x = (index_p-1) % 8
-			local y
-			if index_p > 8 then
-				y = 1.8
-			else
-				y = -0.1
-			end
-			formspec = (formspec.."image_button["..x..","..y..";1,2;"..
-				skins.preview[skins_reftab[i].skin]..";skins_set$"..i..";]"..
-				"tooltip[skins_set$"..i..";"..minetest.formspec_escape(skins.meta[skins_reftab[i].skin].name).."]")
-		end
-		local page_prev = page - 1
-		local page_next = page + 1
-		if page_prev < 1 then
-			page_prev = total_pages
-		end
-		if page_next > total_pages then
-			page_next = 1
-		end
-		local page_list = ""
-		dropdown_values = {}
-		for pg=1, total_pages do
-			local pagename = S("Page").." "..pg.."/"..total_pages
-			dropdown_values[pagename] = pg
-			if pg > 1 then page_list = page_list.."," end
-			page_list = page_list..pagename
-		end
-		formspec = (formspec
-			.."button[0,3.8;1,.5;skins_page$"..page_prev..";<<]"
-			.."dropdown[1,3.68;6.5,.5;skins_selpg;"..page_list..";"..page.."]"
-			.."button[7,3.8;1,.5;skins_page$"..page_next..";>>]")
-		unified_inventory.register_page("skins_page$"..(page), {
-			get_formspec = function(player)
-				return {formspec=formspec}
-			end
-		})
-	end
+	skins_reftab[i] = { index = i, page = page, index_p = index_p, skin = skin }
+	skins_reftab_byskin[skin] = skins_reftab[i]
+	total_pages = page
 end
+
+for page=1, total_pages do
+	local formspec = "background[0.06,0.99;7.92,7.52;ui_misc_form.png]"
+	for i = (page-1)*16+1, page*16 do
+		if not skins_reftab[i] then
+			break
+		end
+		local index_p = skins_reftab[i].index_p
+		local x = (index_p-1) % 8
+		local y
+		if index_p > 8 then
+			y = 1.8
+		else
+			y = -0.1
+		end
+		formspec = (formspec.."image_button["..x..","..y..";1,2;"..
+			skins.preview[skins_reftab[i].skin]..";skins_set$"..i..";]"..
+			"tooltip[skins_set$"..i..";"..minetest.formspec_escape(skins.meta[skins_reftab[i].skin].name).."]")
+	end
+	local page_prev = page - 1
+	local page_next = page + 1
+	if page_prev < 1 then
+		page_prev = total_pages
+	end
+	if page_next > total_pages then
+		page_next = 1
+	end
+	local page_list = ""
+	dropdown_values = {}
+	for pg=1, total_pages do
+		local pagename = S("Page").." "..pg.."/"..total_pages
+		dropdown_values[pagename] = pg
+		if pg > 1 then page_list = page_list.."," end
+		page_list = page_list..pagename
+	end
+	formspec = (formspec
+		.."button[0,3.8;1,.5;skins_page$"..page_prev..";<<]"
+		.."dropdown[1,3.68;6.5,.5;skins_selpg;"..page_list..";"..page.."]"
+		.."button[7,3.8;1,.5;skins_page$"..page_next..";>>]")
+	unified_inventory.register_page("skins_page$"..(page), {
+		get_formspec = function(player)
+			return {formspec=formspec}
+		end
+	})
+end
+
 
 -- click button handlers
 minetest.register_on_player_receive_fields(function(player, formname, fields)
@@ -129,5 +127,3 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 end)
-
-skins.generate_pages()
