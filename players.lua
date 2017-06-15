@@ -1,40 +1,30 @@
-skins.load_players = function()
-	local file = io.open(skins.file, "r")
-	if file then
-		for line in file:lines() do
-			local data = string.split(line, " ", 2)
-			skins.skins[data[1]] = data[2]
-		end
-		io.close(file)
+-- get current skin
+skins.get_player_skin = function(player)
+	local skin = player:get_attribute("skin")
+	if not skins.is_skin(skin) then
+		skin = skins.default
 	end
+	return skin
 end
-skins.load_players()
 
-local ttime = 0
-minetest.register_globalstep(function(t)
-	ttime = ttime + t
-	if ttime < 360 then --every 6min'
-		return
+-- Set skin
+skins.set_player_skin = function(player, skin)
+	if skin == skins.default then
+		skin = ""
 	end
-	ttime = 0
-	skins.save()
+	player:set_attribute("skin", skin)
+	skins.update_player_skin(player)
+end
+
+-- update visuals
+skins.update_player_skin = function(player)
+	local skin = skins.get_player_skin(player)
+	player:set_properties({
+		textures = {skins.list[skin]},
+	})
+end
+
+-- Update skin on join
+minetest.register_on_joinplayer(function(player)
+	skins.update_player_skin(player)
 end)
-
-minetest.register_on_shutdown(function() skins.save() end)
-
-skins.save = function()
-	if not skins.file_save then
-		return
-	end
-	skins.file_save = false
-	local output = io.open(skins.file, "w")
-	for name, skin in pairs(skins.skins) do
-		if name and skin then
-			if skin ~= skins.default then
-				output:write(name.." "..skin.."\n")
-			end
-		end
-	end
-	io.close(output)
-end
-

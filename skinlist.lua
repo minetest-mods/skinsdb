@@ -15,7 +15,7 @@ for _, fn in pairs(skins_dir_list) do
 			if file then
 				local data = string.split(file:read("*all"), "\n", 3)
 				file:close()
-				table.insert(skins.list, name)
+				skins.list[name] = fn
 				skins.meta[name] = {}
 				skins.meta[name].name = data[1]
 				skins.meta[name].author = data[2]
