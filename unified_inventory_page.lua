@@ -5,19 +5,20 @@ else
 	S = function(s) return s end
 end
 
+local dropdown_values = {}
+local skins_reftab = {}
+local skins_reftab_byskin = {}
+
 unified_inventory.register_page("skins", {
 	get_formspec = function(player)
 		local name = player:get_player_name()
-		if not skins.is_skin(skins.skins[name]) then
-			skins.skins[name] = skins.default
-		end
-
+		local skin = skins.get_player_skin(player)
 		local formspec = ("background[0.06,0.99;7.92,7.52;ui_misc_form.png]"
-			.."image[0,.75;1,2;"..skins.skins[name].."_preview.png]"
+			.."image[0,.75;1,2;"..skins.preview[skin].."]"
 			.."label[6,.5;"..S("Raw texture")..":]"
-			.."image[6,1;2,1;"..skins.skins[name]..".png]")
+			.."image[6,1;2,1;"..skins.list[skin].."]")
 
-		local meta = skins.meta[skins.skins[name]]
+		local meta = skins.meta[skin]
 		if meta then
 			if meta.name ~= "" then
 				formspec = formspec.."label[2,.5;"..S("Name")..": "..minetest.formspec_escape(meta.name).."]"
@@ -32,9 +33,9 @@ unified_inventory.register_page("skins", {
 				formspec = formspec.."label[2,2;"..S("Description")..": "..minetest.formspec_escape(meta.description).."]"
 			end
 		end
-		local page = 0
-		if skins.pages[name] then
-			page = skins.pages[name]
+		local page = 1
+		if skins_reftab_byskin[skin] then
+			page = skins_reftab_byskin[skin].page
 		end
 		formspec = formspec .. "button[.75,3;6.5,.5;skins_page$"..page..";"..S("Change").."]"
 		return {formspec=formspec}
@@ -47,42 +48,46 @@ unified_inventory.register_button("skins", {
 })
 
 -- Create all of the skin-picker pages.
+skins.generate_pages = function()
+	local total_pages = 1
 
-
-local dropdown_values = {}
-
-skins.generate_pages = function(texture)
-	local page = 0
-	local pages = {}
-	for i, skin in ipairs(skins.list) do
-		local p_index = (i - 1) % 16
-		if p_index == 0 then
-			page = page + 1
-			pages[page] = {}
-		end
-		pages[page][p_index + 1] = {i, skin}
+	local i = 0
+	for skin, _ in pairs(skins.list) do
+		local page = math.floor(i / 16)+1
+		local index_p = i%16+1
+		i = i + 1
+		skins_reftab[i] = { index = i, page = page, index_p = index_p, skin = skin }
+		skins_reftab_byskin[skin] = skins_reftab[i]
+		total_pages = page
 	end
-	local total_pages = page
-	page = 1
-	for page, arr in ipairs(pages) do
+
+	for page=1, total_pages do
 		local formspec = "background[0.06,0.99;7.92,7.52;ui_misc_form.png]"
-		local y = -0.1
-		for i, skin in ipairs(arr) do
-			local x = (i - 1) % 8
-			if i > 1 and x == 0 then
+print(dump(skins_reftab[i]))
+		for i = (page-1)*16+1, page*16+1 do
+			print("print", i)
+			if not skins_reftab[i] then
+				break
+			end
+			local index_p = skins_reftab[i].index_p
+			local x = index_p % 8
+			local y
+			if index_p >= 8 then
 				y = 1.8
+			else
+				y = -0.1
 			end
 			formspec = (formspec.."image_button["..x..","..y..";1,2;"..
-				skin[2].."_preview.png;skins_set$"..skin[1]..";]"..
-				"tooltip[skins_set$"..skin[1]..";"..skins.meta[skin[2]].name.."]")
+				skins.preview[skins_reftab[i].skin]..";skins_set$"..i..";]"..
+				"tooltip[skins_set$"..i..";"..skins.meta[skins_reftab[i].skin].name.."]")
 		end
-		local page_prev = page - 2
-		local page_next = page
-		if page_prev < 0 then
-			page_prev = total_pages - 1
+		local page_prev = page - 1
+		local page_next = page + 1
+		if page_prev < 1 then
+			page_prev = total_pages
 		end
-		if page_next >= total_pages then
-			page_next = 0
+		if page_next > total_pages then
+			page_next = 1
 		end
 		local page_list = ""
 		dropdown_values = {}
@@ -96,8 +101,8 @@ skins.generate_pages = function(texture)
 			.."button[0,3.8;1,.5;skins_page$"..page_prev..";<<]"
 			.."dropdown[1,3.65;6.5,.5;skins_selpg;"..page_list..";"..page.."]"
 			.."button[7,3.8;1,.5;skins_page$"..page_next..";>>]")
-		
-		unified_inventory.register_page("skins_page$"..(page - 1), {
+	print("register page", page, formspec)
+		unified_inventory.register_page("skins_page$"..(page), {
 			get_formspec = function(player)
 				return {formspec=formspec}
 			end
@@ -113,25 +118,21 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 	for field, _ in pairs(fields) do
 		local current = string.split(field, "$", 2)
+	print(field, current[1], current[2])
 		if current[1] == "skins_set" then
-			skins.skins[player:get_player_name()] = skins.list[tonumber(current[2])]
-			skins.update_player_skin(player)
-			skins.file_save = true
+			skins.set_player_skin(player, skins.list[skins_reftab[current[2]]])
 			unified_inventory.set_inventory_formspec(player, "skins")
 			return
 		elseif current[1] == "skins_page" then
-			skins.pages[player:get_player_name()] = current[2]
 			unified_inventory.set_inventory_formspec(player, "skins_page$"..current[2])
 			return
 		end
 	end
 	if fields.skins_selpg then
 		page = dropdown_values[fields.skins_selpg]
-		skins.pages[player:get_player_name()] = page
-		unified_inventory.set_inventory_formspec(player, "skins_page$"..(page-1))
+		unified_inventory.set_inventory_formspec(player, "skins_page$"..(page))
 		return
 	end
 end)
 
 skins.generate_pages()
-skins.load_players()
