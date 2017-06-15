@@ -28,3 +28,13 @@ end
 minetest.register_on_joinplayer(function(player)
 	skins.update_player_skin(player)
 end)
+
+-- 3d_armor compatibility
+if minetest.global_exists("armor") then
+	armor.get_player_skin = function(self, name)
+		return skins.get_player_skin(minetest.get_player_by_name(name))
+	end
+	armor.get_preview = function(self, name)
+		return skins.preview[skins.get_player_skin(minetest.get_player_by_name(name))]
+	end
+end
