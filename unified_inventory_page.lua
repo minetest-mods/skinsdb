@@ -7,7 +7,7 @@ end
 
 local dropdown_values = {}
 local skins_reftab = {}
-
+local skins_list = skins.get_skinlist()
 unified_inventory.register_page("skins", {
 	get_formspec = function(player)
 		local name = player:get_player_name()
@@ -44,7 +44,7 @@ unified_inventory.register_button("skins", {
 
 -- Create all of the skin-picker pages.
 local total_pages = 1
-for i, skin in ipairs(skins.list) do
+for i, skin in ipairs(skins_list) do
 	local page = math.floor((i-1) / 16)+1
 	skin:set_meta("inv_page", page)
 	skin:set_meta("inv_page_index", (i-1)%16+1)
@@ -54,7 +54,7 @@ end
 for page=1, total_pages do
 	local formspec = "background[0.06,0.99;7.92,7.52;ui_misc_form.png]"
 	for i = (page-1)*16+1, page*16 do
-		local skin = skins.list[i]
+		local skin = skins_list[i]
 		if not skin then
 			break
 		end
@@ -108,7 +108,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	for field, _ in pairs(fields) do
 		local current = string.split(field, "$", 2)
 		if current[1] == "skins_set" then
-			skins.set_player_skin(player, skins.list[tonumber(current[2])])
+			skins.set_player_skin(player, skins_list[tonumber(current[2])])
 			unified_inventory.set_inventory_formspec(player, "skins")
 			return
 		elseif current[1] == "skins_page" then

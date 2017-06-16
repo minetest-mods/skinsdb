@@ -1,7 +1,7 @@
-skins.list = {}
 
 local skins_dir_list = minetest.get_dir_list(skins.modpath.."/textures")
 local unsorted_skinslist = {}
+local sorted_skinslist
 for _, fn in pairs(skins_dir_list) do
 	if fn:find("^character_") then
 		nameparts = string.gsub(fn, "[.]", "_"):split("_")
@@ -26,7 +26,22 @@ for _, fn in pairs(skins_dir_list) do
 	end
 end
 
-table.sort(unsorted_skinslist, function(a,b) return a:get_meta("_sort_id") < b:get_meta("_sort_id") end)
-for _,v in ipairs(unsorted_skinslist) do
-	table.insert(skins.list, v)
+-- get skinlist. listname not full implemented at the time: could be "mod:wardrobe" or "player:bell07" in feature
+function skins.get_skinlist(listname)
+	-- sort on demand
+	if not sorted_skinslist then
+		table.sort(unsorted_skinslist, function(a,b) return a:get_meta("_sort_id") < b:get_meta("_sort_id") end)
+		sorted_skinslist = unsorted_skinslist
+	end
+	if not listname then
+		return sorted_skinslist
+	else
+		local ret = {}
+		for _, skin in ipairs(sorted_skinslist) do
+			if skin:get_meta(listname) then
+				table.insert(ret, skin)
+			end
+		end
+		return ret
+	end
 end

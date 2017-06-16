@@ -5,17 +5,6 @@ else
 	S = function(s) return s end
 end
 
-local dropdown_values = {}
-
--- collect skins data
-local total_pages = 1
-for i, skin in ipairs(skins.list) do
-	local page = math.floor((i-1) / 16)+1
-	skin:set_meta("inv_page", page)
-	skin:set_meta("inv_page_index", (i-1)%16+1)
-	total_pages = page
-end
-
 -- generate the current formspec
 local function get_formspec(player, context)
 	local name = player:get_player_name()
@@ -47,7 +36,7 @@ local function get_formspec(player, context)
 	end
 
 	for i = (page-1)*16+1, page*16 do
-		local skin = skins.list[i]
+		local skin = context.skins_list[i]
 		if not skin then
 			break
 		end
@@ -67,15 +56,15 @@ local function get_formspec(player, context)
 	local page_prev = page - 1
 	local page_next = page + 1
 	if page_prev < 1 then
-		page_prev = total_pages
+		page_prev = context.total_pages
 	end
-	if page_next > total_pages then
+	if page_next > context.total_pages then
 		page_next = 1
 	end
 	local page_list = ""
 	dropdown_values = {}
-	for pg=1, total_pages do
-		local pagename = S("Page").." "..pg.."/"..total_pages
+	for pg=1, context.total_pages do
+		local pagename = S("Page").." "..pg.."/"..context.total_pages
 		dropdown_values[pagename] = pg
 		if pg > 1 then page_list = page_list.."," end
 		page_list = page_list..pagename
@@ -91,13 +80,23 @@ end
 sfinv.register_page("skins:overview", {
 	title = "Skins",
 	get = function(self, player, context)
+		-- collect skins data
+		context.skins_list = skins.get_skinlist()
+		context.total_pages = 1
+		for i, skin in ipairs(context.skins_list ) do
+			local page = math.floor((i-1) / 16)+1
+			skin:set_meta("inv_page", page)
+			skin:set_meta("inv_page_index", (i-1)%16+1)
+			context.total_pages = page
+		end
+		-- generate first formspec
 		return sfinv.make_formspec(player, context, get_formspec(player, context))
 	end,
 	on_player_receive_fields = function(self, player, context, fields)
 		for field, _ in pairs(fields) do
 			local current = string.split(field, "$", 2)
 			if current[1] == "skins_set" then
-				skins.set_player_skin(player, skins.list[tonumber(current[2])])
+				skins.set_player_skin(player, context.skins_list[tonumber(current[2])])
 				sfinv.set_player_inventory_formspec(player)
 				return
 			elseif current[1] == "skins_page" then
