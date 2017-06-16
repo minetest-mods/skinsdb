@@ -9,6 +9,7 @@ skins = {}
 skins.modpath = minetest.get_modpath(minetest.get_current_modname())
 skins.default = "character_1"
 
+dofile(skins.modpath.."skin_meta_api.lua")
 dofile(skins.modpath.."/api.lua")
 dofile(skins.modpath.."/skinlist.lua")
 
@@ -19,4 +20,16 @@ end
 
 if minetest.get_modpath("sfinv") then
 	dofile(skins.modpath.."/sfinv_page.lua")
+end
+
+-- 3d_armor compatibility
+if minetest.global_exists("armor") then
+	armor.get_player_skin = function(self, name)
+		local skin = skins.get_player_skin(minetest.get_player_by_name(name))
+		return skin:get_meta("_key") --3d_armor adds a ".png" but it should be compatible in most cases
+	end
+	armor.get_preview = function(self, name)
+		local skin = skins.get_player_skin(minetest.get_player_by_name(name))
+		return skin:get_meta("preview")
+	end
 end

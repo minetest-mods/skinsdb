@@ -1,18 +1,25 @@
 -- get current skin
 skins.get_player_skin = function(player)
 	local skin = player:get_attribute("skin")
-	if not skins.textures[skin] then
-		skin = skins.default
-	end
-	return skin
+	return skins.get(skin) or skins.get(skins.default)
 end
 
 -- Set skin
 skins.set_player_skin = function(player, skin)
-	if skin == skins.default then
-		skin = ""
+	local skin_obj
+	local skin_key
+	if type(skin) == "string" then
+		skin_obj = skins.get(skin) or skins.get(skins.default)
+	else
+		skin_obj = skin
 	end
-	player:set_attribute("skin", skin)
+	skin_key = skin:get_meta("_key")
+
+	if skin_key == skins.default then
+		skin_key = ""
+	end
+
+	player:set_attribute("skin", skin_key)
 	skins.update_player_skin(player)
 end
 
@@ -20,7 +27,7 @@ end
 skins.update_player_skin = function(player)
 	local skin = skins.get_player_skin(player)
 	player:set_properties({
-		textures = {skins.textures[skin]},
+		textures = {skin:get_texture()},
 	})
 end
 
@@ -28,13 +35,3 @@ end
 minetest.register_on_joinplayer(function(player)
 	skins.update_player_skin(player)
 end)
-
--- 3d_armor compatibility
-if minetest.global_exists("armor") then
-	armor.get_player_skin = function(self, name)
-		return skins.get_player_skin(minetest.get_player_by_name(name))
-	end
-	armor.get_preview = function(self, name)
-		return skins.preview[skins.get_player_skin(minetest.get_player_by_name(name))]
-	end
-end
