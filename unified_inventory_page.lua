@@ -7,36 +7,31 @@ end
 
 local dropdown_values = {}
 local skins_reftab = {}
-local skins_reftab_byskin = {}
 
 unified_inventory.register_page("skins", {
 	get_formspec = function(player)
 		local name = player:get_player_name()
 		local skin = skins.get_player_skin(player)
 		local formspec = ("background[0.06,0.99;7.92,7.52;ui_misc_form.png]"
-			.."image[0,.75;1,2;"..skins.preview[skin].."]"
+			.."image[0,.75;1,2;"..skin:get_preview().."]"
 			.."label[6,.5;"..S("Raw texture")..":]"
-			.."image[6,1;2,1;"..skins.textures[skin].."]")
+			.."image[6,1;2,1;"..skin:get_texture().."]")
 
-		local meta = skins.meta[skin]
-		if meta then
-			if meta.name ~= "" then
-				formspec = formspec.."label[2,.5;"..S("Name")..": "..minetest.formspec_escape(meta.name).."]"
-			end
-			if meta.author ~= "" then
-				formspec = formspec.."label[2,1;"..S("Author")..": "..minetest.formspec_escape(meta.author).."]"
-			end
-			if meta.license ~= "" then
-				formspec = formspec.."label[2,1.5;"..S("License")..": "..minetest.formspec_escape(meta.license).."]"
-			end
-			if meta.description ~= "" then --what's that??
-				formspec = formspec.."label[2,2;"..S("Description")..": "..minetest.formspec_escape(meta.description).."]"
-			end
+
+		local m_name = skin:get_meta_string("name")
+		local m_author = skin:get_meta_string("author")
+		local m_license = skin:get_meta_string("license")
+		if m_name ~= "" then
+			formspec = formspec.."label[2,.5;"..S("Name")..": "..minetest.formspec_escape(m_name).."]"
 		end
-		local page = 1
-		if skins_reftab_byskin[skin] then
-			page = skins_reftab_byskin[skin].page
+		if m_author ~= "" then
+			formspec = formspec.."label[2,1;"..S("Author")..": "..minetest.formspec_escape(m_author).."]"
 		end
+		if m_license ~= "" then
+			formspec = formspec.."label[2,1.5;"..S("License")..": "..minetest.formspec_escape(m_license).."]"
+		end
+
+		local page = skin:get_meta("inv_page") or 1
 		formspec = formspec .. "button[.75,3;6.5,.5;skins_page$"..page..";"..S("Change").."]"
 		return {formspec=formspec}
 	end,
@@ -51,20 +46,20 @@ unified_inventory.register_button("skins", {
 local total_pages = 1
 for i, skin in ipairs(skins.list) do
 	local page = math.floor((i-1) / 16)+1
-	local index_p = (i-1)%16+1
-
-	skins_reftab[i] = { index = i, page = page, index_p = index_p, skin = skin }
-	skins_reftab_byskin[skin] = skins_reftab[i]
+	skin:set_meta("inv_page", page)
+	skin:set_meta("inv_page_index", (i-1)%16+1)
 	total_pages = page
 end
 
 for page=1, total_pages do
 	local formspec = "background[0.06,0.99;7.92,7.52;ui_misc_form.png]"
 	for i = (page-1)*16+1, page*16 do
-		if not skins_reftab[i] then
+		local skin = skins.list[i]
+		if not skin then
 			break
 		end
-		local index_p = skins_reftab[i].index_p
+
+		local index_p = skin:get_meta("inv_page_index")
 		local x = (index_p-1) % 8
 		local y
 		if index_p > 8 then
@@ -73,8 +68,8 @@ for page=1, total_pages do
 			y = -0.1
 		end
 		formspec = (formspec.."image_button["..x..","..y..";1,2;"..
-			skins.preview[skins_reftab[i].skin]..";skins_set$"..i..";]"..
-			"tooltip[skins_set$"..i..";"..minetest.formspec_escape(skins.meta[skins_reftab[i].skin].name).."]")
+			skin:get_preview()..";skins_set$"..i..";]"..
+			"tooltip[skins_set$"..i..";"..minetest.formspec_escape(skin:get_meta_string("name")).."]")
 	end
 	local page_prev = page - 1
 	local page_next = page + 1
@@ -113,7 +108,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	for field, _ in pairs(fields) do
 		local current = string.split(field, "$", 2)
 		if current[1] == "skins_set" then
-			skins.set_player_skin(player, skins_reftab[tonumber(current[2])].skin)
+			skins.set_player_skin(player, skins.list[tonumber(current[2])])
 			unified_inventory.set_inventory_formspec(player, "skins")
 			return
 		elseif current[1] == "skins_page" then

@@ -6,7 +6,6 @@ else
 end
 
 local dropdown_values = {}
---local skins_reftab = {} --skins.list
 
 -- collect skins data
 local total_pages = 1
