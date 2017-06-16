@@ -11,7 +11,8 @@ local dropdown_values = {}
 -- collect skins data
 local total_pages = 1
 for i, skin in ipairs(skins.list) do
-	skin:set_meta("inv_page", math.floor((i-1) / 16)+1)
+	local page = math.floor((i-1) / 16)+1
+	skin:set_meta("inv_page", page)
 	skin:set_meta("inv_page_index", (i-1)%16+1)
 	total_pages = page
 end

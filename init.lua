@@ -9,7 +9,7 @@ skins = {}
 skins.modpath = minetest.get_modpath(minetest.get_current_modname())
 skins.default = "character_1"
 
-dofile(skins.modpath.."skin_meta_api.lua")
+dofile(skins.modpath.."/skin_meta_api.lua")
 dofile(skins.modpath.."/api.lua")
 dofile(skins.modpath.."/skinlist.lua")
 
@@ -30,6 +30,6 @@ if minetest.global_exists("armor") then
 	end
 	armor.get_preview = function(self, name)
 		local skin = skins.get_player_skin(minetest.get_player_by_name(name))
-		return skin:get_meta("preview")
+		return skin:get_preview()
 	end
 end

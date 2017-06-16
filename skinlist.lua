@@ -7,7 +7,7 @@ for _, fn in pairs(skins_dir_list) do
 		nameparts = string.gsub(fn, "[.]", "_"):split("_")
 		local id = nameparts[2]
 		local name = "character_"..id
-		local skin_obj = skins.get(name) or skins.new(new)
+		local skin_obj = skins.get(name) or skins.new(name)
 		if nameparts[3] == "preview" then
 			skin_obj:set_preview(fn)
 		else
@@ -21,6 +21,7 @@ for _, fn in pairs(skins_dir_list) do
 				skin_obj:set_meta("author", data[2])
 				skin_obj:set_meta("license", data[3])
 			end
+			table.insert(unsorted_skinslist, skin_obj)
 		end
 	end
 end

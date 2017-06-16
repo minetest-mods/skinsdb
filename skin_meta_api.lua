@@ -12,9 +12,9 @@ function skins.new(key, object)
 	setmetatable(self, skin_class)
 	self.__index = skin_class
 
-	self._key, key)
+	self._key = key
 	self._sort_id = 0
-	skins.meta[key]
+	skins.meta[key] = self
 	return self
 end
 
