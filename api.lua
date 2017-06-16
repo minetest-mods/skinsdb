@@ -1,7 +1,7 @@
 -- get current skin
 skins.get_player_skin = function(player)
 	local skin = player:get_attribute("skin")
-	if not skins.is_skin(skin) then
+	if not skins.textures[skin] then
 		skin = skins.default
 	end
 	return skin

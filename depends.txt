@@ -1,4 +1,3 @@
-default
 intllib?
 unified_inventory?
 3d_armor?

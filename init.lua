@@ -9,26 +9,8 @@ skins = {}
 skins.modpath = minetest.get_modpath(minetest.get_current_modname())
 skins.default = "character_1"
 
-skins.type = { SPRITE=0, MODEL=1, ERROR=99 }
-skins.get_type = function(texture)
-	if not skins.is_skin(texture) then
-		return skins.type.ERROR
-	end
-	return skins.type.MODEL
-end
-
-skins.is_skin = function(texture)
-	if not texture then
-		return false
-	end
-	if not skins.meta[texture] then
-		return false
-	end
-	return true
-end
-
+dofile(skins.modpath.."/api.lua")
 dofile(skins.modpath.."/skinlist.lua")
-dofile(skins.modpath.."/players.lua")
 
 -- Unified inventory page/integration
 if minetest.get_modpath("unified_inventory") then
