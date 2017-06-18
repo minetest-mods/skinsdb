@@ -26,12 +26,5 @@ end
 -- update visuals
 skins.update_player_skin = function(player)
 	local skin = skins.get_player_skin(player)
-	player:set_properties({
-		textures = {skin:get_texture()},
-	})
+	skin:set_skin(player)
 end
-
--- Update skin on join
-minetest.register_on_joinplayer(function(player)
-	skins.update_player_skin(player)
-end)

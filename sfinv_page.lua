@@ -9,15 +9,16 @@ end
 local function get_formspec(player, context)
 	local name = player:get_player_name()
 	local skin = skins.get_player_skin(player)
-
-	-- overview page
-	local formspec = "image[0,.75;1,2;"..skin:get_preview().."]"
-		.."label[6,.5;"..S("Raw texture")..":]"
-		.."image[6,1;2,1;"..skin:get_texture().."]"
-
+	local texture = skin:get_texture()
 	local m_name = skin:get_meta_string("name")
 	local m_author = skin:get_meta_string("author")
 	local m_license = skin:get_meta_string("license")
+	-- overview page
+	local formspec = "image[0,.75;1,2;"..skin:get_preview().."]"
+	if texture then
+		formspec = formspec.."label[6,.5;"..S("Raw texture")..":]"
+		.."image[6,1;2,1;"..skin:get_texture().."]"
+	end
 	if m_name ~= "" then
 		formspec = formspec.."label[2,.5;"..S("Name")..": "..minetest.formspec_escape(m_name).."]"
 	end
@@ -62,10 +63,10 @@ local function get_formspec(player, context)
 		page_next = 1
 	end
 	local page_list = ""
-	dropdown_values = {}
+	context.dropdown_values = {}
 	for pg=1, context.total_pages do
 		local pagename = S("Page").." "..pg.."/"..context.total_pages
-		dropdown_values[pagename] = pg
+		context.dropdown_values[pagename] = pg
 		if pg > 1 then page_list = page_list.."," end
 		page_list = page_list..pagename
 	end
@@ -106,7 +107,7 @@ sfinv.register_page("skins:overview", {
 			end
 		end
 		if fields.skins_selpg then
-			context.skins_page = tonumber(dropdown_values[fields.skins_selpg])
+			context.skins_page = tonumber(context.dropdown_values[fields.skins_selpg])
 			sfinv.set_player_inventory_formspec(player)
 			return
 		end

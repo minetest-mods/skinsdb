@@ -12,15 +12,15 @@ unified_inventory.register_page("skins", {
 	get_formspec = function(player)
 		local name = player:get_player_name()
 		local skin = skins.get_player_skin(player)
-		local formspec = ("background[0.06,0.99;7.92,7.52;ui_misc_form.png]"
-			.."image[0,.75;1,2;"..skin:get_preview().."]"
-			.."label[6,.5;"..S("Raw texture")..":]"
-			.."image[6,1;2,1;"..skin:get_texture().."]")
-
-
+		local texture = skin:get_texture()
 		local m_name = skin:get_meta_string("name")
 		local m_author = skin:get_meta_string("author")
 		local m_license = skin:get_meta_string("license")
+		local formspec = "background[0.06,0.99;7.92,7.52;ui_misc_form.png]".."image[0,.75;1,2;"..skin:get_preview().."]"
+		if texture then
+			formspec=formspec.."label[6,.5;"..S("Raw texture")..":]"
+			.."image[6,1;2,1;"..texture.."]"
+		end
 		if m_name ~= "" then
 			formspec = formspec.."label[2,.5;"..S("Name")..": "..minetest.formspec_escape(m_name).."]"
 		end

@@ -1,7 +1,6 @@
 
 local skins_dir_list = minetest.get_dir_list(skins.modpath.."/textures")
-local unsorted_skinslist = {}
-local sorted_skinslist
+
 for _, fn in pairs(skins_dir_list) do
 	local nameparts = string.gsub(fn, "[.]", "_"):split("_")
 
@@ -43,28 +42,20 @@ for _, fn in pairs(skins_dir_list) do
 			else
 				skin_obj:set_meta("name", name)
 			end
-			table.insert(unsorted_skinslist, skin_obj)
 		end
 	end
 end
 
 -- get skinlist. If assignment given ("mod:wardrobe" or "player:bell07") select skins matches the assignment. select_unassigned selects the skins without any assignment too
 function skins.get_skinlist(assignment, select_unassigned)
-	-- sort on demand
-	if not sorted_skinslist then
-		table.sort(unsorted_skinslist, function(a,b) return a:get_meta("_sort_id") < b:get_meta("_sort_id") end)
-		sorted_skinslist = unsorted_skinslist
-	end
-	if not assignment then
-		return sorted_skinslist
-	else
-		local ret = {}
-		for _, skin in ipairs(sorted_skinslist) do
-			if assignment == skin:get_meta("assignment") or
-					(select_unassigned and skin:get_meta("assignment") == nil) then
-				table.insert(ret, skin)
-			end
+	local skinslist = {}
+	for _, skin in pairs(skins.meta) do
+		if not assignment or
+				assignment == skin:get_meta("assignment") or
+				(select_unassigned and skin:get_meta("assignment") == nil) then
+			table.insert(skinslist, skin)
 		end
-		return ret
 	end
+	table.sort(skinslist, function(a,b) return a:get_meta("_sort_id") < b:get_meta("_sort_id") end)
+	return skinslist
 end

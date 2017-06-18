@@ -26,10 +26,15 @@ end
 if minetest.global_exists("armor") then
 	armor.get_player_skin = function(self, name)
 		local skin = skins.get_player_skin(minetest.get_player_by_name(name))
-		return skin:get_meta("_key") --3d_armor adds a ".png" but it should be compatible in most cases
+		return skin:get_texture()
 	end
 	armor.get_preview = function(self, name)
 		local skin = skins.get_player_skin(minetest.get_player_by_name(name))
 		return skin:get_preview()
 	end
 end
+
+-- Update skin on join
+minetest.register_on_joinplayer(function(player)
+	skins.update_player_skin(player)
+end)
