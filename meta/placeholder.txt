@@ -1,1 +1,0 @@
-Please run the update_from_db.py script to update the skins.
