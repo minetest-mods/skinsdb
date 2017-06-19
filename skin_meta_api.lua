@@ -26,6 +26,10 @@ end
 -- Skin methods
 -- In this implementation it is just access to attrubutes wrapped
 -- but this way allow to redefine the functionality for more complex skins provider
+function skin_class:get_key()
+	return self._key
+end
+
 function skin_class:set_meta(key, value)
 	self[key] = value
 end
@@ -35,9 +39,8 @@ function skin_class:get_meta(key)
 end
 
 function skin_class:get_meta_string(key)
-	return tostring(self[key] or "")
+	return tostring(self:get_meta(key) or "")
 end
-
 
 function skin_class:set_texture(value)
 	self._texture = value
