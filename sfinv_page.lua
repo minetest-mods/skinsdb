@@ -54,27 +54,29 @@ local function get_formspec(player, context)
 			skin:get_preview()..";skins_set$"..i..";]"..
 			"tooltip[skins_set$"..i..";"..minetest.formspec_escape(skin:get_meta_string("name")).."]"
 	end
-	local page_prev = page - 1
-	local page_next = page + 1
-	if page_prev < 1 then
-		page_prev = context.total_pages
-	end
-	if page_next > context.total_pages then
-		page_next = 1
-	end
-	local page_list = ""
-	context.dropdown_values = {}
-	for pg=1, context.total_pages do
-		local pagename = S("Page").." "..pg.."/"..context.total_pages
-		context.dropdown_values[pagename] = pg
-		if pg > 1 then page_list = page_list.."," end
-		page_list = page_list..pagename
-	end
-	formspec = formspec
-		.."button[0,8.3;1,.5;skins_page$"..page_prev..";<<]"
-		.."dropdown[1,8.16;6.5,.5;skins_selpg;"..page_list..";"..page.."]"
-		.."button[7,8.3;1,.5;skins_page$"..page_next..";>>]"
 
+	if context.total_pages > 1 then
+		local page_prev = page - 1
+		local page_next = page + 1
+		if page_prev < 1 then
+			page_prev = context.total_pages
+		end
+		if page_next > context.total_pages then
+			page_next = 1
+		end
+		local page_list = ""
+		context.dropdown_values = {}
+		for pg=1, context.total_pages do
+			local pagename = S("Page").." "..pg.."/"..context.total_pages
+			context.dropdown_values[pagename] = pg
+			if pg > 1 then page_list = page_list.."," end
+			page_list = page_list..pagename
+		end
+		formspec = formspec
+			.."button[0,8.3;1,.5;skins_page$"..page_prev..";<<]"
+			.."dropdown[1,8.16;6.5,.5;skins_selpg;"..page_list..";"..page.."]"
+			.."button[7,8.3;1,.5;skins_page$"..page_next..";>>]"
+	end
 	return formspec
 end
 

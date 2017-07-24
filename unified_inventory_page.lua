@@ -71,26 +71,28 @@ for page=1, total_pages do
 			skin:get_preview()..";skins_set$"..i..";]"..
 			"tooltip[skins_set$"..i..";"..minetest.formspec_escape(skin:get_meta_string("name")).."]")
 	end
-	local page_prev = page - 1
-	local page_next = page + 1
-	if page_prev < 1 then
-		page_prev = total_pages
+	if total_pages > 1 then
+		local page_prev = page - 1
+		local page_next = page + 1
+		if page_prev < 1 then
+			page_prev = total_pages
+		end
+		if page_next > total_pages then
+			page_next = 1
+		end
+		local page_list = ""
+		dropdown_values = {}
+		for pg=1, total_pages do
+			local pagename = S("Page").." "..pg.."/"..total_pages
+			dropdown_values[pagename] = pg
+			if pg > 1 then page_list = page_list.."," end
+			page_list = page_list..pagename
+		end
+		formspec = (formspec
+			.."button[0,3.8;1,.5;skins_page$"..page_prev..";<<]"
+			.."dropdown[1,3.68;6.5,.5;skins_selpg;"..page_list..";"..page.."]"
+			.."button[7,3.8;1,.5;skins_page$"..page_next..";>>]")
 	end
-	if page_next > total_pages then
-		page_next = 1
-	end
-	local page_list = ""
-	dropdown_values = {}
-	for pg=1, total_pages do
-		local pagename = S("Page").." "..pg.."/"..total_pages
-		dropdown_values[pagename] = pg
-		if pg > 1 then page_list = page_list.."," end
-		page_list = page_list..pagename
-	end
-	formspec = (formspec
-		.."button[0,3.8;1,.5;skins_page$"..page_prev..";<<]"
-		.."dropdown[1,3.68;6.5,.5;skins_selpg;"..page_list..";"..page.."]"
-		.."button[7,3.8;1,.5;skins_page$"..page_next..";>>]")
 	unified_inventory.register_page("skins_page$"..(page), {
 		get_formspec = function(player)
 			return {formspec=formspec}
