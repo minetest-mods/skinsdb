@@ -6,9 +6,15 @@ for _, fn in pairs(skins_dir_list) do
 
 	local name, sort_id, assignment, is_preview
 	if nameparts[1] == "character" then
-		sort_id = tonumber(nameparts[2])+5000
-		name = "character_"..nameparts[2]
-		is_preview = (nameparts[3] == "preview")
+		if tonumber(nameparts[2]) == nil then --default skin character.png
+			sort_id = 5000
+			name = "character"
+			is_preview = (nameparts[2] == "preview")
+		else
+			sort_id = tonumber(nameparts[2])+5000
+			name = "character_"..nameparts[2]
+			is_preview = (nameparts[3] == "preview")
+		end
 	elseif nameparts[1] == "player" then
 		assignment = "player:"..nameparts[2]
 		name = "player_"..nameparts[2]

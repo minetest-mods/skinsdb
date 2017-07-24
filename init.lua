@@ -7,7 +7,7 @@
 
 skins = {}
 skins.modpath = minetest.get_modpath(minetest.get_current_modname())
-skins.default = "character_1"
+skins.default = "character"
 
 dofile(skins.modpath.."/skin_meta_api.lua")
 dofile(skins.modpath.."/api.lua")
