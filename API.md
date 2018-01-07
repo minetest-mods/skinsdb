@@ -70,12 +70,14 @@ Add a meta information to the skin object
 Note: the information is not stored, therefore should be filled each time during skins registration
 
 ## skin:get_meta(key)
-The next metadata keys are usually filled
+The next metadata keys are filled or/and used interally in skinsdb framework
   - name - A name for the skin
   - author - The skin author
   - license - THe skin texture license
   - assignment - (obsolete) is "player:playername" in case the skin is assigned to be privat for a player
   - playername - Player assignment for private skin. Set false for skins not usable by all players (like NPC-Skins), true or nothing for all player skins
+  - in_inventory_list - If set to false the skin is not visible in inventory skins selection but can be still applied to the player
+  - _sort_id - Thi skins lists are sorted by this field for output (internal key)
 
 ## skin:get_meta_string(key)
 Same as get_meta() but does return "" instead of nil if the meta key does not exists
