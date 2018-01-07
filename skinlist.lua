@@ -4,7 +4,7 @@ local skins_dir_list = minetest.get_dir_list(skins.modpath.."/textures")
 for _, fn in pairs(skins_dir_list) do
 	local nameparts = string.gsub(fn, "[.]", "_"):split("_")
 
-	local name, sort_id, assignment, is_preview
+	local name, sort_id, assignment, is_preview, playername
 	if nameparts[1] == "character" then
 		if tonumber(nameparts[2]) == nil then --default skin character.png
 			sort_id = 5000
@@ -16,8 +16,9 @@ for _, fn in pairs(skins_dir_list) do
 			is_preview = (nameparts[3] == "preview")
 		end
 	elseif nameparts[1] == "player" then
-		assignment = "player:"..nameparts[2]
+		assignment = "player:"..nameparts[2] --TODO: remove all assignment handling
 		name = "player_"..nameparts[2]
+		playername = nameparts[2]
 		if tonumber(nameparts[3]) then
 			sort_id = tonumber(nameparts[3])
 			is_preview = (nameparts[4] == "preview")
@@ -38,6 +39,9 @@ for _, fn in pairs(skins_dir_list) do
 			if assignment then
 				skin_obj:set_meta("assignment", assignment)
 			end
+			if playername then
+				skin_obj:set_meta("playername", playername)
+			end
 			local file = io.open(skins.modpath.."/meta/"..name..".txt", "r")
 			if file then
 				local data = string.split(file:read("*all"), "\n", 3)
@@ -52,13 +56,39 @@ for _, fn in pairs(skins_dir_list) do
 	end
 end
 
--- get skinlist. If assignment given ("mod:wardrobe" or "player:bell07") select skins matches the assignment. select_unassigned selects the skins without any assignment too
+-- (obsolete) get skinlist. If assignment given ("mod:wardrobe" or "player:bell07") select skins matches the assignment. select_unassigned selects the skins without any assignment too
 function skins.get_skinlist(assignment, select_unassigned)
+	minetest.log("deprecated", "skins.get_skinlist() is deprecated. Use skins.get_skinlist_for_player() instead")
 	local skinslist = {}
 	for _, skin in pairs(skins.meta) do
 		if not assignment or
 				assignment == skin:get_meta("assignment") or
 				(select_unassigned and skin:get_meta("assignment") == nil) then
+			table.insert(skinslist, skin)
+		end
+	end
+	table.sort(skinslist, function(a,b) return a:get_meta("_sort_id") < b:get_meta("_sort_id") end)
+	return skinslist
+end
+
+-- Get skinlist for player. If no player given, public skins only selected
+function skins.get_skinlist_for_player(playername)
+	local skinslist = {}
+	for _, skin in pairs(skins.meta) do
+		if skin:is_applicable_for_player(playername) and skin:get_meta("in_inventory_list") ~= false then
+			table.insert(skinslist, skin)
+		end
+	end
+	table.sort(skinslist, function(a,b) return a:get_meta("_sort_id") < b:get_meta("_sort_id") end)
+	return skinslist
+end
+
+-- Get skinlist selected by metadata
+function skins.get_skinlist_with_meta(key, value)
+	assert(key, "key parameter for skins.get_skinlist_with_meta() missed")
+	local skinslist = {}
+	for _, skin in pairs(skins.meta) do
+		if skin:get_meta(key) == value then
 			table.insert(skinslist, skin)
 		end
 	end

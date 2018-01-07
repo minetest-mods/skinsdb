@@ -84,7 +84,7 @@ sfinv.register_page("skins:overview", {
 	title = "Skins",
 	get = function(self, player, context)
 		-- collect skins data
-		context.skins_list = skins.get_skinlist("player:"..player:get_player_name(), true)
+		context.skins_list = skins.get_skinlist_for_player(player:get_player_name())
 		context.total_pages = 1
 		for i, skin in ipairs(context.skins_list ) do
 			local page = math.floor((i-1) / 16)+1

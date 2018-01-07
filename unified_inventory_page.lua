@@ -7,7 +7,7 @@ end
 
 local dropdown_values = {}
 local skins_reftab = {}
-local skins_list = skins.get_skinlist()
+local skins_list = skins.get_skinlist_for_player() --public only
 unified_inventory.register_page("skins", {
 	get_formspec = function(player)
 		local name = player:get_player_name()
