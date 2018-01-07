@@ -72,5 +72,7 @@ end
 
 function skin_class:is_applicable_for_player(playername)
 	local assigned_player = self:get_meta("playername")
-	return not assigned_player or assigned_player == playername
+	return assigned_player == nil or
+			assigned_player == playername or
+			assigned_player == true
 end

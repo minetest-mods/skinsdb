@@ -16,12 +16,14 @@ skins.update_player_skin(player)
 ```
 
 ## skins.get_skinlist(assignment, select_unassigned)
-Get a list of skin objects matching to the assignment.
+Obsolete - use get_skinlist_for_player() or get_skinlist_with_meta() instead
 
-Supported assignments:
-  - "player:"..playername - Skins directly assigned to a player
+## skins.get_skinlist_for_player(playername)
+Get all allowed skins for player. All public and all player's private skins. If playername not given only public skins returned
 
-select_unassigned - Select all skins without assignment too (usually the "character_*" skins)
+## skins.get_skinlist_with_meta(key, value)
+Get all skins with metadata key is set to value. Example:
+skins.get_skinlist_with_meta("playername", playername) - Get all private skins (w.o. public) for playername
 
 
 ## skins.new(key, object)
@@ -73,10 +75,10 @@ The next metadata keys are usually filled
   - author - The skin author
   - license - THe skin texture license
   - assignment - (obsolete) is "player:playername" in case the skin is assigned to be privat for a player
-  - playername - Player assignment for private skin
+  - playername - Player assignment for private skin. Set false for skins not usable by all players (like NPC-Skins), true or nothing for all player skins
 
 ## skin:get_meta_string(key)
 Same as get_meta() but does return "" instead of nil if the meta key does not exists
 
 ## skin:is_applicable_for_player(playername)
-Check if a skin is applicable for the player "playername". Ususally the private skins could be applied to the player only
+Returns whether this skin is applicable for player "playername" or not, like private skins
