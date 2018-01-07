@@ -72,7 +72,11 @@ The next metadata keys are usually filled
   - name - A name for the skin
   - author - The skin author
   - license - THe skin texture license
-  - assignment  - is "player:playername" in case the skin is assigned to be privat for a player
+  - assignment - (obsolete) is "player:playername" in case the skin is assigned to be privat for a player
+  - playername - Player assignment for private skin
 
 ## skin:get_meta_string(key)
 Same as get_meta() but does return "" instead of nil if the meta key does not exists
+
+## skin:is_applicable_for_player(playername)
+Check if a skin is applicable for the player "playername". Ususally the private skins could be applied to the player only

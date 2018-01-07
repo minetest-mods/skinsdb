@@ -69,3 +69,8 @@ function skin_class:set_skin(player)
 		textures = {self:get_texture()},
 	})
 end
+
+function skin_class:is_applicable_for_player(playername)
+	local assigned_player = self:get_meta("playername")
+	return not assigned_player or assigned_player == playername
+end
