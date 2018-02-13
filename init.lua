@@ -12,7 +12,7 @@ skins.default = "character"
 dofile(skins.modpath.."/skin_meta_api.lua")
 dofile(skins.modpath.."/api.lua")
 dofile(skins.modpath.."/skinlist.lua")
-
+dofile(skins.modpath.."/chatcommands.lua")
 -- Unified inventory page/integration
 if minetest.get_modpath("unified_inventory") then
 	dofile(skins.modpath.."/unified_inventory_page.lua")
