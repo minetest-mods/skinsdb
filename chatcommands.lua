@@ -1,5 +1,5 @@
 minetest.register_chatcommand("skinsdb", {
-	params = "[set] <skinname> | list | list private | list public",
+	params = "[set] <skin key> | show [<skin key>] | list | list private | list public",
 	description = "Set, show or list player's skin",
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
@@ -12,7 +12,7 @@ minetest.register_chatcommand("skinsdb", {
 		for word in param:gmatch("([^ ]+)") do
 			if not command then
 				-- first word
-				if word == 'set' or word == 'list' then
+				if word == 'set' or word == 'list' or word == 'show' then
 					command = word
 				elseif skins.get(word) then
 					command = 'set'
@@ -58,6 +58,17 @@ minetest.register_chatcommand("skinsdb", {
 				end
 				minetest.chat_send_player(name, info)
 			end
+		elseif command == "show" then
+			if parameter then
+				skin = skins.get(parameter)
+			else
+				skin = skins.get_player_skin(player)
+			end
+			if not skin then
+				return false, "unknown skin"
+			end
+			local formspec = "size[8,3]"..skins.get_skin_info_formspec(skin)
+			minetest.show_formspec(name, 'skinsdb_show_skin', formspec)
 		end
 
 
