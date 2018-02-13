@@ -9,9 +9,18 @@ skins = {}
 skins.modpath = minetest.get_modpath(minetest.get_current_modname())
 skins.default = "character"
 
+local S
+if minetest.get_modpath("intllib") then
+	skins.S = intllib.Getter()
+else
+	skins.S = function(s) return s end
+end
+
+
 dofile(skins.modpath.."/skin_meta_api.lua")
 dofile(skins.modpath.."/api.lua")
 dofile(skins.modpath.."/skinlist.lua")
+dofile(skins.modpath.."/formspecs.lua")
 dofile(skins.modpath.."/chatcommands.lua")
 -- Unified inventory page/integration
 if minetest.get_modpath("unified_inventory") then
