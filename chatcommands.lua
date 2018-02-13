@@ -52,7 +52,7 @@ minetest.register_chatcommand("skinsdb", {
 
 			local current_skin_key = skins.get_player_skin(player):get_key()
 			for _, skin in ipairs(list) do
-				local info = skin:get_key()..": name="..skin:get_meta("name").." author="..skin:get_meta("author").." license="..skin:get_meta("license")
+				local info = skin:get_key()..": name="..skin:get_meta_string("name").." author="..skin:get_meta_string("author").." license="..skin:get_meta_string("license")
 				if skin:get_key() == current_skin_key then
 					info = minetest.colorize("#00FFFF", info)
 				end
