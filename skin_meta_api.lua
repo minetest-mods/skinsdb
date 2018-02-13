@@ -2,6 +2,7 @@ skins.meta = {}
 
 local skin_class = {}
 skin_class.__index = skin_class
+skins.skin_class = skin_class
 -----------------------
 -- Class methods
 -----------------------
