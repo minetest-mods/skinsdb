@@ -1,38 +1,14 @@
-local S
-if minetest.get_modpath("intllib") then
-	S = intllib.Getter()
-else
-	S = function(s) return s end
-end
+local S = skins.S
 
 local dropdown_values = {}
 local skins_reftab = {}
 local skins_list = skins.get_skinlist_for_player() --public only
 unified_inventory.register_page("skins", {
 	get_formspec = function(player)
-		local name = player:get_player_name()
 		local skin = skins.get_player_skin(player)
-		local texture = skin:get_texture()
-		local m_name = skin:get_meta_string("name")
-		local m_author = skin:get_meta_string("author")
-		local m_license = skin:get_meta_string("license")
-		local formspec = "background[0.06,0.99;7.92,7.52;ui_misc_form.png]".."image[0,.75;1,2;"..skin:get_preview().."]"
-		if texture then
-			formspec=formspec.."label[6,.5;"..S("Raw texture")..":]"
-			.."image[6,1;2,1;"..texture.."]"
-		end
-		if m_name ~= "" then
-			formspec = formspec.."label[2,.5;"..S("Name")..": "..minetest.formspec_escape(m_name).."]"
-		end
-		if m_author ~= "" then
-			formspec = formspec.."label[2,1;"..S("Author")..": "..minetest.formspec_escape(m_author).."]"
-		end
-		if m_license ~= "" then
-			formspec = formspec.."label[2,1.5;"..S("License")..": "..minetest.formspec_escape(m_license).."]"
-		end
-
 		local page = skin:get_meta("inv_page") or 1
-		formspec = formspec .. "button[.75,3;6.5,.5;skins_page$"..page..";"..S("Change").."]"
+		local formspec = "background[0.06,0.99;7.92,7.52;ui_misc_form.png]"..skins.get_skin_info_formspec(skin)..
+				"button[.75,3;6.5,.5;skins_page$"..page..";"..S("Change").."]"
 		return {formspec=formspec}
 	end,
 })
