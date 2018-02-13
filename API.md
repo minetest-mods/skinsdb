@@ -5,6 +5,7 @@ Return the skin object assigned to the player. Returns defaout if nothins assign
 
 ## skins.assign_player_skin(player, skin)
 Select the skin for the player. The "skin" parameter could be the skin key or the skin object
+Returns false if skin is not valid or applicable to player
 
 ## skins.update_player_skin(player)
 Update selected skin visuals on player
