@@ -38,6 +38,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 
+	if formname ~= "" then
+		return
+	end
+
 	local context -- read context only if skins related action
 	for field, _ in pairs(fields) do
 		if field:sub(1,5) == "skins" then

@@ -1,5 +1,16 @@
+local function show_selection_formspec(player, context)
+	skins.rebuild_formspec_context(player, context)
+	local name = player:get_player_name()
+	local skin = skins.get_player_skin(player)
+	local formspec = "size[8,8]"..skins.get_skin_info_formspec(skin)
+	formspec = formspec..skins.get_skin_selection_formspec(context, 3.5)
+	player:set_attribute('skinsdb_context', minetest.serialize(context))
+	minetest.show_formspec(name, 'skinsdb_show_ui', formspec)
+end
+
+
 minetest.register_chatcommand("skinsdb", {
-	params = "[set] <skin key> | show [<skin key>] | list | list private | list public",
+	params = "[set] <skin key> | show [<skin key>] | list | list private | list public | [ui]",
 	description = "Set, show or list player's skin",
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
@@ -12,7 +23,7 @@ minetest.register_chatcommand("skinsdb", {
 		for word in param:gmatch("([^ ]+)") do
 			if not command then
 				-- first word
-				if word == 'set' or word == 'list' or word == 'show' then
+				if word == 'set' or word == 'list' or word == 'show' or word == 'ui' then
 					command = word
 				elseif skins.get(word) then
 					command = 'set'
@@ -28,7 +39,7 @@ minetest.register_chatcommand("skinsdb", {
 			end
 		end
 		if not command then
-			return false, "see /help skinsdb for supported parameters"
+			command = "ui"
 		end
 
 		if command == "set" then
@@ -59,6 +70,7 @@ minetest.register_chatcommand("skinsdb", {
 				minetest.chat_send_player(name, info)
 			end
 		elseif command == "show" then
+			local skin
 			if parameter then
 				skin = skins.get(parameter)
 			else
@@ -69,8 +81,30 @@ minetest.register_chatcommand("skinsdb", {
 			end
 			local formspec = "size[8,3]"..skins.get_skin_info_formspec(skin)
 			minetest.show_formspec(name, 'skinsdb_show_skin', formspec)
+		elseif command == "ui" then
+			local context = minetest.deserialize(player:get_attribute('skinsdb_context')) or {}
+			show_selection_formspec(player, context)
 		end
-
-
 	end,
 })
+
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if formname ~= "skinsdb_show_ui" then
+		return
+	end
+
+	local context = minetest.deserialize(player:get_attribute('skinsdb_context'))
+	if not context then
+		return
+	end
+
+	local action = skins.on_skin_selection_receive_fields(player, context, fields)
+	if action == 'set' then
+		player:set_attribute('skinsdb_context',"")
+		minetest.close_formspec(player:get_player_name(), formname)
+	elseif action == 'page' then
+		player:set_attribute('skinsdb_context', minetest.serialize(context))
+		show_selection_formspec(player, context)
+	end
+end)
