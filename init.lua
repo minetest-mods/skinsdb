@@ -44,6 +44,12 @@ if minetest.global_exists("armor") then
 end
 
 -- Update skin on join
+skins.ui_context = {}
 minetest.register_on_joinplayer(function(player)
 	skins.update_player_skin(player)
+	skins.ui_context[player:get_player_name()] = {}
+end)
+
+minetest.register_on_leaveplayer(function(player)
+	skins.ui_context[player:get_player_name()] = nil
 end)

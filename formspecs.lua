@@ -42,7 +42,8 @@ function skins.get_skin_info_formspec(skin)
 	return formspec
 end
 
-function skins.get_skin_selection_formspec(context, y_delta)
+function skins.get_skin_selection_formspec(player, context, y_delta)
+	skins.rebuild_formspec_context(player, context)
 	local page = context.skins_page or 1
 	local formspec = ""
 	for i = (page-1)*16+1, page*16 do
@@ -93,10 +94,7 @@ function skins.on_skin_selection_receive_fields(player, context, fields)
 	for field, _ in pairs(fields) do
 		local current = string.split(field, "$", 2)
 		if current[1] == "skins_set" then
-			local selected_skin = context.skins_list[tonumber(current[2])]
-			setmetatable(selected_skin, skins.skin_class)
-
-			skins.set_player_skin(player, selected_skin)
+			skins.set_player_skin(player, context.skins_list[tonumber(current[2])])
 			return 'set'
 		elseif current[1] == "skins_page" then
 			context.skins_page = tonumber(current[2])
