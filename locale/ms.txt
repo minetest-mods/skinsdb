@@ -1,0 +1,9 @@
+# Malay translation by muhdnurhidayat
+
+Raw texture = Tekstur mentah
+Name = Nama
+Author = Pengarang
+Change = Ubah
+Page = Halaman
+License = Lesen 
+Description = Keterangan
