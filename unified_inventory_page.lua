@@ -15,12 +15,9 @@ unified_inventory.register_button("skins", {
 })
 
 local function get_formspec(player)
-	-- unified inventory is stateless, but skins pager needs some context usage to be more flexible
-	local context = minetest.deserialize(player:get_attribute('skinsdb_unified_inventory_context')) or {}
-	context = skins.rebuild_formspec_context(player, context)
+	local context = skins.ui_context[player:get_player_name()]
 	local formspec = "background[0.06,0.99;7.92,7.52;ui_misc_form.png]"..
-			skins.get_skin_selection_formspec(context, -0.2)
-	player:set_attribute('skinsdb_unified_inventory_context', minetest.serialize(context))
+			skins.get_skin_selection_formspec(player, context, -0.2)
 	return formspec
 end
 
@@ -33,7 +30,6 @@ unified_inventory.register_page("skins_page", {
 -- click button handlers
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.skins then
-		player:set_attribute('skinsdb_unified_inventory_context',"") --reset context
 		unified_inventory.set_inventory_formspec(player, "craft")
 		return
 	end
@@ -42,23 +38,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 
-	local context -- read context only if skins related action
-	for field, _ in pairs(fields) do
-		if field:sub(1,5) == "skins" then
-			context = minetest.deserialize(player:get_attribute('skinsdb_unified_inventory_context')) or {}
-			break
-		end
-	end
-	if not context then
-		return
-	end
-
+	local context = skins.ui_context[player:get_player_name()]
 	local action = skins.on_skin_selection_receive_fields(player, context, fields)
 	if action == 'set' then
-		player:set_attribute('skinsdb_unified_inventory_context',"") --reset context
 		unified_inventory.set_inventory_formspec(player, "skins")
 	elseif action == 'page' then
-		player:set_attribute('skinsdb_unified_inventory_context', minetest.serialize(context))
 		unified_inventory.set_inventory_formspec(player, "skins_page")
 	end
 end)
