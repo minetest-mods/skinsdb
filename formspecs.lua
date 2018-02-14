@@ -1,23 +1,5 @@
 local S = skins.S
 
-
--- Prepare server-site state / context
-function skins.rebuild_formspec_context(player, context)
-	local skin = skins.get_player_skin(player)
-	context.skins_list = skins.get_skinlist_for_player(player:get_player_name())
-	context.total_pages = 1
-	for i, skin in ipairs(context.skins_list ) do
-		local page = math.floor((i-1) / 16)+1
-		skin:set_meta("inv_page", page)
-		skin:set_meta("inv_page_index", (i-1)%16+1)
-		context.total_pages = page
-	end
-	context.skins_page = context.skins_page or skin:get_meta("inv_page")
-	context.dropdown_values = nil
-	return context
-end
-
-
 -- Show skin info
 function skins.get_skin_info_formspec(skin)
 	local texture = skin:get_texture()
@@ -43,8 +25,18 @@ function skins.get_skin_info_formspec(skin)
 end
 
 function skins.get_skin_selection_formspec(player, context, y_delta)
-	skins.rebuild_formspec_context(player, context)
-	local page = context.skins_page or 1
+	context.skins_list = skins.get_skinlist_for_player(player:get_player_name())
+	context.total_pages = 1
+	for i, skin in ipairs(context.skins_list ) do
+		local page = math.floor((i-1) / 16)+1
+		skin:set_meta("inv_page", page)
+		skin:set_meta("inv_page_index", (i-1)%16+1)
+		context.total_pages = page
+	end
+	context.skins_page = context.skins_page or skins.get_player_skin(player):get_meta("inv_page") or 1
+	context.dropdown_values = nil
+
+	local page = context.skins_page
 	local formspec = ""
 	for i = (page-1)*16+1, page*16 do
 		local skin = context.skins_list[i]
