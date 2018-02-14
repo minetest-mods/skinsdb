@@ -1,10 +1,9 @@
-local function show_selection_formspec(player, context)
-	skins.rebuild_formspec_context(player, context)
+local function show_selection_formspec(player)
+	local context = skins.ui_context[player:get_player_name()]
 	local name = player:get_player_name()
 	local skin = skins.get_player_skin(player)
 	local formspec = "size[8,8]"..skins.get_skin_info_formspec(skin)
-	formspec = formspec..skins.get_skin_selection_formspec(context, 3.5)
-	player:set_attribute('skinsdb_context', minetest.serialize(context))
+	formspec = formspec..skins.get_skin_selection_formspec(player, context, 3.5)
 	minetest.show_formspec(name, 'skinsdb_show_ui', formspec)
 end
 
@@ -82,8 +81,7 @@ minetest.register_chatcommand("skinsdb", {
 			local formspec = "size[8,3]"..skins.get_skin_info_formspec(skin)
 			minetest.show_formspec(name, 'skinsdb_show_skin', formspec)
 		elseif command == "ui" then
-			local context = minetest.deserialize(player:get_attribute('skinsdb_context')) or {}
-			show_selection_formspec(player, context)
+			show_selection_formspec(player)
 		end
 	end,
 })
@@ -94,17 +92,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 
-	local context = minetest.deserialize(player:get_attribute('skinsdb_context'))
-	if not context then
-		return
-	end
+	local context = skins.ui_context[player:get_player_name()]
 
 	local action = skins.on_skin_selection_receive_fields(player, context, fields)
 	if action == 'set' then
-		player:set_attribute('skinsdb_context',"")
 		minetest.close_formspec(player:get_player_name(), formname)
 	elseif action == 'page' then
-		player:set_attribute('skinsdb_context', minetest.serialize(context))
-		show_selection_formspec(player, context)
+		show_selection_formspec(player)
 	end
 end)
