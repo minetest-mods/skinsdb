@@ -1,3 +1,5 @@
+local S = skins.S
+
 local function show_selection_formspec(player)
 	local context = skins.ui_context[player:get_player_name()]
 	local name = player:get_player_name()
@@ -10,11 +12,11 @@ end
 
 minetest.register_chatcommand("skinsdb", {
 	params = "[set] <skin key> | show [<skin key>] | list | list private | list public | [ui]",
-	description = "Set, show or list player's skin",
+	description = S("Show, list or set player's skin"),
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 		if not player then
-			return false, "Player not found"
+			return false, S("Player not found")
 		end
 
 		-- parse command line
@@ -30,15 +32,15 @@ minetest.register_chatcommand("skinsdb", {
 		elseif not word then
 			command = 'ui'
 		else
-			return false, "unknown command "..word.." see /help skinsdb for supported parameters"
+			return false, S("unknown command").." "..word..", "..S("see /help skinsdb for supported parameters")
 		end
 
 		if command == "set" then
 			local success = skins.set_player_skin(player, parameter)
 			if success then
-				return true, "skin set to "..parameter
+				return true, S("skin set to").." "..parameter
 			else
-				return false, "invalid skin "..parameter
+				return false, S("invalid skin").." "..parameter
 			end
 		elseif command == "list" then
 			local list
@@ -49,13 +51,15 @@ minetest.register_chatcommand("skinsdb", {
 			elseif not parameter then
 				list = skins.get_skinlist_for_player(name)
 			else
-				return false, "unknown parameter", parameter
+				return false, S("unknown parameter"), parameter
 			end
 
 			local current_skin_key = skins.get_player_skin(player):get_key()
 			for _, skin in ipairs(list) do
-				local info = skin:get_key()..": name="..skin:get_meta_string("name").." author="
-						..skin:get_meta_string("author").." license="..skin:get_meta_string("license")
+				local info = skin:get_key().." - "
+						..S("Name").."="..skin:get_meta_string("name").." "
+						..S("Author").."="..skin:get_meta_string("author").." "
+						..S("License").."="..skin:get_meta_string("license")
 				if skin:get_key() == current_skin_key then
 					info = minetest.colorize("#00FFFF", info)
 				end
@@ -69,7 +73,7 @@ minetest.register_chatcommand("skinsdb", {
 				skin = skins.get_player_skin(player)
 			end
 			if not skin then
-				return false, "unknown skin"
+				return false, S("invalid skin")
 			end
 			local formspec = "size[8,3]"..skins.get_skin_info_formspec(skin)
 			minetest.show_formspec(name, 'skinsdb_show_skin', formspec)
