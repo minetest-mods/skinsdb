@@ -19,26 +19,18 @@ minetest.register_chatcommand("skinsdb", {
 
 		-- parse command line
 		local command, parameter
-		for word in param:gmatch("([^ ]+)") do
-			if not command then
-				-- first word
-				if word == 'set' or word == 'list' or word == 'show' or word == 'ui' then
-					command = word
-				elseif skins.get(word) then
-					command = 'set'
-					parameter = word
-					break
-				else
-					return false, "unknown command "..word.." see /help skinsdb for supported parameters"
-				end
-			else
-				-- second word
-				parameter = word
-				break
-			end
-		end
-		if not command then
-			command = "ui"
+		local words = param:split(" ")
+		local word = words[1]
+		if word == 'set' or word == 'list' or word == 'show' or word == 'ui' then
+			command = word
+			parameter = words[2]
+		elseif skins.get(word) then
+			command = 'set'
+			parameter = word
+		elseif not word then
+			command = 'ui'
+		else
+			return false, "unknown command "..word.." see /help skinsdb for supported parameters"
 		end
 
 		if command == "set" then
@@ -62,7 +54,8 @@ minetest.register_chatcommand("skinsdb", {
 
 			local current_skin_key = skins.get_player_skin(player):get_key()
 			for _, skin in ipairs(list) do
-				local info = skin:get_key()..": name="..skin:get_meta_string("name").." author="..skin:get_meta_string("author").." license="..skin:get_meta_string("license")
+				local info = skin:get_key()..": name="..skin:get_meta_string("name").." author="
+						..skin:get_meta_string("author").." license="..skin:get_meta_string("license")
 				if skin:get_key() == current_skin_key then
 					info = minetest.colorize("#00FFFF", info)
 				end
