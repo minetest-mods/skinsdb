@@ -1,7 +1,7 @@
 local S = skins.S
 
 local function show_selection_formspec(player)
-	local context = skins.ui_context[player:get_player_name()]
+	local context = skins.get_formspec_context(player)
 	local name = player:get_player_name()
 	local skin = skins.get_player_skin(player)
 	local formspec = "size[8,8]"..skins.get_skin_info_formspec(skin)
@@ -89,7 +89,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 
-	local context = skins.ui_context[player:get_player_name()]
+	local context = skins.get_formspec_context(player)
 
 	local action = skins.on_skin_selection_receive_fields(player, context, fields)
 	if action == 'set' then
