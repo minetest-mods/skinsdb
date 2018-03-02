@@ -1,5 +1,15 @@
 local S = skins.S
 
+function skins.get_formspec_context(player)
+	if player then
+		local playername = player:get_player_name()
+		skins.ui_context[playername] = skins.ui_context[playername] or {}
+		return skins.ui_context[playername]
+	else
+		return {}
+	end
+end
+
 -- Show skin info
 function skins.get_skin_info_formspec(skin)
 	local texture = skin:get_texture()

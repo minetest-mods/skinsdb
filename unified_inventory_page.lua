@@ -15,7 +15,7 @@ unified_inventory.register_button("skins", {
 })
 
 local function get_formspec(player)
-	local context = skins.ui_context[player:get_player_name()]
+	local context = skins.get_formspec_context(player)
 	local formspec = "background[0.06,0.99;7.92,7.52;ui_misc_form.png]"..
 			skins.get_skin_selection_formspec(player, context, -0.2)
 	return formspec
@@ -38,7 +38,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 
-	local context = skins.ui_context[player:get_player_name()]
+	local context = skins.get_formspec_context(player)
 	local action = skins.on_skin_selection_receive_fields(player, context, fields)
 	if action == 'set' then
 		unified_inventory.set_inventory_formspec(player, "skins")
