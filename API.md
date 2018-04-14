@@ -16,6 +16,10 @@ skins.assign_player_skin(player, skin)
 skins.update_player_skin(player)
 ```
 
+## skins.get_skin_format(file)
+Returns the skin format version ("1.0" or "1.8"). File is an open file handle to the texture file
+
+
 ## skins.get_skinlist(assignment, select_unassigned)
 Obsolete - use get_skinlist_for_player() or get_skinlist_with_meta() instead
 
@@ -63,7 +67,11 @@ Get the skin preview
 Could be redefined for dynamic preview texture generation
 
 ## skin:set_skin(player)
-Apply the skin to the player. Is called in skins.update_player_skin()
+Apply the skin to the player and do some resets.
+Is called if skin selection started, in skins.update_player_skin() for examlpe
+
+skin:apply_skin_to_player(player)
+Apply the skin to the player. Is called in set_skin() and other places the skin needs to be updated
 
 ## skin:set_meta(key, value)
 Add a meta information to the skin object

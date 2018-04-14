@@ -14,7 +14,7 @@ This Minetest mod offers changeable player skins with a graphical interface for 
 - Additional information for each skin
 - Support for different skins lists: public and a per-player list are currently implemented
 - Full [3d_armor](https://forum.minetest.net/viewtopic.php?t=4654) support
-
+- Compatible to 1.0 and 1.8 Minecraft skins format
 
 ## Update tools
 
@@ -41,3 +41,4 @@ Fritigern:
 - cornernote (source code)
 - Krock (source code)
 - bell07 (source code)
+- stujones11 (player models)

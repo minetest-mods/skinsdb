@@ -42,7 +42,10 @@ for _, fn in pairs(skins_dir_list) do
 			if playername then
 				skin_obj:set_meta("playername", playername)
 			end
-			local file = io.open(skins.modpath.."/meta/"..name..".txt", "r")
+			local file = io.open(skins.modpath.."/textures/"..fn, "r")
+			skin_obj:set_meta("format", skins.get_skin_format(file))
+			file:close()
+			file = io.open(skins.modpath.."/meta/"..name..".txt", "r")
 			if file then
 				local data = string.split(file:read("*all"), "\n", 3)
 				file:close()
