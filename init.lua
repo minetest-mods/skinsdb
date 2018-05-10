@@ -16,7 +16,6 @@ else
 	skins.S = function(s) return s end
 end
 
-
 dofile(skins.modpath.."/skin_meta_api.lua")
 dofile(skins.modpath.."/api.lua")
 dofile(skins.modpath.."/skinlist.lua")
@@ -41,6 +40,14 @@ if minetest.global_exists("armor") then
 		local skin = skins.get_player_skin(minetest.get_player_by_name(name))
 		return skin:get_preview()
 	end
+	armor.update_player_visuals = function(self, player)
+		if not player then
+			return
+		end
+		local skin = skins.get_player_skin(player)
+		skin:apply_skin_to_player(player)
+		armor:run_callbacks("on_update", player)
+	end
 end
 
 -- Update skin on join
@@ -52,3 +59,21 @@ end)
 minetest.register_on_leaveplayer(function(player)
 	skins.ui_context[player:get_player_name()] = nil
 end)
+
+default.player_register_model("skinsdb_3d_armor_character.b3d", {
+	animation_speed = 30,
+	textures = {
+		"blank.png",
+		"blank.png",
+		"blank.png",
+		"blank.png",
+	},
+	animations = {
+		stand = {x=0, y=79},
+		lay = {x=162, y=166},
+		walk = {x=168, y=187},
+		mine = {x=189, y=198},
+		walk_mine = {x=200, y=219},
+		sit = {x=81, y=160},
+	},
+})
