@@ -1,20 +1,17 @@
 # Skinsdb Interface
 
 ## skins.get_player_skin(player)
-Return the skin object assigned to the player. Returns defaout if nothins assigned
+Return the skin object assigned to the player. Returns default if nothing assigned
 
 ## skins.assign_player_skin(player, skin)
-Select the skin for the player. The "skin" parameter could be the skin key or the skin object
+Check if allowed and assign the skin for the player without visual updates. The "skin" parameter could be the skin key or the skin object
 Returns false if skin is not valid or applicable to player
 
 ## skins.update_player_skin(player)
 Update selected skin visuals on player
 
 ## skins.set_player_skin(player, skin)
-```
-skins.assign_player_skin(player, skin)
-skins.update_player_skin(player)
-```
+Function for external usage on skin selection. This function assign the skin, call the skin:set_skin(player) hook to update dynamic skins, then update the visuals
 
 ## skins.get_skin_format(file)
 Returns the skin format version ("1.0" or "1.8"). File is an open file handle to the texture file
@@ -67,11 +64,11 @@ Get the skin preview
 Could be redefined for dynamic preview texture generation
 
 ## skin:set_skin(player)
-Apply the skin to the player and do some resets.
-Is called if skin selection started, in skins.update_player_skin() for examlpe
+Hook for dynamic skins updates on select. Is called in skins.set_player_skin()
+In skinsdb the default implementation for this function is empty.
 
 skin:apply_skin_to_player(player)
-Apply the skin to the player. Is called in set_skin() and other places the skin needs to be updated
+Apply the skin to the player. Called in skins.update_player_skin() to update visuals
 
 ## skin:set_meta(key, value)
 Add a meta information to the skin object

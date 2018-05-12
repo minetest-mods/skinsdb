@@ -31,14 +31,23 @@ end
 
 -- update visuals
 function skins.update_player_skin(player)
-	local skin = skins.get_player_skin(player)
-	skin:set_skin(player)
+	if skins.armor_loaded then
+		-- all needed is wrapped and implemented in 3d_armor mod
+		armor:set_player_armor(player)
+	else
+		-- do updates manually without 3d_armor
+		skins.get_player_skin(player):apply_skin_to_player(player)
+		if minetest.global_exists("sfinv") and sfinv.enabled then
+			sfinv.set_player_inventory_formspec(player)
+		end
+	end
 end
 
--- Assign and update
+-- Assign and update - should be used on selection externally
 function skins.set_player_skin(player, skin)
 	local success = skins.assign_player_skin(player, skin)
 	if success then
+		skins.get_player_skin(player):set_skin(player)
 		skins.update_player_skin(player)
 	end
 	return success

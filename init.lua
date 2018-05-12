@@ -32,6 +32,7 @@ end
 
 -- 3d_armor compatibility
 if minetest.global_exists("armor") then
+	skins.armor_loaded = true
 	armor.get_player_skin = function(self, name)
 		local skin = skins.get_player_skin(minetest.get_player_by_name(name))
 		return skin:get_texture()
