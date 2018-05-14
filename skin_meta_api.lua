@@ -59,8 +59,6 @@ function skin_class:get_preview()
 	return self._preview or "player.png"
 end
 
-local armor_loaded = minetest.global_exists("armor")
-
 function skin_class:apply_skin_to_player(player)
 	local ver = self:get_meta("format") or "1.0"
 	default.player_set_model(player, "skinsdb_3d_armor_character.b3d")
@@ -76,7 +74,7 @@ function skin_class:apply_skin_to_player(player)
 		v10_texture = self:get_texture()
 	end
 
-	if armor_loaded then
+	if skins.armor_loaded then
 		local armor_textures = armor.textures[player:get_player_name()]
 		if armor_textures then
 			armor_texture = armor_textures.armor
@@ -103,7 +101,6 @@ function skin_class:set_skin(player)
 	-- The set_skin is used on skins selection
 	-- This means the method could be redefined to start an furmslec
 	-- See character_creator for example
-	self:apply_skin_to_player(player)
 end
 
 function skin_class:is_applicable_for_player(playername)
