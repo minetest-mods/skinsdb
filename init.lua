@@ -51,6 +51,11 @@ if minetest.global_exists("armor") then
 	end
 end
 
+if minetest.global_exists("clothing") and clothing.player_textures then
+	skins.clothing_loaded = true
+	clothing:register_on_update(skins.update_player_skin)
+end
+
 -- Update skin on join
 skins.ui_context = {}
 minetest.register_on_joinplayer(function(player)
