@@ -60,6 +60,18 @@ function skin_class:get_preview()
 end
 
 function skin_class:apply_skin_to_player(player)
+
+	local function concat_texture(base, ext)
+		if base == "blank.png" then
+			return ext
+		elseif ext == "blank.png" then
+			return base
+		else
+			return	base .. "^" .. ext
+		end
+	end
+
+	local playername = player:get_player_name()
 	local ver = self:get_meta("format") or "1.0"
 	default.player_set_model(player, "skinsdb_3d_armor_character.b3d")
 
@@ -74,11 +86,26 @@ function skin_class:apply_skin_to_player(player)
 		v10_texture = self:get_texture()
 	end
 
+	-- Support for clothing
+	if skins.clothing_loaded and clothing.player_textures[playername] then
+		local cape = clothing.player_textures[playername].cape
+		local layers = {}
+		for k, v in pairs(clothing.player_textures[playername]) do
+			if k ~= "skin" and k ~= "cape" then
+				table.insert(layers, v)
+			end
+		end
+		local overlay = table.concat(layers, "^")
+		v10_texture = concat_texture(v10_texture, cape)
+		v18_texture = concat_texture(v18_texture, overlay)
+	end
+
+	-- Support for armor
 	if skins.armor_loaded then
-		local armor_textures = armor.textures[player:get_player_name()]
+		local armor_textures = armor.textures[playername]
 		if armor_textures then
-			armor_texture = armor_textures.armor
-			wielditem_texture = armor_textures.wielditem
+			armor_texture = concat_texture(armor_texture, armor_textures.armor)
+			wielditem_texture = concat_texture(wielditem_texture, armor_textures.wielditem)
 		end
 	end
 
