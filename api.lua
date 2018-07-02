@@ -1,6 +1,12 @@
 -- get current skin
+local storage = minetest.get_mod_storage()
+
 function skins.get_player_skin(player)
-	local skin = player:get_attribute("skinsdb:skin_key")
+	if player:get_attribute("skinsdb:skin_key") then
+		storage:set_string(player:get_player_name(), player:get_attribute("skinsdb:skin_key"))
+		player:set_attribute("skinsdb:skin_key", nil)
+	end
+	local skin = storage:get_string(player:get_player_name())
 	return skins.get(skin) or skins.get(skins.default)
 end
 
@@ -22,7 +28,7 @@ function skins.assign_player_skin(player, skin)
 		if skin_key == skins.default then
 			skin_key = ""
 		end
-		player:set_attribute("skinsdb:skin_key", skin_key)
+		storage:set_string(player:get_player_name(), skin_key)
 	else
 		return false
 	end
