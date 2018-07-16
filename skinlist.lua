@@ -2,44 +2,50 @@
 local skins_dir_list = minetest.get_dir_list(skins.modpath.."/textures")
 
 for _, fn in pairs(skins_dir_list) do
+	local name, sort_id, assignment, is_preview, playername
 	local nameparts = string.gsub(fn, "[.]", "_"):split("_")
 
-	local name, sort_id, assignment, is_preview, playername
-	if nameparts[1] == "character" then
-		if tonumber(nameparts[2]) == nil then --default skin character.png
-			sort_id = 5000
-			name = "character"
-			is_preview = (nameparts[2] == "preview")
-		else
-			sort_id = tonumber(nameparts[2])+5000
-			name = "character_"..nameparts[2]
-			is_preview = (nameparts[3] == "preview")
-		end
-	elseif nameparts[1] == "player" then
-		assignment = "player:"..nameparts[2] --TODO: remove all assignment handling
-		name = "player_"..nameparts[2]
-		playername = nameparts[2]
-		if tonumber(nameparts[3]) then
-			sort_id = tonumber(nameparts[3])
-			is_preview = (nameparts[4] == "preview")
-			name = name.."_"..nameparts[3]
-		else
-			sort_id = 1
-			is_preview = (nameparts[3] == "preview")
-		end
-	end
+	-- check allowed prefix and file extension
+	if (nameparts[1] == 'player' or nameparts[1] == 'character') and
+			nameparts[#nameparts]:lower() == 'png' then
 
-	if name then
+		-- cut filename extension
+		table.remove(nameparts, #nameparts)
+
+		-- check preview suffix
+		if nameparts[#nameparts] == 'preview' then
+			is_preview = true
+			table.remove(nameparts, #nameparts)
+		end
+
+		-- Build technically skin name
+		name = table.concat(nameparts, '_')
+
+		-- Handle metadata from file name
+		if not is_preview then
+			-- Get player name
+			if nameparts[1] == "player" then
+				playername = nameparts[2]
+				table.remove(nameparts, 1)
+				sort_id = 0
+			else
+				sort_id = 5000
+			end
+
+			-- Get sort index
+			if tonumber(nameparts[#nameparts]) then
+				sort_id = sort_id + nameparts[#nameparts]
+			end
+		end
+
 		local skin_obj = skins.get(name) or skins.new(name)
 		if is_preview then
 			skin_obj:set_preview(fn)
 		else
 			skin_obj:set_texture(fn)
 			skin_obj:set_meta("_sort_id", sort_id)
-			if assignment then
-				skin_obj:set_meta("assignment", assignment)
-			end
 			if playername then
+				skin_obj:set_meta("assignment", "player:"..playername)
 				skin_obj:set_meta("playername", playername)
 			end
 			local file = io.open(skins.modpath.."/textures/"..fn, "r")
@@ -53,7 +59,11 @@ for _, fn in pairs(skins_dir_list) do
 				skin_obj:set_meta("author", data[2])
 				skin_obj:set_meta("license", data[3])
 			else
-				skin_obj:set_meta("name", name)
+				-- remove player / character prefix if further naming given
+				if nameparts[2] and not tonumber(nameparts[2]) then
+					table.remove(nameparts, 1)
+				end
+				skin_obj:set_meta("name", table.concat(nameparts, ' '))
 			end
 		end
 	end
