@@ -42,7 +42,7 @@ for _, fn in pairs(skins_dir_list) do
 		if is_preview then
 			skin_obj:set_preview(fn)
 		else
-			skin_obj:set_texture(fn)
+			skin_obj:set_texture("black_layer.png^"..fn)
 			skin_obj:set_meta("_sort_id", sort_id)
 			if playername then
 				skin_obj:set_meta("assignment", "player:"..playername)
