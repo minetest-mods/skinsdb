@@ -67,8 +67,8 @@ minetest.register_on_leaveplayer(function(player)
 end)
 
 if minetest.global_exists("player_api") then
-	-- Minetest-0.5 and above compatible
-	player_api.register_model("skinsdb_3d_armor_character_0_5.b3d", {
+	-- Minetest-5 and above compatible
+	player_api.register_model("skinsdb_3d_armor_character_5.b3d", {
 		animation_speed = 30,
 		textures = {
 			"blank.png",
