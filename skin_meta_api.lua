@@ -73,8 +73,13 @@ function skin_class:apply_skin_to_player(player)
 
 	local playername = player:get_player_name()
 	local ver = self:get_meta("format") or "1.0"
-	default.player_set_model(player, "skinsdb_3d_armor_character.b3d")
-
+	if minetest.global_exists("player_api") then
+		-- Minetest-5 compatible
+		player_api.set_model(player, "skinsdb_3d_armor_character_5.b3d")
+	else
+		-- Minetest-0.4 compatible
+		default.player_set_model(player, "skinsdb_3d_armor_character.b3d")
+	end
 	local v10_texture = "blank.png"
 	local v18_texture = "blank.png"
 	local armor_texture = "blank.png"
@@ -109,12 +114,23 @@ function skin_class:apply_skin_to_player(player)
 		end
 	end
 
-	default.player_set_textures(player, {
-			v10_texture,
-			v18_texture,
-			armor_texture,
-			wielditem_texture,
-		})
+	if minetest.global_exists("player_api") then
+		-- Minetest-5 compatible
+		player_api.set_textures(player, {
+				v10_texture,
+				v18_texture,
+				armor_texture,
+				wielditem_texture,
+			})
+	else
+		-- Minetest-0.4 compatible
+		default.player_set_textures(player, {
+				v10_texture,
+				v18_texture,
+				armor_texture,
+				wielditem_texture,
+			})
+	end
 
 	player:set_properties({
 		visual_size = {
