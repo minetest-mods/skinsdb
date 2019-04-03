@@ -82,3 +82,13 @@ player_api.register_model("skinsdb_3d_armor_character_5.b3d", {
 		sit = {x=81, y=160},
 	},
 })
+
+-- Register default character.png if not part of this mod
+local default_skin_obj = skins.get(skins.default)
+if not default_skin_obj then
+	default_skin_obj = skins.new(skins.default)
+	default_skin_obj:set_texture("character.png")
+	default_skin_obj:set_meta("format", '1.0')
+	default_skin_obj:set_meta("_sort_id", 0)
+	default_skin_obj:set_meta("name", "Sam")
+end
