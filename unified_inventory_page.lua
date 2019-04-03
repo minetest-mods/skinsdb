@@ -12,6 +12,7 @@ unified_inventory.register_page("skins", {
 unified_inventory.register_button("skins", {
 	type = "image",
 	image = "skins_button.png",
+	tooltip = "Skins",
 })
 
 local function get_formspec(player)
