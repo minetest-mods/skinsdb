@@ -30,6 +30,13 @@ if minetest.get_modpath("sfinv") then
 	dofile(skins.modpath.."/sfinv_page.lua")
 end
 
+-- ie.loadfile does not exist?
+--[[skins.ie = minetest.request_insecure_environment()
+skins.http = minetest.request_http_api()
+dofile(skins.modpath.."/skins_updater.lua")
+skins.ie = nil
+skins.http = nil]]
+
 -- 3d_armor compatibility
 if minetest.global_exists("armor") then
 	skins.armor_loaded = true

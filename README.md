@@ -15,6 +15,29 @@ This Minetest mod offers changeable player skins with a graphical interface for 
 - Full [3d_armor](https://forum.minetest.net/viewtopic.php?t=4654) support
 - Compatible to 1.0 and 1.8 Minecraft skins format
 
+
+## Installing skins
+
+### Download from the database
+
+1) Get Minetest 5.1.0-dev-cb00632 or newer
+2) Uncomment the lines in `init.lua` mentioning `skins_updater.lua`
+3) Start your world and wait until it reports that the skins were downloaded.
+4) Let the Minetest server shut down
+5) Comment the lines in `init.lua` again
+6) Start the server again
+
+You might want to run `minetest` in a Terminal/Console window to check the log output instantly.
+
+### Manual addition
+
+1) Copy your skin textures to `textures` as documented in `textures/readme.txt`
+2) Create `meta/character_<name>.txt` with the following fields (separated by new lines):
+    * Skin name
+    * Author
+    * Skin license
+
+
 ## License:
 - GPLv3
 
