@@ -1,5 +1,4 @@
 -- Skins update script
--- Load it in init.lua or write a frontend GUI/chatcommand for it. Good luck.
 
 local S = skins.S
 local _ID_ = "Lua Skins Updater"
