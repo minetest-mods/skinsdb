@@ -1,18 +1,50 @@
 -- Skins update script
 -- Load it in init.lua or write a frontend GUI/chatcommand for it. Good luck.
 
+local S = skins.S
 local _ID_ = "Lua Skins Updater"
-local _SKIN_PAGE_START_ = 1   -- Starting page to fetch the skins
-local _SKIN_PAGE_END_   = nil -- End page number (nil = all skins)
 
+local internal = {}
+internal.errors = {}
+
+-- Binary downloads are required
 if not core.features.httpfetch_binary_data then
-	error(_ID_ .. " requires the feature 'httpfetch_binary_data'. Update Minetest.")
+	internal.errors[#internal.errors + 1] =
+		"Feature 'httpfetch_binary_data' is missing. Update Minetest."
 end
 
+-- Insecure environment for saving textures and meta
 local ie, http = skins.ie, skins.http
 if not ie or not http then
-	error(_ID_ .. " requires the insecure environment. " ..
-		"Please add skinsdb to `secure.trusted_mods` in minetest.conf")
+	internal.errors[#internal.errors + 1] = "Insecure environment is required. " ..
+		"Please add skinsdb to `secure.trusted_mods` in minetest.conf"
+end
+
+minetest.register_chatcommand("skinsdb_download_skins", {
+	params = "<skindb start page> <amount of pages>",
+	description = S("Downloads the specified range of skins and shuts down the server"),
+	privs = {server=true},
+	func = function(name, param)
+		if #internal.errors > 0 then
+			return false, "Cannot run " .. _ID_ .. ":\n\t" ..
+				table.concat(internal.errors, "\n\t")
+		end
+
+		local parts = string.split(param, " ")
+		local start = tonumber(parts[1])
+		local len = tonumber(parts[2])
+		if not (start and len and len > 0) then
+			return false, "Invalid page number or amount of pages"
+		end
+
+		internal.get_pages_count(internal.fetch_function, start, len)
+		return true, "Started downloading..."
+	end,
+})
+
+
+if #internal.errors > 0 then
+	return -- Nonsense to load something that's not working
 end
 
 -- http://minetest.fensta.bplaced.net/api/apidoku.md
@@ -76,20 +108,21 @@ local function safe_single_skin(skin)
 end
 
 -- Get total pages since it'll just return the last page all over again
-local function get_pages_count(callback)
-	fetch_url(page_url:format(1) .. "&per_page=5", function(data)
+internal.get_pages_count = function(callback, ...)
+	local vars = {...}
+	fetch_url(page_url:format(1) .. "&per_page=1", function(data)
 		local list = core.parse_json(data)
-		print(dump(list))
-		callback(list.pages)
+		-- "per_page" defaults to 20 if left away (docs say something else, though)
+		callback(math.ceil(list.pages / 20), unpack(vars))
 	end)
 end
 	
--- Just fetch them all. YOLO
-get_pages_count(function(pages_total)
-	local start_page = _SKIN_PAGE_START_ or 1
-	local end_page = math.min(pages_total, _SKIN_PAGE_END_ or pages_total)
+-- Function to fetch a range of pages
+internal.fetch_function = function(pages_total, start_page, len)
+	start_page = math.max(start_page, 1)
+	local end_page = math.min(start_page + len - 1, pages_total)
 
-	for page_n = 1, end_page do
+	for page_n = start_page, end_page do
 		local page_cpy = page_n
 		fetch_url(page_url:format(page_n), function(data)
 			core.log("action", ("%s: Page %i"):format(_ID_, page_cpy))
@@ -105,11 +138,11 @@ get_pages_count(function(pages_total)
 			end
 
 			if page_cpy == end_page then
-				core.log("action", _ID_ .. " finished downloading all skins. " ..
-					"Please comment out this script to reduce server traffic.")
-				core.request_shutdown("Reloading skinsdb media cache after download",
-					true, 3 --[[give some time for pending requests]])
+				local log = _ID_ .. " finished downloading all skins. " ..
+					"Shutting down server to reload media cache"
+				core.log("action", log)
+				core.request_shutdown(log, true, 3 --[[give some time for pending requests]])
 			end
 		end)
 	end
-end)
+end
