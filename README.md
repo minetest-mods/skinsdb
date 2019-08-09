@@ -66,3 +66,4 @@ The Script will download all the skins from the database for you.
 - bell07 (source code)
 - stujones11 (player models)
 - jordan4ibanez (1st person view hand)
+- sirrobzeroone (skins)
