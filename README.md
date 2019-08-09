@@ -39,6 +39,7 @@ You might want to run `minetest` in a Terminal/Console window to check the log o
 
 ## License:
 - GPLv3
+- skin texture licenses: See "meta" folder
 
 ### Credits
 
