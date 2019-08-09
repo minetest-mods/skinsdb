@@ -49,3 +49,4 @@ You might want to run `minetest` in a Terminal/Console window to check the log o
 - Krock (source code)
 - bell07 (source code)
 - stujones11 (player models)
+- sirrobzeroone (skins)
