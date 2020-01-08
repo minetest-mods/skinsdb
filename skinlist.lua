@@ -71,8 +71,8 @@ end
 
 local function skins_sort(skinslist)
 	table.sort(skinslist, function(a,b)
-		local a_id = a:get_meta("_sort_id")
-		local b_id = b:get_meta("_sort_id")
+		local a_id = a:get_meta("_sort_id") or 10000
+		local b_id = b:get_meta("_sort_id") or 10000
 		if a_id ~= b_id then
 			return a:get_meta("_sort_id") < b:get_meta("_sort_id")
 		else
