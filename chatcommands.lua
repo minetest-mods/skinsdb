@@ -1,4 +1,4 @@
-local S = skins.S
+local S = minetest.get_translator("skinsdb")
 
 local function show_selection_formspec(player)
 	local context = skins.get_formspec_context(player)

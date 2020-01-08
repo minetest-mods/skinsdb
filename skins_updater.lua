@@ -1,6 +1,6 @@
 -- Skins update script
 
-local S = skins.S
+local S = minetest.get_translator("skinsdb")
 local _ID_ = "Lua Skins Updater"
 
 local internal = {}

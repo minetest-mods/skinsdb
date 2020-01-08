@@ -1,4 +1,4 @@
-local S = skins.S
+local S = minetest.get_translator("skinsdb")
 
 function skins.get_formspec_context(player)
 	if player then
