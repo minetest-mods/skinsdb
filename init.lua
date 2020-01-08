@@ -9,12 +9,7 @@ skins = {}
 skins.modpath = minetest.get_modpath(minetest.get_current_modname())
 skins.default = "character"
 
-local S
-if minetest.get_modpath("intllib") then
-	skins.S = intllib.Getter()
-else
-	skins.S = function(s) return s end
-end
+local S = minetest.get_translator("skinsdb")
 
 dofile(skins.modpath.."/skin_meta_api.lua")
 dofile(skins.modpath.."/api.lua")
