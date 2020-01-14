@@ -1,4 +1,4 @@
-local S = skins.S
+local S = minetest.get_translator("skinsdb")
 
 -- generate the current formspec
 local function get_formspec(player, context)
@@ -9,7 +9,7 @@ local function get_formspec(player, context)
 end
 
 sfinv.register_page("skins:overview", {
-	title = "Skins",
+	title = S("Skins"),
 	get = function(self, player, context)
 		-- collect skins data
 		return sfinv.make_formspec(player, context, get_formspec(player, context))
