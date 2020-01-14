@@ -8,9 +8,6 @@ skins = {}
 skins.modpath = minetest.get_modpath(minetest.get_current_modname())
 skins.default = "character"
 
-local S = minetest.get_translator("skinsdb")
-print("Translator:", dump(S))
-
 dofile(skins.modpath.."/skin_meta_api.lua")
 dofile(skins.modpath.."/api.lua")
 dofile(skins.modpath.."/skinlist.lua")
