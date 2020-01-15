@@ -15,4 +15,5 @@ skin set to=
 invalid skin=
 unknown parameter=
 unknown skin=
+Downloads the specified range of skins and shuts down the server=
 Skins=
