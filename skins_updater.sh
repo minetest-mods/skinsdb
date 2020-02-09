@@ -8,7 +8,7 @@ pages_amount="$2"
 cd "$(dirname "$0")"
 mod_path="$PWD"
 
-workdir="$(mktemp -d /tmp/XXXXXXXX)"
+workdir="$(mktemp -d)"
 cd "$workdir"
 export HOME="$PWD"
 
