@@ -25,53 +25,6 @@ gameid = minetest
 load_mod_skinsdb = true
 load_mod_skinsdb_updater_script = true
 EOF
-echo 'mg_biome_np_humidity_blend = {
-  octaves = 2
-  lacunarity = 2
-  persistence = 1
-  spread = (8,8,8)
-  scale = 1.5
-  seed = 90003
-  flags = defaults
-  offset = 0
-}
-mg_biome_np_heat_blend = {
-  octaves = 2
-  lacunarity = 2
-  persistence = 1
-  spread = (8,8,8)
-  scale = 1.5
-  seed = 13
-  flags = defaults
-  offset = 0
-}
-mg_biome_np_humidity = {
-  octaves = 3
-  lacunarity = 2
-  persistence = 0.5
-  spread = (1000,1000,1000)
-  scale = 50
-  seed = 842
-  flags = defaults
-  offset = 50
-}
-mg_biome_np_heat = {
-  octaves = 3
-  lacunarity = 2
-  persistence = 0.5
-  spread = (1000,1000,1000)
-  scale = 50
-  seed = 5349
-  flags = defaults
-  offset = 50
-}
-mg_flags = caves, dungeons, light, decorations, biomes
-mapgen_limit = 31000
-seed = 15898582935432365961
-chunksize = 5
-water_level = 1
-mg_name = v7
-[end_of_params]' > "$world/map_meta.txt"
 
 mkdir -p .minetest/mods
 cp -rv "$mod_path" .minetest/mods/skinsdb
@@ -98,4 +51,3 @@ mv .minetest/mods/skinsdb/meta .minetest/mods/skinsdb/textures "$mod_path/"
 
 cd "$mod_path"
 rm -fr "$workdir"
-
