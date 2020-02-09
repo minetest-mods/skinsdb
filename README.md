@@ -22,8 +22,8 @@ This Minetest mod offers changeable player skins with a graphical interface for 
 
 #### using script
 
-1) Get minetestserver 5.1.0-dev-cb00632 or newer and add it to `$PATH`
-2) Run `./skins_updater.sh`
+1) Get `minetestserver` 5.1.0-dev-cb00632 or newer and add it to `$PATH`
+2) Run `./skins_updater.sh <skindb start page> <amount of pages>`
 
 #### using ingame command
 
@@ -33,7 +33,7 @@ This Minetest mod offers changeable player skins with a graphical interface for 
 4) Wait for the Minetest server to shut down
 5) Start the server again
 
-You might want to run `minetest` in a Terminal/Console window to check the log output instantly.
+You might want to run `minetest` or `minetestserver` in a Terminal/Console window to check the log output instantly.
 
 ### Manual addition
 

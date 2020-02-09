@@ -1,5 +1,10 @@
 #!/bin/bash
+# arguments: <skindb start page> <amount of pages>
 set -e
+
+start_page="$1"
+pages_amount="$2"
+
 cd "$(dirname "$0")"
 mod_path="$PWD"
 
@@ -31,9 +36,9 @@ cp -rv "$mod_path" .minetest/mods/skinsdb
 
 mkdir -p .minetest/mods/skinsdb_updater_script
 echo skinsdb > .minetest/mods/skinsdb_updater_script/depends.txt
-cat << 'EOF' > .minetest/mods/skinsdb_updater_script/init.lua
+cat << EOF > .minetest/mods/skinsdb_updater_script/init.lua
 minetest.register_on_mods_loaded(function()
-  local status, msg = minetest.registered_chatcommands.skinsdb_download_skins.func("", "1 100")
+  local status, msg = minetest.registered_chatcommands.skinsdb_download_skins.func("", "$start_page $pages_amount")
   if status then
     minetest.log("action", msg)
   else
