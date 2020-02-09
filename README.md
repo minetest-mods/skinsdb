@@ -20,6 +20,13 @@ This Minetest mod offers changeable player skins with a graphical interface for 
 
 ### Download from the database
 
+#### using script
+
+1) Get minetestserver 5.1.0-dev-cb00632 or newer and add it to `$PATH`
+2) Run `./skins_updater.sh`
+
+#### using ingame command
+
 1) Get Minetest 5.1.0-dev-cb00632 or newer
 2) Start your world
 3) Run `/skinsdb_download_skins <skindb start page> <amount of pages>`
