@@ -1,9 +1,12 @@
-
 local skins_dir_list = minetest.get_dir_list(skins.modpath.."/textures")
 
 for _, fn in pairs(skins_dir_list) do
 	local name, sort_id, assignment, is_preview, playername
-	local nameparts = string.gsub(fn, "[.]", "_"):split("_")
+	local nameparts = {
+		fn:match("^%w+"),
+		fn:gsub("^%w+_", ""):gsub("%.%w+$", ""),
+		fn:match("%w+$"),
+	}
 
 	-- check allowed prefix and file extension
 	if (nameparts[1] == 'player' or nameparts[1] == 'character') and

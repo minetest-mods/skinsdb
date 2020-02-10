@@ -16,11 +16,14 @@ function skins.get_skin_info_formspec(skin)
 	local m_name = skin:get_meta_string("name")
 	local m_author = skin:get_meta_string("author")
 	local m_license = skin:get_meta_string("license")
+	local m_format = skin:get_meta("format")
 	-- overview page
-	local formspec = "image[0,.75;1,2;"..skin:get_preview().."]"
+	local raw_size = m_format == "1.8" and "2,2" or "2,1"
+
+	local formspec = "image[0.8,.6;1,2;"..minetest.formspec_escape(skin:get_preview()).."]"
 	if texture then
 		formspec = formspec.."label[6,.5;"..S("Raw texture")..":]"
-		.."image[6,1;2,1;"..skin:get_texture().."]"
+		.."image[6,1;"..raw_size..";"..texture.."]"
 	end
 	if m_name ~= "" then
 		formspec = formspec.."label[2,.5;"..S("Name")..": "..minetest.formspec_escape(m_name).."]"
@@ -63,7 +66,7 @@ function skins.get_skin_selection_formspec(player, context, y_delta)
 			y = y_delta
 		end
 		formspec = formspec.."image_button["..x..","..y..";1,2;"..
-			skin:get_preview()..";skins_set$"..i..";]"..
+			minetest.formspec_escape(skin:get_preview())..";skins_set$"..i..";]"..
 			"tooltip[skins_set$"..i..";"..minetest.formspec_escape(skin:get_meta_string("name")).."]"
 	end
 
