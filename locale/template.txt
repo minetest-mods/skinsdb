@@ -17,3 +17,4 @@ unknown parameter=
 unknown skin=
 Downloads the specified range of skins and shuts down the server=
 Skins=
+Requires skin key=
