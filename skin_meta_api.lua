@@ -184,6 +184,7 @@ end
 
 function skin_class:is_applicable_for_player(playername)
 	local assigned_player = self:get_meta("playername")
-	return minetest.check_player_privs(playername, {server=true}) or assigned_player == nil or assigned_player == true or
-			(assigned_player:lower() == playername:lower())
+	return assigned_player == nil or assigned_player == true or
+ 			playername and (minetest.check_player_privs(playername, {server=true}) or
+			assigned_player:lower() == playername:lower())
 end
