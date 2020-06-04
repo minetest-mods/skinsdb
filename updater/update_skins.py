@@ -38,7 +38,7 @@ for json in data["skins"]:
         count += 1
 
     else:
-        print("Fetching of preview of skin " + id + "failed!")
+        print("Failed to download skin #" + id)
 
 
 print("Fetched " + str(count) + " skins!")
