@@ -18,7 +18,9 @@ This Minetest mod offers changeable player skins with a graphical interface for 
 
 ## Installing skins
 
-### Download from the database
+### Download from the [database](http://minetest.fensta.bplaced.net/)
+
+#### Ingame Downloader
 
 1) Get Minetest 5.1.0-dev-cb00632 or newer
 2) Start your world
@@ -27,6 +29,16 @@ This Minetest mod offers changeable player skins with a graphical interface for 
 5) Start the server again
 
 You might want to run `minetest` in a Terminal/Console window to check the log output instantly.
+
+#### Python Download script
+
+**Requirements:**
+
+ * Python 3
+ * `requests` library: `pip3 install requests`  
+ 
+Go to the updater folder of this mod and run `python3 update_skins.py`  
+The Script will download all the skins from the database for you.
 
 ### Manual addition
 
