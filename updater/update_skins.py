@@ -20,7 +20,7 @@ else:
 
 
 for json in data["skins"]:
-    id = str(json["id"]).zfill(4)
+    id = str(json["id"])
 
     # Texture file
     raw_data = base64.b64decode(json["img"])
