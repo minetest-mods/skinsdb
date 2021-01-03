@@ -9,6 +9,7 @@ This Minetest mod offers changeable player skins with a graphical interface for 
 - Skin change menu for sfinv (in minetest_game) and [unified_inventory](https://forum.minetest.net/viewtopic.php?t=12767)
 - Skins change menu and command line using chat command /skinsdb (set | show | list | list private | list public | ui)
 - Supported by [smart_inventory](https://forum.minetest.net/viewtopic.php?t=16597) for the skin selection
+- Supported by [i3](https://github.com/minetest-mods/i3) inventory mod
 - Skin previews supported in selection
 - Additional information for each skin
 - Support for different skins lists: public and a per-player list are currently implemented
