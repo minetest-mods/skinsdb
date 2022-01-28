@@ -1,0 +1,21 @@
+# textdomain: skinsdb
+# Translation by Baytuch
+
+Raw texture=Текстура
+Name=Ім'я
+Author=Автор
+Change=Змінити
+Page=Сторінка
+License=Ліцензія
+Description=Опис
+Show, list or set player's skin=Показати скін, список скінів, встановити скін гравця
+Player not found=Гравець не знайдений
+unknown command=невідома команда
+see /help skinsdb for supported parameters=дивіться /help skinsdb для перегляду параметрів
+skin set to=встановлено скін
+invalid skin=некоректний скін
+unknown parameter=невизначений параметр
+unknown skin=невизначений скін
+Downloads the specified range of skins and shuts down the server=Завантажити масив скінів та зупинити сервер
+Skins=Скіни
+Requires skin key=Залежний ідентифікатор скіна
