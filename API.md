@@ -55,6 +55,15 @@ Get the skin texture for any reason. Note to apply them the skin:set_skin() shou
 
 Could be redefined for dynamic texture generation
 
+## skin:set_hand(hand_node)
+Set the hand node to be used with this skin
+
+## skin:set_hand_from_texture()
+Register and set hand node based on skin texture
+
+##skin:get_hand()
+Get hand node
+
 ## skin:set_preview(texture)
 Set the skin preview - usually at the init time only
 

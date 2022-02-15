@@ -15,6 +15,7 @@ This Minetest mod offers changeable player skins with a graphical interface for 
 - Support for different skins lists: public and a per-player list are currently implemented
 - Full [3d_armor](https://forum.minetest.net/viewtopic.php?t=4654) support
 - Compatible to 1.0 and 1.8 Minecraft skins format
+- Skinned hand in 1st person view (1.0 skins only)
 
 
 ## Installing skins
@@ -53,6 +54,7 @@ The Script will download all the skins from the database for you.
 ## License:
 - GPLv3
 - skin texture licenses: See "meta" folder
+- hand model: CC0
 
 ### Credits
 
@@ -62,3 +64,4 @@ The Script will download all the skins from the database for you.
 - Krock (source code)
 - bell07 (source code)
 - stujones11 (player models)
+- jordan4ibanez (1st person view hand)

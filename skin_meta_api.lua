@@ -51,6 +51,33 @@ function skin_class:get_texture()
 	return self._texture
 end
 
+function skin_class:set_hand(hand)
+	self._hand = hand
+end
+
+function skin_class:set_hand_from_texture()
+	local hand = core.get_current_modname()..':'..self._texture:gsub('[%p%c%s]', '')
+
+	minetest.register_node(hand, {
+		tiles = {self:get_texture()},
+		inventory_image = "wieldhand.png",
+		visual_scale = 1,
+		wield_scale = {x=1,y=1,z=1},
+		paramtype = "light",
+		drawtype = "mesh",
+		mesh = "skinsdb_hand.b3d",
+		use_texture_alpha = "clip",
+		node_placement_prediction = "",
+		groups = { not_in_creative_inventory = 1 }
+	})
+
+	self:set_hand(hand)
+end
+
+function skin_class:get_hand()
+	return self._hand
+end
+
 function skin_class:set_preview(value)
 	self._preview = value
 end
@@ -174,6 +201,14 @@ function skin_class:apply_skin_to_player(player)
 			y = self:get_meta("visual_size_y") or 1
 		}
 	})
+
+	local hand = self:get_hand()
+	if hand then
+		player:get_inventory():set_size("hand", 1)
+		player:get_inventory():set_stack("hand", 1, hand)
+	else
+		player:get_inventory():set_stack("hand", 1, "")
+	end
 end
 
 function skin_class:set_skin(player)
