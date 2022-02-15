@@ -34,7 +34,7 @@ function skins.assign_player_skin(player, skin)
 	else
 		return false
 	end
-	return true
+	return true, skin_obj
 end
 
 -- update visuals
@@ -53,11 +53,11 @@ end
 
 -- Assign and update - should be used on selection externally
 function skins.set_player_skin(player, skin)
-	local success = skins.assign_player_skin(player, skin)
+	local success, skin_obj = skins.assign_player_skin(player, skin)
 	if success then
 		skins.get_player_skin(player):set_skin(player)
 		skins.update_player_skin(player)
-		minetest.log("action", player:get_player_name().." set skin to "..skin:get_meta("name"))
+		minetest.log("action", player:get_player_name().." set skin to "..skin_obj:get_meta("name"))
 	end
 	return success
 end
