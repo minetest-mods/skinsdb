@@ -1,5 +1,5 @@
 local S = minetest.get_translator("skinsdb")
-local ui = unified_inventory
+local ui = minetest.global_exists("unified_inventory") and unified_inventory
 
 function skins.get_formspec_context(player)
 	if player then
