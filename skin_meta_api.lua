@@ -55,6 +55,7 @@ function skin_class:set_hand(hand)
 	self._hand = hand
 end
 
+local ALPHA_CLIP = minetest.features.use_texture_alpha_string_modes and "clip" or true
 function skin_class:set_hand_from_texture()
 	local hand = core.get_current_modname()..':'..self._texture:gsub('[%p%c%s]', '')
 
@@ -66,7 +67,7 @@ function skin_class:set_hand_from_texture()
 		paramtype = "light",
 		drawtype = "mesh",
 		mesh = "skinsdb_hand.b3d",
-		use_texture_alpha = "clip",
+		use_texture_alpha = ALPHA_CLIP,
 		node_placement_prediction = "",
 		groups = { not_in_creative_inventory = 1 }
 	})

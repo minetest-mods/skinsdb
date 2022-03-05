@@ -60,9 +60,10 @@ Set the hand node to be used with this skin
 
 ## skin:set_hand_from_texture()
 Register and set hand node based on skin texture
+Only works on mod load
 
-##skin:get_hand()
-Get hand node
+## skin:get_hand()
+Get hand node. Returns ItemStack
 
 ## skin:set_preview(texture)
 Set the skin preview - usually at the init time only
@@ -76,7 +77,7 @@ Could be redefined for dynamic preview texture generation
 Hook for dynamic skins updates on select. Is called in skins.set_player_skin()
 In skinsdb the default implementation for this function is empty.
 
-skin:apply_skin_to_player(player)
+## skin:apply_skin_to_player(player)
 Apply the skin to the player. Called in skins.update_player_skin() to update visuals
 
 ## skin:set_meta(key, value)
