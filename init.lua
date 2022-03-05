@@ -93,3 +93,10 @@ if not default_skin_obj then
 	default_skin_obj:set_meta("name", "Sam")
 	default_skin_obj:set_hand_from_texture()
 end
+
+-- Secure hand inventory slot
+minetest.register_allow_player_inventory_action(function(player, action, inv, data)
+	if data.to_list == "hand" or data.from_list == "hand" or data.listname == "hand" then
+		return 0
+	end
+end)
