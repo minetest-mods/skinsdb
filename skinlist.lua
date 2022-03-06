@@ -48,8 +48,12 @@ for _, fn in pairs(skins_dir_list) do
 				skin_obj:set_meta("playername", playername)
 			end
 			local file = io.open(skins.modpath.."/textures/"..fn, "r")
-			skin_obj:set_meta("format", skins.get_skin_format(file))
+			local skin_format = skins.get_skin_format(file)
+			skin_obj:set_meta("format", skin_format)
 			file:close()
+			if skin_format == "1.0" then
+				skin_obj:set_hand_from_texture()
+			end
 			file = io.open(skins.modpath.."/meta/"..name..".txt", "r")
 			if file then
 				local data = string.split(file:read("*all"), "\n", 3)
@@ -73,9 +77,9 @@ local function skins_sort(skinslist)
 		local a_id = a:get_meta("_sort_id") or 10000
 		local b_id = b:get_meta("_sort_id") or 10000
 		if a_id ~= b_id then
-			return a:get_meta("_sort_id") < b:get_meta("_sort_id")
+			return a_id < b_id
 		else
-			return a:get_meta("name") < b:get_meta("name")
+			return (a:get_meta("name") or 'ZZ') < (b:get_meta("name") or 'ZZ')
 		end
 	end)
 end
