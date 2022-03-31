@@ -58,20 +58,20 @@ end
 local ALPHA_CLIP = minetest.features.use_texture_alpha_string_modes and "clip" or true
 function skin_class:set_hand_from_texture()
 	local hand = core.get_current_modname()..':'..self._texture:gsub('[%p%c%s]', '')
-
-	minetest.register_node(hand, {
-		tiles = {self:get_texture()},
-		inventory_image = "wieldhand.png",
-		visual_scale = 1,
-		wield_scale = {x=1,y=1,z=1},
-		paramtype = "light",
-		drawtype = "mesh",
-		mesh = "skinsdb_hand.b3d",
-		use_texture_alpha = ALPHA_CLIP,
-		node_placement_prediction = "",
-		groups = { not_in_creative_inventory = 1 }
-	})
-
+	local hand_def = {}
+	for k,v in pairs(minetest.registered_items[""]) do
+		if k ~= "mod_origin" and k ~= "type" and k ~= "wield_image" then
+			hand_def[k] = v
+		end
+	end
+	hand_def.tiles = {self:get_texture()}
+	hand_def.visual_scale = 1
+	hand_def.wield_scale = {x=1,y=1,z=1}
+	hand_def.paramtype = "light"
+	hand_def.drawtype = "mesh"
+	hand_def.mesh = "skinsdb_hand.b3d"
+	hand_def.use_texture_alpha = ALPHA_CLIP
+	minetest.register_node(hand, hand_def)
 	self:set_hand(hand)
 end
 
