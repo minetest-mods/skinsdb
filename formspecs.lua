@@ -57,7 +57,7 @@ function skins.get_skin_selection_formspec(player, context, perplayer_formspec)
 	local yspc = 2
 	local skinwidth = 1
 	local skinheight = 2
-	local xscale = 1
+	local xscale = 1 -- luacheck: ignore
 	local btn_y = 8.15
 	local drop_y = 8
 	local btn_width = 1
@@ -104,7 +104,7 @@ function skins.get_skin_selection_formspec(player, context, perplayer_formspec)
 
 	local page = context.skins_page
 	local formspec = ""
-	
+
 	for i = (page-1)*maxdisp+1, page*maxdisp do
 		local skin = context.skins_list[i]
 		if not skin then
