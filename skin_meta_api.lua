@@ -56,7 +56,7 @@ function skin_class:set_hand(hand)
 end
 
 local ALPHA_CLIP = minetest.features.use_texture_alpha_string_modes and "clip" or true
-function skin_class:set_hand_from_texture(is_new)
+function skin_class:set_hand_from_texture(skin_format)
 	local hand = core.get_current_modname()..':'..self._texture:gsub('[%p%c%s]', '')
 	local hand_def = {}
 	for k,v in pairs(minetest.registered_items[""]) do
@@ -69,7 +69,7 @@ function skin_class:set_hand_from_texture(is_new)
 	hand_def.wield_scale = {x=1,y=1,z=1}
 	hand_def.paramtype = "light"
 	hand_def.drawtype = "mesh"
-	if(is_new == false) then 
+	if(skin_format == "1.0") then 
 		hand_def.mesh = "skinsdb_hand.b3d"
 	else
 		hand_def.mesh = "skinsdb_hand_18.b3d"

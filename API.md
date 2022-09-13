@@ -58,8 +58,9 @@ Could be redefined for dynamic texture generation
 ## skin:set_hand(hand_node)
 Set the hand node to be used with this skin
 
-## skin:set_hand_from_texture(isNew)
-Register and set hand node based on skin texture
+## skin:set_hand_from_texture(skin_format)
+Register and set hand node based on skin texture.
+Uses different model depending on skin_format ("1.0" or "1.8")
 Only works on mod load
 
 ## skin:get_hand()
