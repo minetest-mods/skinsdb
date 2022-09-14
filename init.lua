@@ -91,7 +91,7 @@ if not default_skin_obj then
 	default_skin_obj:set_meta("format", '1.0')
 	default_skin_obj:set_meta("_sort_id", 0)
 	default_skin_obj:set_meta("name", "Sam")
-	default_skin_obj:set_hand_from_texture('1.0')
+	default_skin_obj:set_hand_from_texture()
 end
 
 -- Secure hand inventory slot
