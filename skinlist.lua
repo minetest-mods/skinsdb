@@ -51,9 +51,7 @@ for _, fn in pairs(skins_dir_list) do
 			local skin_format = skins.get_skin_format(file)
 			skin_obj:set_meta("format", skin_format)
 			file:close()
-			if skin_format == "1.0" then
-				skin_obj:set_hand_from_texture()
-			end
+			skin_obj:set_hand_from_texture()
 			file = io.open(skins.modpath.."/meta/"..name..".txt", "r")
 			if file then
 				local data = string.split(file:read("*all"), "\n", 3)
