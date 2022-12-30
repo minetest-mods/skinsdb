@@ -1,0 +1,20 @@
+# textdomain: skinsdb
+
+Raw texture=Textura crua
+Name=Nome
+Author=Autor
+Change=Mudar
+Page=Página
+License=Licença
+Description=Descrição
+Show, list or set player's skin=Mostrar, listar ou definir a skin do jogador
+Player not found=Jogador não encontrado
+unknown command=Comando desconhecido
+see /help skinsdb for supported parameters= consulte /help skinsdb para obter os parâmetros suportados
+skin set to=Aparência definida para
+invalid skin=Aparência inválida
+unknown parameter=parâmetro desconhecido
+unknown skin=Aparência desconhecida
+Downloads thespecified range of skins and shuts down the server= Baixa o intervalo especificado de capas e desliga o servidor
+Skins=Aparência
+Requires skin key=Requer chave de aparência

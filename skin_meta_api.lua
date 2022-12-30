@@ -69,7 +69,11 @@ function skin_class:set_hand_from_texture()
 	hand_def.wield_scale = {x=1,y=1,z=1}
 	hand_def.paramtype = "light"
 	hand_def.drawtype = "mesh"
-	hand_def.mesh = "skinsdb_hand.b3d"
+	if(self:get_meta("format") == "1.0") then
+		hand_def.mesh = "skinsdb_hand.b3d"
+	else
+		hand_def.mesh = "skinsdb_hand_18.b3d"
+	end
 	hand_def.use_texture_alpha = ALPHA_CLIP
 	minetest.register_node(hand, hand_def)
 	self:set_hand(hand)
@@ -221,6 +225,6 @@ end
 function skin_class:is_applicable_for_player(playername)
 	local assigned_player = self:get_meta("playername")
 	return assigned_player == nil or assigned_player == true or
- 			playername and (minetest.check_player_privs(playername, {server=true}) or
-			assigned_player:lower() == playername:lower())
+		playername and (minetest.check_player_privs(playername, {server=true}) or
+		assigned_player:lower() == playername:lower())
 end

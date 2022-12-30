@@ -115,7 +115,7 @@ internal.get_pages_count = function(callback, ...)
 		callback(math.ceil(list.pages / 20), unpack(vars))
 	end)
 end
-	
+
 -- Function to fetch a range of pages
 internal.fetch_function = function(pages_total, start_page, len)
 	start_page = math.max(start_page, 1)
