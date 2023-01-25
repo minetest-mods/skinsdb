@@ -1,13 +1,16 @@
 In this folder the skin files could be placed according the following file naming convention.
 
-Notice:
-skinsdb uses an underscore as seperator for filename splitting which can lead to problems with playernames containing "_", see https://github.com/minetest-mods/skinsdb/issues/54.
-To keep compatibility with older versions the config setting skinsdb_fsep (texture filename seperator) with the default value "_" was added as a workaround.
+skinsdb uses an underscore as default seperator for filename splitting which can cause problems with playernames containing "_",
+see https://github.com/minetest-mods/skinsdb/issues/54.
+The config setting skinsdb_fsep (texture filename seperator) was added as a workaround which also offers "."(dot) as seperator,
+dot is the only character which is allowed in textures but not in playernames.
+To keep compatibility with older versions underscore is the default value.
+
 fresh install:
-you should change the seperator to something not allowed in minetest playernames to avoid that problem.
+you should change the seperator to "." to avoid that problem.
 existing install:
-- pick a new seperator and change the filenames according to the naming convention with your seperator instead of the underscore
-- change the seperator in settings or add "skinsdb_fsep = YOURSEPERATOR" to your minetest.conf before starting your server
+- change the filenames according to the naming convention with dot as seperator instead of underscore
+- change the texture filename seperator in settings or add "skinsdb_fsep = ." to your minetest.conf before starting your server
 
 Public skin available for all users:
 	character_[number-or-name].png
