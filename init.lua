@@ -63,6 +63,13 @@ end)
 
 minetest.register_on_leaveplayer(function(player)
 	skins.ui_context[player:get_player_name()] = nil
+	player:get_inventory():set_size("hand", 0)
+end)
+
+minetest.register_on_shutdown(function()
+	for _, player in pairs(minetest.get_connected_players()) do
+		player:get_inventory():set_size("hand", 0)
+	end
 end)
 
 player_api.register_model("skinsdb_3d_armor_character_5.b3d", {
