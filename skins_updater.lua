@@ -88,7 +88,7 @@ local function safe_single_skin(skin)
 		skin.license
 	}
 
-	local name =  "character_" .. skin.id
+	local name =  "character" .. skins.fsep .. skin.id
 
 	-- core.safe_file_write does not work here
 	unsafe_file_write(
@@ -101,7 +101,7 @@ local function safe_single_skin(skin)
 		core.decode_base64(skin.img)
 	)
 	fetch_url(preview_url:format(skin.id), function(preview)
-		unsafe_file_write(skins_path .. name .. "_preview.png", preview)
+		unsafe_file_write(skins_path .. name .. skins.fsep .. "preview.png", preview)
 	end)
 	core.log("action", ("%s: Completed skin %s"):format(_ID_, name))
 end

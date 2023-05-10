@@ -1,5 +1,9 @@
 import sys, requests, base64
 
+# filename seperator to use, either default "-" or ".". see skinsdb/textures/readme.txt
+#fsep = "_"
+fsep = "."
+
 download_preview = ( len (sys.argv) > 1 and sys.argv[1] == "with_preview" )
 
 
@@ -24,7 +28,7 @@ for json in data["skins"]:
 
     # Texture file
     raw_data = base64.b64decode(json["img"])
-    file = open("../textures/character_" + id + ".png", "wb")
+    file = open("../textures/character" + fsep + id + ".png", "wb")
     file.write(bytearray(raw_data))
     file.close()
 
@@ -44,7 +48,7 @@ for json in data["skins"]:
         if r2.status_code == 200:
             # Preview file
             preview = r2.content
-            file = open("../textures/character_" + id + "_preview.png", "wb")
+            file = open("../textures/character_" + id + fsep + "preview.png", "wb")
             file.write(bytearray(preview))
             file.close()
         else:
