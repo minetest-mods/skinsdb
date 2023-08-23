@@ -22,6 +22,8 @@ This Minetest mod offers changeable player skins with a graphical interface for 
 
 ### Download from the [database](http://minetest.fensta.bplaced.net/)
 
+**NOTE: This website is no longer up, so the `update_skins.py` script and the ingame downloader will not work. You are still able to add skins manually from other sources.**
+
 #### Ingame Downloader
 
 1) Get Minetest 5.1.0-dev-cb00632 or newer
