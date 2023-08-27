@@ -48,7 +48,7 @@ end
 
 -- http://minetest.fensta.bplaced.net/api/apidoku.md
 local root_url = "http://skinsdb.terraqueststudios.net"
-local page_url = root_url .. "/api/v1/content?test=test" -- [1] = Page#
+local page_url = root_url .. "/api/v1/content?client=mod" -- [1] = Page#
 --local preview_url = root_url .. "/skins/1/%i.png" -- [1] = ID
 
 local mod_path = skins.modpath
