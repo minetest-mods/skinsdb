@@ -119,7 +119,7 @@ internal.fetch_function = function(pages_total, start_page, len)
 
 	for page_n = start_page, end_page do
 		local page_cpy = page_n
-		fetch_url(page_url:format(page_n), function(data)
+		fetch_url(page_url .. "&page=" .. page_n, function(data)
 			core.log("action", ("%s: Page %i"):format(_ID_, page_cpy))
 
 			local list = core.parse_json(data)
