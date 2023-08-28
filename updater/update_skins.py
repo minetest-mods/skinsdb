@@ -4,7 +4,6 @@ import sys, requests, base64
 #fsep = "_"
 fsep = "."
 
-download_preview = ( len (sys.argv) > 1 and sys.argv[1] == "with_preview" )
 
 
 print("Downloading skins from skinsdb.terraqueststudio.net ...")
