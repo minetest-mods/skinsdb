@@ -16,10 +16,7 @@ if r.status_code != 200:
 data = r.json()
 count = 0
 
-if download_preview:
-    print("Writing to file and downloading previews ...")
-else:
-    print("Writing skins")
+print("Writing skins")
 
 
 for json in data["skins"]:
