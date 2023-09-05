@@ -4,7 +4,6 @@ import sys, requests, base64
 #fsep = "_"
 fsep = "."
 
-download_preview = ( len (sys.argv) > 1 and sys.argv[1] == "with_preview" )
 
 
 print("Downloading skins from skinsdb.terraqueststudio.net ...")
@@ -17,10 +16,7 @@ if r.status_code != 200:
 data = r.json()
 count = 0
 
-if download_preview:
-    print("Writing to file and downloading previews ...")
-else:
-    print("Writing skins")
+print("Writing skins")
 
 
 for json in data["skins"]:
