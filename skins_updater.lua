@@ -48,7 +48,7 @@ end
 
 -- http://minetest.fensta.bplaced.net/api/apidoku.md
 local root_url = "http://skinsdb.terraqueststudios.net"
-local page_url = root_url .. "/api/v1/content?client=mod" -- [1] = Page#
+local page_url = root_url .. "/api/v1/content?client=mod&page=%i" -- [1] = Page#
 
 local mod_path = skins.modpath
 local meta_path = mod_path .. "/meta/"
@@ -119,7 +119,7 @@ internal.fetch_function = function(pages_total, start_page, len)
 
 	for page_n = start_page, end_page do
 		local page_cpy = page_n
-		fetch_url(page_url .. "&page=" .. page_n, function(data)
+		fetch_url(page_url:format(page_n), function(data)
 			core.log("action", ("%s: Page %i"):format(_ID_, page_cpy))
 
 			local list = core.parse_json(data)
