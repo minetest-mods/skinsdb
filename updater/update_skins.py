@@ -4,12 +4,11 @@ import sys, requests, base64
 #fsep = "_"
 fsep = "."
 
-download_preview = ( len (sys.argv) > 1 and sys.argv[1] == "with_preview" )
 
 
-print("Downloading skins from minetest.fensta.bplaced.net ...")
+print("Downloading skins from skinsdb.terraqueststudio.net ...")
 # Requesting all skins and their raw texture using the API
-r = requests.get('http://minetest.fensta.bplaced.net/api/v2/get.json.php?getlist&page=1&per_page=999999999')
+r = requests.get('http://skinsdb.terraqueststudios.net/api/v1/content?client=script&page=1&per_page=10000')
 
 if r.status_code != 200:
     sys.exit("Request failed!")
@@ -17,10 +16,7 @@ if r.status_code != 200:
 data = r.json()
 count = 0
 
-if download_preview:
-    print("Writing to file and downloading previews ...")
-else:
-    print("Writing skins")
+print("Writing skins")
 
 
 for json in data["skins"]:
@@ -41,18 +37,6 @@ for json in data["skins"]:
     file.close()
     print("Added #%s Name: %s Author: %s License: %s" % (id, name, author, license))
     count += 1
-
-    if download_preview:
-        # Downloading the preview of the skin
-        r2 = requests.get('http://minetest.fensta.bplaced.net/skins/1/' + id + ".png")
-        if r2.status_code == 200:
-            # Preview file
-            preview = r2.content
-            file = open("../textures/character_" + id + fsep + "preview.png", "wb")
-            file.write(bytearray(preview))
-            file.close()
-        else:
-            print("Failed to download skin preview #" + id)
 
 
 print("Fetched " + str(count) + " skins!")
