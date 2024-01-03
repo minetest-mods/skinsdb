@@ -1,0 +1,19 @@
+# textdomain: skinsdb
+[set] <skin key> | show [<skin key>] | list | list private | list public | [ui]=[set] <haŭtonomo> | show [<haŭtonomo>] | list | list private | list public | [ui]
+Show, list or set player's skin=Montri haŭtojn («show»), listigi haŭtojn («list»), aŭ agordi onian haŭton («set»)
+Player not found=Ludanto ne trovita
+unknown command=nekonata ordono
+see /help skinsdb for supported parameters=rulu «/help skinsdb» por vidi subtenatajn parametrojn
+skin set to=haŭto agordita al
+invalid skin=nevalida haŭto
+Requires skin key=Postulas haŭtonomon
+unknown parameter=nekonata parametro
+Raw texture=Kruda bildo
+Page=Paĝo
+Name=Nomo
+Author=Aŭtoro
+License=Permesilo
+<skindb start page> <amount of pages>=<komenca paĝo> <paĝokvanto>
+Downloads the specified range of skins and shuts down the server=Elŝutinte haŭtojn el skindb inter la donitaj paĝoj, restartigas la servilon
+Change=Ŝanĝi
+Skins=Haŭtoj
