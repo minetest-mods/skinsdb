@@ -20,7 +20,7 @@ if not ie or not http then
 end
 
 minetest.register_chatcommand("skinsdb_download_skins", {
-	params = "<skindb start page> <amount of pages>",
+	params = S("<skindb start page> <amount of pages>"),
 	description = S("Downloads the specified range of skins and shuts down the server"),
 	privs = {server=true},
 	func = function(name, param)
