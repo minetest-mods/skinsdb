@@ -8,6 +8,12 @@ skins = {}
 skins.modpath = minetest.get_modpath(minetest.get_current_modname())
 skins.default = "character"
 
+-- see skindsdb/textures/readme.txt to avoid playername with underscore problem
+skins.fsep = minetest.settings:get("skinsdb_fsep") or "_"
+if skins.fsep == "_" then
+	minetest.log("warning", "skinsdb filename seperator is set to " .. skins.fsep .. ", see skindsdb/textures/readme.txt to avoid problems with playernames containing underscore")
+end
+
 dofile(skins.modpath.."/skin_meta_api.lua")
 dofile(skins.modpath.."/api.lua")
 dofile(skins.modpath.."/skinlist.lua")

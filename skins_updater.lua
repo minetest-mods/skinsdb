@@ -20,7 +20,7 @@ if not ie or not http then
 end
 
 minetest.register_chatcommand("skinsdb_download_skins", {
-	params = "<skindb start page> <amount of pages>",
+	params = S("<skindb start page> <amount of pages>"),
 	description = S("Downloads the specified range of skins and shuts down the server"),
 	privs = {server=true},
 	func = function(name, param)
@@ -47,9 +47,8 @@ if #internal.errors > 0 then
 end
 
 -- http://minetest.fensta.bplaced.net/api/apidoku.md
-local root_url = "http://minetest.fensta.bplaced.net"
-local page_url = root_url .. "/api/v2/get.json.php?getlist&page=%i&outformat=base64" -- [1] = Page#
-local preview_url = root_url .. "/skins/1/%i.png" -- [1] = ID
+local root_url = "http://skinsdb.terraqueststudios.net"
+local page_url = root_url .. "/api/v1/content?client=mod&page=%i" -- [1] = Page#
 
 local mod_path = skins.modpath
 local meta_path = mod_path .. "/meta/"
@@ -88,7 +87,7 @@ local function safe_single_skin(skin)
 		skin.license
 	}
 
-	local name =  "character_" .. skin.id
+	local name =  "character" .. skins.fsep .. skin.id
 
 	-- core.safe_file_write does not work here
 	unsafe_file_write(
@@ -100,9 +99,6 @@ local function safe_single_skin(skin)
 		skins_path .. name .. ".png",
 		core.decode_base64(skin.img)
 	)
-	fetch_url(preview_url:format(skin.id), function(preview)
-		unsafe_file_write(skins_path .. name .. "_preview.png", preview)
-	end)
 	core.log("action", ("%s: Completed skin %s"):format(_ID_, name))
 end
 

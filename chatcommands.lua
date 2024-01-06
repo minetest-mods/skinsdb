@@ -11,7 +11,7 @@ end
 
 
 minetest.register_chatcommand("skinsdb", {
-	params = "[set] <skin key> | show [<skin key>] | list | list private | list public | [ui]",
+	params = S("[set] <skin key> | show [<skin key>] | list | list private | list public | [ui]"),
 	description = S("Show, list or set player's skin"),
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
