@@ -5,11 +5,11 @@ local dbgprint = false and print or function() end
 local function process_skin_texture(path, filename)
 	-- See "textures/readme.txt" for allowed formats
 
-	local prefix, sep, middlepart, extension = filename:match("^(%w+)([_.])(.*)%.(%w+)$")
+	local prefix, sep, identifier, extension = filename:match("^(%a+)([_.])([%w_]+)%.(%a+)$")
 	--[[
 		prefix:     "character" or "player"
 		sep:        "." (new) or "_" (legacy)
-		middlepart: number or name
+		identifier: number, name or (name + sep + number)
 			^ previews are explicity skipped
 		extension:  "png" only due `skins.get_skin_format`
 	]]
@@ -23,29 +23,36 @@ local function process_skin_texture(path, filename)
 	end
 
 	local preview_suffix = sep .. "preview"
-	if middlepart:sub(-#preview_suffix) == preview_suffix then
+	if identifier:sub(-#preview_suffix) == preview_suffix then
 		-- skip preview textures
 		-- This is added by the main skin texture (if exists)
 		return
 	end
 
-	dbgprint("Found skin", prefix, middlepart, extension)
+	dbgprint("Found skin", prefix, identifier, extension)
 
 	local sort_id    -- number, sorting "rank" in the skin list
 	local playername -- string, if player-specific
 	if prefix == "player" then
 		-- Allow "player.PLAYERNAME.png" and "player.PLAYERNAME.123.png"
-		local splits = middlepart:split(sep)
-		playername = splits[1]
+		local splits = identifier:split(sep)
 
+		playername = splits[1]
 		-- Put in front
 		sort_id = 0 + (tonumber(splits[2]) or 0)
+
+		if #splits > 1 and sep == "_" then
+			minetest.log("warning", "skinsdb: The skin name '" .. filename .. "' is ambigous." ..
+				" Please use the separator '.' to lock it down to the correct player name.")
+		end
 	else -- Public skin "character*"
 		-- Less priority
-		sort_id = 5000 + (tonumber(middlepart) or 0)
+		sort_id = 5000 + (tonumber(identifier) or 0)
 	end
 
-	local filename_noext = prefix .. sep .. middlepart
+	local filename_noext = prefix .. sep .. identifier
+
+	dbgprint("Register skin", filename_noext, playername, sort_id)
 
 	-- Register skin texture
 	local skin_obj = skins.get(filename_noext) or skins.new(filename_noext)
@@ -65,7 +72,7 @@ local function process_skin_texture(path, filename)
 	end
 
 	skin_obj:set_hand_from_texture()
-	skin_obj:set_meta("name", middlepart)
+	skin_obj:set_meta("name", identifier)
 
 	do
 		-- Optional skin information
