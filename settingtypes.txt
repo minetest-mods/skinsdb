@@ -1,3 +1,0 @@
-# texture filename seperator, default "_"
-# see skindsdb/textures/readme.txt to avoid playername with underscore problem
-skinsdb_fsep (texture filename seperator) enum _ _,.
