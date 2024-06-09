@@ -26,7 +26,7 @@ The character `_` is accepted in player names, thus it is not recommended to
 use such file names. For compatibility reasons, they are still recognized.
 
 	character_[number or name].png
-	player_[nick]_png
+	player_[nick].png
 	player_[nick]_[number or name].png
 
 ... and corresponding previews that end in `_preview.png`.

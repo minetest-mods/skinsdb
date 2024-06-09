@@ -2,14 +2,26 @@
 local storage = minetest.get_mod_storage()
 
 function skins.get_player_skin(player)
+	local player_name = player:get_player_name()
 	local meta = player:get_meta()
 	if meta:get("skinsdb:skin_key") then
 		-- Move player data prior July 2018 to mod storage
-		storage:set_string(player:get_player_name(), meta:get_string("skinsdb:skin_key"))
+		storage:set_string(player_name, meta:get_string("skinsdb:skin_key"))
 		meta:set_string("skinsdb:skin_key", "")
 	end
-	local skin = storage:get_string(player:get_player_name())
-	return skins.get(skin) or skins.get(skins.default)
+
+	local skin_name = storage:get_string(player_name)
+	local skin = skins.get(skin_name)
+	if #skin_name > 0 and not skin then
+		-- Migration step to convert `_`-delimited skins to `.` (if possible)
+		skin = skins.__fuzzy_match_skin_name(player_name, skin_name, true)
+		if skin then
+			storage:set_string(player_name, skin:get_key())
+		else
+			storage:set_string(player_name, "")
+		end
+	end
+	return skin or skins.get(skins.default)
 end
 
 -- Assign skin to player

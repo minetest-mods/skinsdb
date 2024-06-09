@@ -97,6 +97,65 @@ local function process_skin_texture(path, filename)
 	end
 end
 
+--- Internal function. Fallback/migration code for `.`-delimited skin names that
+--- were equipped between d3c7fa7 and 312780c (master branch).
+--- During this period, `.`-delimited skin names were internally registered with
+--- `_` delimiters. This function tries to find a matching skin.
+--- @param player_name (string)
+--- @param skin_name   (string) e.g. `player_foo_mc_bar`
+--- @param be_noisy    (boolean) whether to print a warning in case of mismatches`
+--- @return On match, the new skin (skins.skin_class) or `nil` if nothing matched.
+function skins.__fuzzy_match_skin_name(player_name, skin_name, be_noisy)
+	if select(2, skin_name:gsub("%.", "")) > 0 then
+		-- Not affected by ambiguity
+		return
+	end
+
+	--[[
+		Public skin names:
+			character_[number]
+		Private skin names:
+			player_sam_doe
+			player_sam_doe_1234 <-- might also belong to player "sam_doe_1233"
+			.      ^^^^^^^^^^^^ identifier
+			^^^^^^------------- prefix
+
+		Approach: try to find a match for the longest possible name
+		Assumption 1: There are no skin variations without numeric ending
+		Assumption 2: Player names to not end with `_%d+`
+	]]
+
+	local prefix, identifier = unpack(skin_name:split("_", true, 1))
+	local for_player, number
+	if prefix == "player" then
+		for_player, number = identifier:match("^([%w_]+)_(%d+)$")
+		if not number then
+			for_player = identifier
+		end
+	else -- character
+		number = identifier
+	end
+
+	local skin = nil
+	if not for_player or for_player == player_name then
+		skin = skins.get(prefix
+			.. (for_player and ("." .. for_player) or "")
+			.. (number and ("." .. number) or "")
+		)
+	end
+
+	if skin then
+		-- MATCH!
+		dbgprint("Match", skin_name, skin:get_key())
+		return skin
+	end
+
+	if be_noisy then
+		minetest.log("warning", "skinsdb: cannot find matching skin '" ..
+			skin_name .. "' for player '" .. player_name .. "'.")
+	end
+end
+
 do
 	-- Load skins from the current mod directory
 	local skins_path = skins.modpath.."/textures"
