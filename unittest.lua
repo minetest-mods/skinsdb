@@ -1,5 +1,3 @@
--- Ensure a best possible compatibility with `_` underscore delimiter weirdnesses
-
 local function get_skin(skin_name)
 	local skin = skins.get(skin_name)
 		or skins.__fuzzy_match_skin_name("(unittest)", skin_name, true)
@@ -48,6 +46,6 @@ local function run_unittest()
 	error("Unittest passed! Please disable them now.")
 end
 
-
---run_unittest()
-
+if skins._enable_unittest then
+	run_unittest()
+end
