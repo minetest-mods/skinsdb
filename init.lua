@@ -111,3 +111,7 @@ minetest.register_allow_player_inventory_action(function(player, action, inv, da
 		return 0
 	end
 end)
+
+if true then
+	dofile(skins.modpath.."/unittest.lua")
+end
