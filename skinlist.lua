@@ -5,7 +5,7 @@ local dbgprint = false and print or function() end
 local function process_skin_texture(path, filename)
 	-- See "textures/readme.txt" for allowed formats
 
-	local prefix, sep, identifier, extension = filename:match("^(%a+)([_.])([%w_]+)%.(%a+)$")
+	local prefix, sep, identifier, extension = filename:match("^(%a+)([_.])([%w_.]+)%.(%a+)$")
 	--[[
 		prefix:     "character" or "player"
 		sep:        "." (new) or "_" (legacy)
