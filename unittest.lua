@@ -46,6 +46,5 @@ local function run_unittest()
 	error("Unittest passed! Please disable them now.")
 end
 
-if skins._enable_unittest then
-	run_unittest()
-end
+run_unittest()
+
