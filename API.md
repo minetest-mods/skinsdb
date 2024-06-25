@@ -35,6 +35,15 @@ Registers a new skin based on the texture file path specified by `path` and `fil
  * `filename` (string): full file name, without any path specifications.
    The file name must adhere to [one of the accepted naming formats](textures/readme.txt).
 
+Note: this function takes the following files into consideration:
+
+1. `<path>/<filename>` (required)
+    * Main skin texture
+2. `<path>/<filenamestem><separator>preview.png` (optional)
+    * Pre-generated preview image
+3. `<path>/../meta/<filenamestem>.txt` (optional)
+    * Metadata regarding the skin
+
 Return values:
 
  * On failure: `false, reason`
