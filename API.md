@@ -27,6 +27,31 @@ Get all allowed skins for player. All public and all player's private skins. If 
 Get all skins with metadata key is set to value. Example:
 skins.get_skinlist_with_meta("playername", playername) - Get all private skins (w.o. public) for playername
 
+## skins.register_skin(path, filename)
+Registers a new skin based on the texture file path specified by `path` and `filename`.
+
+ * `path` (string): points to the parent directory of the texture `filename`.
+   Generally, this should be in the format `mymod.modpath .. "/textures"`.
+ * `filename` (string): full file name, without any path specifications.
+   The file name must adhere to [one of the accepted naming formats](textures/readme.txt).
+
+Note: this function takes the following files into consideration:
+
+1. `<path>/<filename>` (required)
+    * Main skin texture
+2. `<path>/<filenamestem><separator>preview.png` (optional)
+    * Pre-generated preview image
+3. `<path>/../meta/<filenamestem>.txt` (optional)
+    * Metadata regarding the skin
+
+Return values:
+
+ * On failure: `false, reason`
+    * `reason` (string): human readable reason string (similar to `io.open` errors)
+ * On success: `true, key`
+    * `key`: unique skins key for use with e.g. `skins.get(key)` for subsequent
+      fine-tuning of the skin registration.
+
 
 ## skins.new(key, object)
 Create and register a new skin object for given key
