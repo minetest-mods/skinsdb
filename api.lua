@@ -21,6 +21,18 @@ function skins.get_player_skin(player)
 			storage:set_string(player_name, "")
 		end
 	end
+
+	if skins.use_voxelibre_compat then
+		local texture = mcl_skins.player_skins[player].simple_skins_id
+		if texture then
+			for k, listed_skin in pairs(skins.meta) do
+				if listed_skin._texture == texture then
+					return listed_skin
+				end
+			end
+		end
+	end
+
 	return skin or skins.get(skins.default)
 end
 
@@ -46,6 +58,12 @@ function skins.assign_player_skin(player, skin)
 	else
 		return false
 	end
+
+	if skins.use_voxelibre_compat then
+		mcl_skins.player_skins[player].simple_skins_id = skin_obj:get_texture()
+		mcl_skins.save(player)
+	end
+
 	return true, skin_obj
 end
 
@@ -59,6 +77,9 @@ function skins.update_player_skin(player)
 		skins.get_player_skin(player):apply_skin_to_player(player)
 		if minetest.global_exists("sfinv") and sfinv.enabled then
 			sfinv.set_player_inventory_formspec(player)
+		end
+		if skins.use_voxelibre_compat then
+			mcl_skins.update_player_skin(player);
 		end
 	end
 end
