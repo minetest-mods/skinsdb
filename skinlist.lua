@@ -92,6 +92,7 @@ function skins.register_skin(path, filename)
 			skin_obj:set_meta("name", data[1])
 			skin_obj:set_meta("author", data[2])
 			skin_obj:set_meta("license", data[3])
+			file:close() -- do not rely on delayed GC
 		end
 	end
 
@@ -102,6 +103,7 @@ function skins.register_skin(path, filename)
 		if fh then
 			dbgprint("Found preview", preview_name)
 			skin_obj:set_preview(preview_name)
+			fh:close() -- do not rely on delayed GC
 		end
 	end
 
