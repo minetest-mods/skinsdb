@@ -67,6 +67,10 @@ function skins.register_skin(path, filename)
 		skin_obj._legacy_name = filename_noext:gsub("[._]+", "_")
 	end
 
+	if skins.use_voxelibre_compat then
+		mcl_skins.register_simple_skin({texture = filename})
+	end
+
 	if playername then
 		skin_obj:set_meta("assignment", "player:"..playername)
 		skin_obj:set_meta("playername", playername)

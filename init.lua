@@ -8,6 +8,9 @@ skins = {}
 skins.modpath = minetest.get_modpath(minetest.get_current_modname())
 skins.default = "character"
 
+skins.use_voxelibre_compat = minetest.global_exists("mcl_skins")
+assert(minetest.global_exists("player_api") or minetest.global_exists("mcl_skins"), "One of player_api or mcl_skins is required.")
+
 dofile(skins.modpath.."/skin_meta_api.lua")
 dofile(skins.modpath.."/api.lua")
 dofile(skins.modpath.."/skinlist.lua")
@@ -72,27 +75,29 @@ minetest.register_on_shutdown(function()
 	end
 end)
 
-player_api.register_model("skinsdb_3d_armor_character_5.b3d", {
-	animation_speed = 30,
-	textures = {
-		"blank.png",
-		"blank.png",
-		"blank.png",
-		"blank.png"
-	},
-	animations = {
-		stand = {x=0, y=79},
-		lay = {x=162, y=166},
-		walk = {x=168, y=187},
-		mine = {x=189, y=198},
-		walk_mine = {x=200, y=219},
-		sit = {x=81, y=160},
-		-- compatibility w/ the emote mod
-		wave = {x = 192, y = 196, override_local = true},
-		point = {x = 196, y = 196, override_local = true},
-		freeze = {x = 205, y = 205, override_local = true},
-	},
-})
+if minetest.global_exists("player_api") then
+	player_api.register_model("skinsdb_3d_armor_character_5.b3d", {
+		animation_speed = 30,
+		textures = {
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			"blank.png"
+		},
+		animations = {
+			stand = {x=0, y=79},
+			lay = {x=162, y=166},
+			walk = {x=168, y=187},
+			mine = {x=189, y=198},
+			walk_mine = {x=200, y=219},
+			sit = {x=81, y=160},
+			-- compatibility w/ the emote mod
+			wave = {x = 192, y = 196, override_local = true},
+			point = {x = 196, y = 196, override_local = true},
+			freeze = {x = 205, y = 205, override_local = true},
+		},
+	})
+end
 
 -- Register default character.png if not part of this mod
 local default_skin_obj = skins.get(skins.default)

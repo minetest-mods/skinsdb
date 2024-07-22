@@ -5,6 +5,7 @@ max_line_length = 999
 globals = {
     "minetest", "unified_inventory", "core",
     "player_api", "clothing", "armor", "sfinv",
+    "mcl_skins",
 }
 
 read_globals = {
