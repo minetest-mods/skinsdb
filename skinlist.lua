@@ -1,72 +1,150 @@
-local skins_dir_list = minetest.get_dir_list(skins.modpath.."/textures")
+local dbgprint = false and print or function() end
 
-for _, fn in pairs(skins_dir_list) do
-	local name, sort_id, is_preview, playername
-	local nameparts = string.gsub(fn, "[.]", skins.fsep):split(skins.fsep)
+--- @param path     Path to the "textures" directory, without tailing slash.
+--- @param filename Current file name, such as "player.groot.17.png".
+--- @return On error: false, error message. On success: true, skin key
+function skins.register_skin(path, filename)
+	-- See "textures/readme.txt" for allowed formats
 
-	-- check allowed prefix and file extension
-	if (nameparts[1] == 'player' or nameparts[1] == 'character') and
-			nameparts[#nameparts]:lower() == 'png' then
+	local prefix, sep, identifier, extension = filename:match("^(%a+)([_.])([%w_.-]+)%.(%a+)$")
+	--[[
+		prefix:     "character" or "player"
+		sep:        "." (new) or "_" (legacy)
+		identifier: number, name or (name + sep + number)
+			^ previews are explicity skipped
+		extension:  "png" only due `skins.get_skin_format`
+	]]
 
-		-- cut filename extension
-		table.remove(nameparts, #nameparts)
+	-- Filter out files that do not match the allowed patterns
+	if not extension or extension:lower() ~= "png" then
+		return false, "invalid skin name"
+	end
+	if prefix ~= "player" and prefix ~= "character" then
+		return false, "unknown type"
+	end
 
-		-- check preview suffix
-		if nameparts[#nameparts] == 'preview' then
-			is_preview = true
-			table.remove(nameparts, #nameparts)
+	local preview_suffix = sep .. "preview"
+	if identifier:sub(-#preview_suffix) == preview_suffix then
+		-- The preview texture is added by the main skin texture (if exists)
+		return false, "preview texture"
+	end
+
+	assert(path)
+	if path == ":UNITTEST:" then
+		path = nil
+	end
+
+	dbgprint("Found skin", prefix, identifier, extension)
+
+	local sort_id    -- number, sorting "rank" in the skin list
+	local playername -- string, if player-specific
+	if prefix == "player" then
+		-- Allow "player.PLAYERNAME.png" and "player.PLAYERNAME.123.png"
+		local splits = identifier:split(sep)
+
+		playername = splits[1]
+		-- Put in front
+		sort_id = 0 + (tonumber(splits[2]) or 0)
+
+		if #splits > 1 and sep == "_" then
+			minetest.log("warning", "skinsdb: The skin name '" .. filename .. "' is ambigous." ..
+				" Please use the separator '.' to lock it down to the correct player name.")
 		end
+	else -- Public skin "character*"
+		-- Less priority
+		sort_id = 5000 + (tonumber(identifier) or 0)
+	end
 
-		-- Build technically skin name
-		name = table.concat(nameparts, '_')
+	local filename_noext = prefix .. sep .. identifier
 
-		-- Handle metadata from file name
-		if not is_preview then
-			-- Get player name
-			if nameparts[1] == "player" then
-				playername = nameparts[2]
-				table.remove(nameparts, 1)
-				sort_id = 0
-			else
-				sort_id = 5000
-			end
+	dbgprint("Register skin", filename_noext, playername, sort_id)
 
-			-- Get sort index
-			if tonumber(nameparts[#nameparts]) then
-				sort_id = sort_id + nameparts[#nameparts]
-			end
+	-- Register skin texture
+	local skin_obj = skins.get(filename_noext) or skins.new(filename_noext)
+	skin_obj:set_texture(filename)
+	skin_obj:set_meta("_sort_id", sort_id)
+	if sep ~= "_" then
+		skin_obj._legacy_name = filename_noext:gsub("[._]+", "_")
+	end
+
+	if playername then
+		skin_obj:set_meta("assignment", "player:"..playername)
+		skin_obj:set_meta("playername", playername)
+	end
+
+	if path then
+		-- Get type of skin based on dimensions
+		local file = io.open(path .. "/" .. filename, "r")
+		local skin_format = skins.get_skin_format(file)
+		skin_obj:set_meta("format", skin_format)
+		file:close()
+	end
+
+	skin_obj:set_hand_from_texture()
+	skin_obj:set_meta("name", identifier)
+
+	if path then
+		-- Optional skin information
+		local file = io.open(path .. "/../meta/" .. filename_noext .. ".txt", "r")
+		if file then
+			dbgprint("Found meta")
+			local data = string.split(file:read("*all"), "\n", 3)
+			skin_obj:set_meta("name", data[1])
+			skin_obj:set_meta("author", data[2])
+			skin_obj:set_meta("license", data[3])
+			file:close() -- do not rely on delayed GC
 		end
+	end
 
-		local skin_obj = skins.get(name) or skins.new(name)
-		if is_preview then
-			skin_obj:set_preview(fn)
-		else
-			skin_obj:set_texture(fn)
-			skin_obj:set_meta("_sort_id", sort_id)
-			if playername then
-				skin_obj:set_meta("assignment", "player:"..playername)
-				skin_obj:set_meta("playername", playername)
-			end
-			local file = io.open(skins.modpath.."/textures/"..fn, "r")
-			local skin_format = skins.get_skin_format(file)
-			skin_obj:set_meta("format", skin_format)
-			file:close()
-			skin_obj:set_hand_from_texture()
-			file = io.open(skins.modpath.."/meta/"..name..".txt", "r")
-			if file then
-				local data = string.split(file:read("*all"), "\n", 3)
-				file:close()
-				skin_obj:set_meta("name", data[1])
-				skin_obj:set_meta("author", data[2])
-				skin_obj:set_meta("license", data[3])
-			else
-				-- remove player / character prefix if further naming given
-				if nameparts[2] and not tonumber(nameparts[2]) then
-					table.remove(nameparts, 1)
-				end
-				skin_obj:set_meta("name", table.concat(nameparts, ' '))
-			end
+	if path then
+		-- Optional preview texture
+		local preview_name = filename_noext .. sep .. "preview.png"
+		local fh = io.open(path .. "/" .. preview_name)
+		if fh then
+			dbgprint("Found preview", preview_name)
+			skin_obj:set_preview(preview_name)
+			fh:close() -- do not rely on delayed GC
 		end
+	end
+
+	return true, skin_obj:get_key()
+end
+
+--- Internal function. Fallback/migration code for `.`-delimited skin names that
+--- were equipped between d3c7fa7 and 312780c (master branch).
+--- During this period, `.`-delimited skin names were internally registered with
+--- `_` delimiters. This function tries to find a matching skin.
+--- @param player_name (string)
+--- @param skin_name   (string) e.g. `player_foo_mc_bar`
+--- @param be_noisy    (boolean) whether to print a warning in case of mismatches`
+--- @return On match, the new skin (skins.skin_class) or `nil` if nothing matched.
+function skins.__fuzzy_match_skin_name(player_name, skin_name, be_noisy)
+	if select(2, skin_name:gsub("%.", "")) > 0 then
+		-- Not affected by ambiguity
+		return
+	end
+
+	for _, skin in pairs(skins.meta) do
+		if skin._legacy_name == skin_name then
+			dbgprint("Match", skin_name, skin:get_key())
+			return skin
+		end
+		--dbgprint("Try match", skin_name, skin:get_key(), skin._legacy_name)
+	end
+
+	if be_noisy then
+		minetest.log("warning", "skinsdb: cannot find matching skin '" ..
+			skin_name .. "' for player '" .. player_name .. "'.")
+	end
+end
+
+do
+	-- Load skins from the current mod directory
+	local skins_path = skins.modpath.."/textures"
+	local skins_dir_list = minetest.get_dir_list(skins_path)
+
+	for _, fn in pairs(skins_dir_list) do
+		skins.register_skin(skins_path, fn)
 	end
 end
 

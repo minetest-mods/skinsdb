@@ -1,9 +1,4 @@
-import sys, requests, base64
-
-# filename seperator to use, either default "-" or ".". see skinsdb/textures/readme.txt
-#fsep = "_"
-fsep = "."
-
+import os.path, sys, requests, base64
 
 
 print("Downloading skins from skinsdb.terraqueststudio.net ...")
@@ -22,21 +17,27 @@ print("Writing skins")
 for json in data["skins"]:
     id = str(json["id"])
 
+    name = "character." + id
+    if True:
+        legacy_name = "character_" + id
+        if os.path.exists("../textures/" + legacy_name + ".png"):
+            name = legacy_name
+
+
     # Texture file
     raw_data = base64.b64decode(json["img"])
-    file = open("../textures/character" + fsep + id + ".png", "wb")
+    file = open("../textures/" + name + ".png", "wb")
     file.write(bytearray(raw_data))
     file.close()
 
     # Meta file
-    name = str(json["name"])
-    author = str(json["author"])
-    license = str(json["license"])
-    file = open("../meta/character_" + id + ".txt", "w")
-    file.write(name + "\n" + author + "\n" + license + "\n")
+    meta_name = str(json["name"])
+    meta_author = str(json["author"])
+    meta_license = str(json["license"])
+    file = open("../meta/" + name + ".txt", "w")
+    file.write(meta_name + "\n" + meta_author + "\n" + meta_license + "\n")
     file.close()
-    print("Added #%s Name: %s Author: %s License: %s" % (id, name, author, license))
+    print("Added #%s Name: %s Author: %s License: %s" % (id, meta_name, meta_author, meta_license))
     count += 1
-
 
 print("Fetched " + str(count) + " skins!")
