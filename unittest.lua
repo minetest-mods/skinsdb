@@ -9,12 +9,14 @@ local function run_unittest()
 
 	-- -----
 	-- `.`: Simple register + retrieve operations
-	skins.register_skin(PATH, "player.DotSep.png")
-	skins.register_skin(PATH, "player._DotSep_666_.1.png")
+	assert(skins.register_skin(PATH, "player.DotSep.png"))
+	assert(skins.register_skin(PATH, "player._DotSep_666_.1.png"))
+	assert(skins.register_skin(PATH, "character._DotSep_With-Dash-.png"))
 
 	assert(get_skin("player.DotSep"))
 	assert(get_skin("player._DotSep_666_.1"))
 	assert(get_skin("player.DotSep.1") == nil)
+	assert(get_skin("character._DotSep_With-Dash-"))
 
 	-- -----
 	-- Ambiguous skin names (filenames without extension). Register + retrieve
@@ -41,7 +43,6 @@ local function run_unittest()
 	assert(get_skin("player_ComPat42_5") == "player.ComPat42.5")
 	assert(get_skin("player_Com_Pat_42") == "player._Com_Pat_42")
 	assert(get_skin("player_Com_Pat_42_1") == "player._Com_Pat_42.1")
-
 
 	error("Unittest passed! Please disable them now.")
 end
