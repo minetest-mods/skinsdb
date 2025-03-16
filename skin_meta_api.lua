@@ -109,7 +109,7 @@ function skin_class:get_preview()
 	--Right Leg
 	skin = skin .. "([combine:16x32:0,0=" .. player_skin .. "^[mask:skindb_mask_rleg.png)^"
 
-	-- 64x skins have non-mirrored arms and legs
+	-- 64x64 skins have non-mirrored arms and legs
 	local left_arm
 	local left_leg
 
@@ -126,17 +126,21 @@ function skin_class:get_preview()
 	--Left Leg
 	skin = skin .. left_leg
 
-	-- Add overlays for 64x skins. these wont appear if skin is 32x because it will be cropped out
-	--Chest Overlay
-	skin = skin .. "([combine:16x32:-16,-28=" .. player_skin .. "^[mask:skindb_mask_chest.png)^"
-	--Right Arm Overlay
-	skin = skin .. "([combine:16x32:-44,-28=" .. player_skin .. "^[mask:skindb_mask_rarm.png)^"
-	--Right Leg Overlay
-	skin = skin .. "([combine:16x32:0,-16=" .. player_skin .. "^[mask:skindb_mask_rleg.png)^"
-	--Left Arm Overlay
-	skin = skin .. "([combine:16x32:-40,-44=" .. player_skin .. "^[mask:(skindb_mask_rarm.png^[transformFX))^"
-	--Left Leg Overlay
-	skin = skin .. "([combine:16x32:4,-32=" .. player_skin .. "^[mask:(skindb_mask_rleg.png^[transformFX))"
+	if self:get_meta("format") == "1.8" then
+		-- Add overlays for 64x64 skins. This check is needed to avoid
+		-- client-side out-of-bounds "[combine" warnings.
+
+		--Chest Overlay
+		skin = skin .. "([combine:16x32:-16,-28=" .. player_skin .. "^[mask:skindb_mask_chest.png)^"
+		--Right Arm Overlay
+		skin = skin .. "([combine:16x32:-44,-28=" .. player_skin .. "^[mask:skindb_mask_rarm.png)^"
+		--Right Leg Overlay
+		skin = skin .. "([combine:16x32:0,-16=" .. player_skin .. "^[mask:skindb_mask_rleg.png)^"
+		--Left Arm Overlay
+		skin = skin .. "([combine:16x32:-40,-44=" .. player_skin .. "^[mask:(skindb_mask_rarm.png^[transformFX))^"
+		--Left Leg Overlay
+		skin = skin .. "([combine:16x32:4,-32=" .. player_skin .. "^[mask:(skindb_mask_rleg.png^[transformFX))"
+	end
 
 	-- Full Preview
 	skin = "(((" .. skin .. ")^[resize:64x128)^[mask:skindb_transform.png)"
