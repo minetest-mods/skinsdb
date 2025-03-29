@@ -49,23 +49,25 @@ function skin_class:set_texture(value)
 	self._texture = value
 end
 
+--- Retrieves the character texture
 function skin_class:get_texture()
 	return self._texture
 end
 
+--- Assigns an existing hand item (/node) name to this skin
 function skin_class:set_hand(hand)
 	self._hand = hand
 end
 
+function skin_class:get_hand()
+	return self._hand
+end
+
+--- Registers a new hand item based on the skin meta
 local ALPHA_CLIP = minetest.features.use_texture_alpha_string_modes and "clip" or true
 function skin_class:set_hand_from_texture()
 	local hand = core.get_current_modname()..':'..self._texture:gsub('[%p%c%s]', '')
 	local hand_def = {}
-	for k,v in pairs(minetest.registered_items[""]) do
-		if k ~= "mod_origin" and k ~= "type" and k ~= "wield_image" then
-			hand_def[k] = v
-		end
-	end
 	hand_def.tiles = {self:get_texture()}
 	hand_def.visual_scale = 1
 	hand_def.wield_scale = {x=1,y=1,z=1}
@@ -77,13 +79,39 @@ function skin_class:set_hand_from_texture()
 		hand_def.mesh = "skinsdb_hand_18.b3d"
 	end
 	hand_def.use_texture_alpha = ALPHA_CLIP
-	minetest.register_node(hand, hand_def)
+
+	core.register_node(hand, table.copy(hand_def))
+
+	self._hand_def = hand_def -- for wieldhand overrides
 	self:set_hand(hand)
 end
 
-function skin_class:get_hand()
-	return self._hand
-end
+-- creative (and other mods?) may overwrite the wieldhand very late.
+-- Grab the most recent definition and use them as default for our skin hands.
+core.register_on_mods_loaded(function()
+	local default_hand_def = {}
+	for k, v in pairs(core.registered_items[""]) do
+		if k ~= "mod_origin"
+				and k ~= "name"
+				and k ~= "type"
+				and k ~= "wield_image"
+				and string.sub(k, 1, 1) ~= "_" then
+			default_hand_def[k] = v
+		end
+	end
+	for _, meta in pairs(skins.meta) do
+		local def = core.registered_nodes[meta._hand]
+		if def then
+			local new_def = table.copy(default_hand_def)
+			-- Overwrite the hand with our fields from `set_hand_from_texture`
+			for k, v in pairs(meta._hand_def) do
+				new_def[k] = v
+			end
+			core.override_item(meta._hand, new_def)
+		end
+		meta._hand_def = nil -- no longer needed, free up RAM
+	end
+end)
 
 function skin_class:set_preview(value)
 	self._preview = value
