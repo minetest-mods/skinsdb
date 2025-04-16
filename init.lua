@@ -72,6 +72,7 @@ minetest.register_on_shutdown(function()
 	end
 end)
 
+-- See also: 3d_armor/init.lua
 player_api.register_model("skinsdb_3d_armor_character_5.b3d", {
 	animation_speed = 30,
 	textures = {
@@ -82,16 +83,21 @@ player_api.register_model("skinsdb_3d_armor_character_5.b3d", {
 	},
 	animations = {
 		stand = {x=0, y=79},
-		lay = {x=162, y=166},
+		lay = {x=162, y=166, eye_height = 0.3, override_local = true,
+			collisionbox = {-0.6, 0.0, -0.6, 0.6, 0.3, 0.6}},
 		walk = {x=168, y=187},
 		mine = {x=189, y=198},
 		walk_mine = {x=200, y=219},
-		sit = {x=81, y=160},
+		sit = {x=81, y=160, eye_height = 0.8, override_local = true,
+			collisionbox = {-0.3, 0.0, -0.3, 0.3, 1.0, 0.3}},
 		-- compatibility w/ the emote mod
 		wave = {x = 192, y = 196, override_local = true},
 		point = {x = 196, y = 196, override_local = true},
 		freeze = {x = 205, y = 205, override_local = true},
 	},
+	collisionbox = {-0.3, 0.0, -0.3, 0.3, 1.7, 0.3},
+	-- stepheight: use default
+	eye_height = 1.47,
 })
 
 -- Register default character.png if not part of this mod
