@@ -1,5 +1,6 @@
 -- Skins update script
 
+local ie, http = ...
 local S = minetest.get_translator("skinsdb")
 local _ID_ = "Lua Skins Updater"
 
@@ -13,7 +14,6 @@ if not core.features.httpfetch_binary_data then
 end
 
 -- Insecure environment for saving textures and meta
-local ie, http = skins.ie, skins.http
 if not ie or not http then
 	internal.errors[#internal.errors + 1] = "Insecure environment is required. " ..
 		"Please add skinsdb to `secure.trusted_mods` in minetest.conf"
