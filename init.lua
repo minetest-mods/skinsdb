@@ -6,7 +6,11 @@
 
 skins = {}
 skins.modpath = minetest.get_modpath(minetest.get_current_modname())
+skins.storage_path = minetest.get_mod_data_path()
 skins.default = "character"
+
+core.mkdir(skins.storage_path.."/textures")
+core.mkdir(skins.storage_path.."/meta")
 
 dofile(skins.modpath.."/skin_meta_api.lua")
 dofile(skins.modpath.."/api.lua")
@@ -23,9 +27,8 @@ if minetest.get_modpath("sfinv") then
 end
 
 do
-	local ie = minetest.request_insecure_environment()
 	local http = minetest.request_http_api()
-	loadfile(skins.modpath.."/skins_updater.lua")(ie, http)
+	assert(loadfile(skins.modpath.."/skins_updater.lua"))(http)
 end
 
 -- 3d_armor compatibility

@@ -1,22 +1,15 @@
 -- Skins update script
 
-local ie, http = ...
+local http = ...
 local S = minetest.get_translator("skinsdb")
 local _ID_ = "Lua Skins Updater"
 
 local internal = {}
 internal.errors = {}
 
--- Binary downloads are required
-if not core.features.httpfetch_binary_data then
-	internal.errors[#internal.errors + 1] =
-		"Feature 'httpfetch_binary_data' is missing. Update Minetest."
-end
-
--- Insecure environment for saving textures and meta
-if not ie or not http then
-	internal.errors[#internal.errors + 1] = "Insecure environment is required. " ..
-		"Please add skinsdb to `secure.trusted_mods` in minetest.conf"
+if not http then
+	internal.errors[#internal.errors + 1] = "http api is required. " ..
+		"Please add skinsdb to `secure.http_mods` in minetest.conf"
 end
 
 minetest.register_chatcommand("skinsdb_download_skins", {
@@ -50,7 +43,7 @@ end
 local root_url = "http://skinsdb.terraqueststudios.net"
 local page_url = root_url .. "/api/v1/content?client=mod&page=%i" -- [1] = Page#
 
-local download_path = skins.modpath
+local download_path = skins.storage_path
 local meta_path = download_path .. "/meta/"
 local skins_path = download_path .. "/textures/"
 
@@ -72,13 +65,6 @@ local function fetch_url(url, callback)
 	end)
 end
 
--- Insecure workaround since meta/ and textures/ cannot be written to
-local function unsafe_file_write(path, contents)
-	local f = ie.io.open(path, "wb")
-	f:write(contents)
-	f:close()
-end
-
 -- Takes a valid skin table from the Skins Database and saves it
 local function save_single_skin(skin)
 	local meta = {
@@ -90,20 +76,20 @@ local function save_single_skin(skin)
 	local name = "character." .. skin.id
 	do
 		local legacy_name = "character_" .. skin.id
-		local fh = ie.io.open(skins_path .. legacy_name .. ".png", "r")
+		local fh = io.open(skins_path .. legacy_name .. ".png", "r")
 		-- Use the old name if either the texture ...
 		if fh then
 			name = legacy_name
+			fh:close()
 		end
 	end
 
-	-- core.safe_file_write does not work here
-	unsafe_file_write(
+	core.safe_file_write(
 		meta_path .. name .. ".txt",
 		table.concat(meta, "\n")
 	)
 
-	unsafe_file_write(
+	core.safe_file_write(
 		skins_path .. name .. ".png",
 		core.decode_base64(skin.img)
 	)
