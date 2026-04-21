@@ -4,6 +4,13 @@
 -- Rework 2017 by bell07
 -- License: GPLv3
 
+if not core.has_feature({
+    dynamic_add_media_startup = true,
+    dynamic_add_media_filepath = true,
+}) then
+	error("Skinsdb requires Luanti 5.9.0 or newer, please update!")
+end
+
 skins = {}
 skins.modpath = minetest.get_modpath(minetest.get_current_modname())
 skins.default = "character"
