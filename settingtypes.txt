@@ -1,4 +1,4 @@
 # path to the directory where the skins shall be stored
 # @MODDATA: global storage, path starts at core.get_mod_data_path()
 # @WORLD: per-world storage, path starts at core.get_worldpath()
-skinsdb.storage_path (Storage Path) string @MODDATA/skinsdb
+skinsdb.storage_path (Storage Path) string @MODDATA

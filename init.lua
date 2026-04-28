@@ -15,7 +15,7 @@ skins = {}
 skins.modpath = minetest.get_modpath(minetest.get_current_modname())
 skins.default = "character"
 
-local storage_path = core.settings:get("skins.storage_path") or "@MODDATA/skinsdb"
+local storage_path = core.settings:get("skins.storage_path") or "@MODDATA"
 storage_path = storage_path:gsub("^@MODDATA", core.get_mod_data_path())
 storage_path = storage_path:gsub("^@WORLD", core.get_worldpath())
 skins.storage_path = storage_path
