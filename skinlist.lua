@@ -138,8 +138,9 @@ function skins.__fuzzy_match_skin_name(player_name, skin_name, be_noisy)
 	end
 end
 
+-- Load skins
 do
-	-- Load old skins from the current mod directory
+	-- old skins from the current mod directory
 	local legacy_skin_path = skins.modpath.."/textures"
 	local legacy_skins_dir_list = minetest.get_dir_list(legacy_skin_path)
 
@@ -147,7 +148,7 @@ do
 		skins.register_skin(legacy_skin_path, fn)
 	end
 
-	-- Load skins
+	-- skins as specified by settings
 	local skins_path = skins.storage_path.."/textures"
 	local skins_dir_list = minetest.get_dir_list(skins_path)
 
