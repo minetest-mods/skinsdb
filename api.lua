@@ -74,7 +74,7 @@ function skins.set_player_skin(player, skin)
 	return success
 end
 
--- Check Skin format (code stohlen from stu's multiskin)
+-- Check Skin format (code stolen from stu's multiskin)
 function skins.get_skin_format(file)
 	file:seek("set", 1)
 	if file:read(3) == "PNG" then

@@ -24,8 +24,8 @@ This Minetest mod offers changeable player skins with a graphical interface for 
 
 #### Ingame Downloader
 
-1) Get Minetest 5.1.0-dev-cb00632 or newer
-2) In the settings menu show advanced options, find the "Developer Options" tab and add "skinsdb" to "Trusted mods" (secure.trusted_mods in minetest.conf)
+1) Get Minetest 5.9.0 or newer
+2) In the settings menu show advanced options, find the "Developer Options" tab and add "skinsdb" to "HTTP mods" (secure.http_mods in minetest.conf)
 3) Start your world
 4) Run `/skinsdb_download_skins <skindb start page> <amount of pages>`
 5) Wait for the Minetest server to shut down
