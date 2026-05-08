@@ -1,6 +1,6 @@
 skins.meta = {}
 
-local has_hand_monoid = minetest.get_modpath("hand_monoid")
+local has_hand_monoid = core.get_modpath("hand_monoid")
 
 local skin_class = {}
 skin_class.__index = skin_class
@@ -64,7 +64,7 @@ function skin_class:get_hand()
 end
 
 --- Registers a new hand item based on the skin meta
-local ALPHA_CLIP = minetest.features.use_texture_alpha_string_modes and "clip" or true
+local ALPHA_CLIP = core.features.use_texture_alpha_string_modes and "clip" or true
 function skin_class:set_hand_from_texture()
 	local hand = core.get_current_modname()..':'..self._texture:gsub('[%p%c%s]', '')
 	local hand_def = {}
@@ -267,6 +267,6 @@ end
 function skin_class:is_applicable_for_player(playername)
 	local assigned_player = self:get_meta("playername")
 	return assigned_player == nil or assigned_player == true or
-		playername and (minetest.check_player_privs(playername, {server=true}) or
+		playername and (core.check_player_privs(playername, {server=true}) or
 		assigned_player:lower() == playername:lower())
 end

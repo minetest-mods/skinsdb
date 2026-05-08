@@ -1,5 +1,5 @@
-local S = minetest.get_translator("skinsdb")
-local ui = minetest.global_exists("unified_inventory") and unified_inventory
+local S = core.get_translator("skinsdb")
+local ui = core.global_exists("unified_inventory") and unified_inventory
 
 function skins.get_formspec_context(player)
 	if player then
@@ -31,19 +31,19 @@ function skins.get_skin_info_formspec(skin, perplayer_formspec)
 		rxoffs = 7.5
 	end
 
-	local formspec = "image["..lxoffs..",.6;1,2;"..minetest.formspec_escape(skin:get_preview()).."]"
+	local formspec = "image["..lxoffs..",.6;1,2;"..core.formspec_escape(skin:get_preview()).."]"
 	if texture then
 		formspec = formspec.."label["..rxoffs..",.5;"..S("Raw texture")..":]"
 		.."image["..rxoffs..",1;"..raw_size..";"..texture.."]"
 	end
 	if m_name ~= "" then
-		formspec = formspec.."label["..cxoffs..",.5;"..S("Name")..": "..minetest.formspec_escape(m_name).."]"
+		formspec = formspec.."label["..cxoffs..",.5;"..S("Name")..": "..core.formspec_escape(m_name).."]"
 	end
 	if m_author ~= "" then
-		formspec = formspec.."label["..cxoffs..",1;"..S("Author")..": "..minetest.formspec_escape(m_author).."]"
+		formspec = formspec.."label["..cxoffs..",1;"..S("Author")..": "..core.formspec_escape(m_author).."]"
 	end
 	if m_license ~= "" then
-		formspec = formspec.."label["..cxoffs..",1.5;"..S("License")..": "..minetest.formspec_escape(m_license).."]"
+		formspec = formspec.."label["..cxoffs..",1.5;"..S("License")..": "..core.formspec_escape(m_license).."]"
 	end
 	return formspec
 end
@@ -122,8 +122,8 @@ function skins.get_skin_selection_formspec(player, context, perplayer_formspec)
 		formspec = formspec..
 			string.format("image_button[%f,%f;%f,%f;%s;skins_set$%i;]",
 				x, y, skinwidth, skinheight,
-				minetest.formspec_escape(skin:get_preview()), i)..
-			"tooltip[skins_set$"..i..";"..minetest.formspec_escape(skin:get_meta_string("name")).."]"
+				core.formspec_escape(skin:get_preview()), i)..
+			"tooltip[skins_set$"..i..";"..core.formspec_escape(skin:get_meta_string("name")).."]"
 	end
 
 	if context.total_pages > 1 then

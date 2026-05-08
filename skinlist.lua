@@ -47,7 +47,7 @@ function skins.register_skin(path, filename)
 		sort_id = 0 + (tonumber(splits[2]) or 0)
 
 		if #splits > 1 and sep == "_" then
-			minetest.log("warning", "skinsdb: The skin name '" .. filename .. "' is ambigous." ..
+			core.log("warning", "skinsdb: The skin name '" .. filename .. "' is ambigous." ..
 				" Please use the separator '.' to lock it down to the correct player name.")
 		end
 	else -- Public skin "character*"
@@ -133,7 +133,7 @@ function skins.__fuzzy_match_skin_name(player_name, skin_name, be_noisy)
 	end
 
 	if be_noisy then
-		minetest.log("warning", "skinsdb: cannot find matching skin '" ..
+		core.log("warning", "skinsdb: cannot find matching skin '" ..
 			skin_name .. "' for player '" .. player_name .. "'.")
 	end
 end
@@ -142,7 +142,7 @@ end
 do
 	-- old skins from the current mod directory
 	local legacy_skin_path = skins.modpath.."/textures"
-	local legacy_skins_dir_list = minetest.get_dir_list(legacy_skin_path)
+	local legacy_skins_dir_list = core.get_dir_list(legacy_skin_path)
 
 	for _, fn in pairs(legacy_skins_dir_list) do
 		skins.register_skin(legacy_skin_path, fn)
@@ -150,7 +150,7 @@ do
 
 	-- skins as specified by settings
 	local skins_path = skins.storage_path.."/textures"
-	local skins_dir_list = minetest.get_dir_list(skins_path)
+	local skins_dir_list = core.get_dir_list(skins_path)
 
 	for _, fn in pairs(skins_dir_list) do
 		if core.dynamic_add_media({
@@ -175,7 +175,7 @@ end
 
 -- (obsolete) get skinlist. If assignment given ("mod:wardrobe" or "player:bell07") select skins matches the assignment. select_unassigned selects the skins without any assignment too
 function skins.get_skinlist(assignment, select_unassigned)
-	minetest.log("deprecated", "skins.get_skinlist() is deprecated. Use skins.get_skinlist_for_player() instead")
+	core.log("deprecated", "skins.get_skinlist() is deprecated. Use skins.get_skinlist_for_player() instead")
 	local skinslist = {}
 	for _, skin in pairs(skins.meta) do
 		if not assignment or
