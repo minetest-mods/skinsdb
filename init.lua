@@ -1,4 +1,4 @@
--- Unified Skins for Minetest - based modified Bags from unfied_inventory and skins from inventory_plus
+-- Unified Skins for Luanti - based modified Bags from unfied_inventory and skins from inventory_plus
 
 -- Copyright (c) 2012 cornernote, Dean Montgomery
 -- Rework 2017 by bell07

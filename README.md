@@ -1,19 +1,19 @@
 # skinsdb
 
-This Minetest mod offers changeable player skins with a graphical interface for multiple inventory mods.
+This Luanti mod offers changeable player skins with a graphical interface for multiple inventory mods.
 
 ## Features
 
 - Flexible skins API to manage the database
 - [character_creator](https://github.com/minetest-mods/character_creator) support for custom skins
-- Skin change menu for sfinv (in minetest_game) and [unified_inventory](https://forum.minetest.net/viewtopic.php?t=12767)
+- Skin change menu for sfinv (in minetest_game) and [unified_inventory](https://forum.luanti.org/viewtopic.php?t=12767)
 - Skins change menu and command line using chat command /skinsdb (set | show | list | list private | list public | ui)
-- Supported by [smart_inventory](https://forum.minetest.net/viewtopic.php?t=16597) for the skin selection
+- Supported by [smart_inventory](https://forum.luanti.org/viewtopic.php?t=16597) for the skin selection
 - Supported by [i3](https://github.com/minetest-mods/i3) inventory mod
 - Skin previews supported in selection
 - Additional information for each skin
 - Support for different skins lists: public and a per-player list are currently implemented
-- Full [3d_armor](https://forum.minetest.net/viewtopic.php?t=4654) support
+- Full [3d_armor](https://forum.luanti.org/viewtopic.php?t=4654) support
 - Compatible to 1.0 and 1.8 Minecraft skins format
 - Skinned hand in 1st person view (1.0 skins only)
 
@@ -24,14 +24,14 @@ This Minetest mod offers changeable player skins with a graphical interface for 
 
 #### Ingame Downloader
 
-1) Get Minetest 5.9.0 or newer
+1) Get Luanti 5.9.0 or newer
 2) In the settings menu show advanced options, find the "Developer Options" tab and add "skinsdb" to "HTTP mods" (secure.http_mods in minetest.conf)
 3) Start your world
 4) Run `/skinsdb_download_skins <skindb start page> <amount of pages>`
-5) Wait for the Minetest server to shut down
+5) Wait for the Luanti server to shut down
 6) Start the server again
 
-You might want to run `minetest` in a Terminal/Console window to check the log output instantly.
+You might want to run `luanti` in a Terminal/Console window to check the log output instantly.
 
 #### Python Download script
 
