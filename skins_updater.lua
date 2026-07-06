@@ -1,7 +1,7 @@
 -- Skins update script
 
 local http = ...
-local S = minetest.get_translator("skinsdb")
+local S = core.get_translator("skinsdb")
 local _ID_ = "Lua Skins Updater"
 
 local internal = {}
@@ -9,10 +9,10 @@ internal.errors = {}
 
 if not http then
 	internal.errors[#internal.errors + 1] = "http api is required. " ..
-		"Please add skinsdb to `secure.http_mods` in minetest.conf"
+		"Please add skinsdb to `secure.http_mods` in core.conf"
 end
 
-minetest.register_chatcommand("skinsdb_download_skins", {
+core.register_chatcommand("skinsdb_download_skins", {
 	params = S("<skindb start page> <amount of pages>"),
 	description = S("Downloads the specified range of skins and shuts down the server"),
 	privs = {server=true},
@@ -39,7 +39,7 @@ if #internal.errors > 0 then
 	return -- Nonsense to load something that's not working
 end
 
--- http://minetest.fensta.bplaced.net/api/apidoku.md
+-- http://core.fensta.bplaced.net/api/apidoku.md
 local root_url = "http://skinsdb.terraqueststudios.net"
 local page_url = root_url .. "/api/v1/content?client=mod&page=%i" -- [1] = Page#
 

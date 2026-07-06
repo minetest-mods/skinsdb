@@ -1,4 +1,4 @@
-local S = minetest.get_translator("skinsdb")
+local S = core.get_translator("skinsdb")
 
 unified_inventory.register_page("skins", {
 	get_formspec = function(player, perplayer_formspec)
@@ -32,7 +32,7 @@ unified_inventory.register_page("skins_page", {
 })
 
 -- click button handlers
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+core.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.skins then
 		unified_inventory.set_inventory_formspec(player, "craft")
 		return

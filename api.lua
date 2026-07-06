@@ -1,5 +1,5 @@
 -- get current skin
-local storage = minetest.get_mod_storage()
+local storage = core.get_mod_storage()
 
 function skins.get_player_skin(player)
 	local player_name = player:get_player_name()
@@ -57,7 +57,7 @@ function skins.update_player_skin(player)
 	else
 		-- do updates manually without 3d_armor
 		skins.get_player_skin(player):apply_skin_to_player(player)
-		if minetest.global_exists("sfinv") and sfinv.enabled then
+		if core.global_exists("sfinv") and sfinv.enabled then
 			sfinv.set_player_inventory_formspec(player)
 		end
 	end
@@ -69,7 +69,7 @@ function skins.set_player_skin(player, skin)
 	if success then
 		skins.get_player_skin(player):set_skin(player)
 		skins.update_player_skin(player)
-		minetest.log("action", player:get_player_name().." set skin to "..skin_obj:get_key(""))
+		core.log("action", player:get_player_name().." set skin to "..skin_obj:get_key(""))
 	end
 	return success
 end

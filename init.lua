@@ -1,4 +1,4 @@
--- Unified Skins for Minetest - based modified Bags from unfied_inventory and skins from inventory_plus
+-- Unified Skins for Luanti - based modified Bags from unfied_inventory and skins from inventory_plus
 
 -- Copyright (c) 2012 cornernote, Dean Montgomery
 -- Rework 2017 by bell07
@@ -12,7 +12,7 @@ if not core.has_feature({
 end
 
 skins = {}
-skins.modpath = minetest.get_modpath(minetest.get_current_modname())
+skins.modpath = core.get_modpath(core.get_current_modname())
 skins.default = "character"
 
 local storage_path = core.settings:get("skins.storage_path") or "@MODDATA"
@@ -29,28 +29,28 @@ dofile(skins.modpath.."/skinlist.lua")
 dofile(skins.modpath.."/formspecs.lua")
 dofile(skins.modpath.."/chatcommands.lua")
 -- Unified inventory page/integration
-if minetest.get_modpath("unified_inventory") then
+if core.get_modpath("unified_inventory") then
 	dofile(skins.modpath.."/unified_inventory_page.lua")
 end
 
-if minetest.get_modpath("sfinv") then
+if core.get_modpath("sfinv") then
 	dofile(skins.modpath.."/sfinv_page.lua")
 end
 
 do
-	local http = minetest.request_http_api()
+	local http = core.request_http_api()
 	assert(loadfile(skins.modpath.."/skins_updater.lua"))(http)
 end
 
 -- 3d_armor compatibility
-if minetest.global_exists("armor") then
+if core.global_exists("armor") then
 	skins.armor_loaded = true
 	armor.get_player_skin = function(self, name)
-		local skin = skins.get_player_skin(minetest.get_player_by_name(name))
+		local skin = skins.get_player_skin(core.get_player_by_name(name))
 		return skin:get_texture()
 	end
 	armor.get_preview = function(self, name)
-		local skin = skins.get_player_skin(minetest.get_player_by_name(name))
+		local skin = skins.get_player_skin(core.get_player_by_name(name))
 		return skin:get_preview()
 	end
 	armor.update_player_visuals = function(self, player)
@@ -63,24 +63,24 @@ if minetest.global_exists("armor") then
 	end
 end
 
-if minetest.global_exists("clothing") and clothing.player_textures then
+if core.global_exists("clothing") and clothing.player_textures then
 	skins.clothing_loaded = true
 	clothing:register_on_update(skins.update_player_skin)
 end
 
 -- Update skin on join
 skins.ui_context = {}
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
 	skins.update_player_skin(player)
 end)
 
-minetest.register_on_leaveplayer(function(player)
+core.register_on_leaveplayer(function(player)
 	skins.ui_context[player:get_player_name()] = nil
 	player:get_inventory():set_size("hand", 0)
 end)
 
-minetest.register_on_shutdown(function()
-	for _, player in pairs(minetest.get_connected_players()) do
+core.register_on_shutdown(function()
+	for _, player in pairs(core.get_connected_players()) do
 		player:get_inventory():set_size("hand", 0)
 	end
 end)
@@ -125,7 +125,7 @@ if not default_skin_obj then
 end
 
 -- Secure hand inventory slot
-minetest.register_allow_player_inventory_action(function(player, action, inv, data)
+core.register_allow_player_inventory_action(function(player, action, inv, data)
 	if data.to_list == "hand" or data.from_list == "hand" or data.listname == "hand" then
 		return 0
 	end

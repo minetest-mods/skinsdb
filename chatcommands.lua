@@ -1,4 +1,4 @@
-local S = minetest.get_translator("skinsdb")
+local S = core.get_translator("skinsdb")
 
 local function show_selection_formspec(player)
 	local context = skins.get_formspec_context(player)
@@ -6,15 +6,15 @@ local function show_selection_formspec(player)
 	local skin = skins.get_player_skin(player)
 	local formspec = "size[8,8]"..skins.get_skin_info_formspec(skin)
 	formspec = formspec..skins.get_skin_selection_formspec(player, context, 3.5)
-	minetest.show_formspec(name, 'skinsdb_show_ui', formspec)
+	core.show_formspec(name, 'skinsdb_show_ui', formspec)
 end
 
 
-minetest.register_chatcommand("skinsdb", {
+core.register_chatcommand("skinsdb", {
 	params = S("[set] <skin key> | show [<skin key>] | list | list private | list public | [ui]"),
 	description = S("Show, list or set player's skin"),
 	func = function(name, param)
-		local player = minetest.get_player_by_name(name)
+		local player = core.get_player_by_name(name)
 		if not player then
 			return false, S("Player not found")
 		end
@@ -64,9 +64,9 @@ minetest.register_chatcommand("skinsdb", {
 						..S("Author").."="..skin:get_meta_string("author").." "
 						..S("License").."="..skin:get_meta_string("license")
 				if skin:get_key() == current_skin_key then
-					info = minetest.colorize("#00FFFF", info)
+					info = core.colorize("#00FFFF", info)
 				end
-				minetest.chat_send_player(name, info)
+				core.chat_send_player(name, info)
 			end
 		elseif command == "show" then
 			local skin
@@ -79,7 +79,7 @@ minetest.register_chatcommand("skinsdb", {
 				return false, S("invalid skin")
 			end
 			local formspec = "size[8,3]"..skins.get_skin_info_formspec(skin)
-			minetest.show_formspec(name, 'skinsdb_show_skin', formspec)
+			core.show_formspec(name, 'skinsdb_show_skin', formspec)
 		elseif command == "ui" then
 			show_selection_formspec(player)
 		end
@@ -87,7 +87,7 @@ minetest.register_chatcommand("skinsdb", {
 })
 
 
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+core.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= "skinsdb_show_ui" then
 		return
 	end
@@ -96,7 +96,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	local action = skins.on_skin_selection_receive_fields(player, context, fields)
 	if action == 'set' then
-		minetest.close_formspec(player:get_player_name(), formname)
+		core.close_formspec(player:get_player_name(), formname)
 	elseif action == 'page' then
 		show_selection_formspec(player)
 	end
